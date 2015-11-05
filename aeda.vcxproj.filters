@@ -36,6 +36,9 @@
     <ClCompile Include="Menus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OLZ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contato.h">
@@ -63,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Menus.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OLZ.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

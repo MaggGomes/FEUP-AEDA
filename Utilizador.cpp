@@ -101,7 +101,7 @@ ostream& operator<<(ostream& os, const Utilizador& user){
 		os << "Telefone: " << user.telefone << endl;
 
 	if (!user.vis_nome && !user.vis_email && !user.vis_telefone)
-		os << "O Utilizador nao pertende mostrar as suas informações. " << endl;
+		os << "O Utilizador nao pertende mostrar as suas informaÃ§Ãµes. " << endl;
 
 	os << endl;
 

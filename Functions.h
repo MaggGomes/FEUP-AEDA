@@ -1,3 +1,7 @@
+#ifndef FUNCTIONS_H_
+#define FUNCTIONS_H_
+
+#include <iomanip>
 #include <iostream>
 #include <windows.h>
 #include <cstddef>
@@ -11,7 +15,7 @@
 
 using namespace std;
 
-void clrscr(void)
+void clrscreen()
 {
 	COORD coordScreen = { 0, 0 }; // Canto superior esquerdo
 	DWORD cCharsWritten;
@@ -20,7 +24,7 @@ void clrscr(void)
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	GetConsoleScreenBufferInfo(hCon, &csbi);
 	dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
-	// Preenchimento com espaços
+	// Preenchimento com espaÃ§os
 	FillConsoleOutputCharacter(hCon, TEXT(' '), dwConSize, coordScreen, &cCharsWritten);
 	GetConsoleScreenBufferInfo(hCon, &csbi);
 	FillConsoleOutputAttribute(hCon, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
@@ -28,7 +32,7 @@ void clrscr(void)
 	SetConsoleCursorPosition(hCon, coordScreen);
 }
 
-void setcolor(unsigned int color, unsigned int background_color) // Altera a cor das letras da consola
+void set_color(unsigned int color, unsigned int background_color) // Altera a cor das letras da consola
 {
 	HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (background_color == BLACK)
@@ -37,3 +41,5 @@ void setcolor(unsigned int color, unsigned int background_color) // Altera a cor
 		SetConsoleTextAttribute(hCon, color | BACKGROUND_BLUE | BACKGROUND_GREEN |
 		BACKGROUND_RED);
 }
+
+#endif /*FUNCTIONS_H_*/

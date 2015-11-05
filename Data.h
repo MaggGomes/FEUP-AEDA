@@ -2,6 +2,7 @@
 #define DATA_H_
 
 #include <iostream>
+#include <ctime>
 
 using namespace std;
 
@@ -16,6 +17,11 @@ private:
 	int mes;
 	int ano;
 public:
+
+	/**
+	* @brief Construtor Default da classe Data
+	*/
+	Data();
 
 	/**
 	* @brief Construtor da classe Data
@@ -57,7 +63,7 @@ public:
 	* @param Recebe um parâmetro do tipo inteiro
 	*/
 	void setAno(int ano);
-
+	
 	/**
 	* @brief Overload do operator << para imprimir a data
 	*

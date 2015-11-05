@@ -62,104 +62,104 @@ public:
 	Localizacao getLocalizacao() const;
 
 	/**
-	* @return Retorna os an˙ncios do utilizador
+	* @return Retorna os an√∫ncios do utilizador
 	*/
 	vector<Anuncio *> getAnuncios() const;
 
 	/**
-	* @return Retorna se o utilizador quer o nome visÌvel
+	* @return Retorna se o utilizador quer o nome vis√≠vel
 	*/
 	bool getVisNome() const;
 
 	/**
-	* @return Retorna se o utilizador quer o email visÌvel
+	* @return Retorna se o utilizador quer o email vis√≠vel
 	*/
 	bool getVisEmail() const;
 
 	/**
-	* @return Retorna se o utilizador quer o telefone visÌvel
+	* @return Retorna se o utilizador quer o telefone vis√≠vel
 	*/
 	bool getVisTelefone() const;
 
 	/**
 	* @brief Adiciona um contato ao vetor de contatos recebidos
 	*
-	* @param Recebe um par‚metro do tipo Contato
+	* @param Recebe um par√¢metro do tipo Contato
 	*/
 	void addmsgRec(Contato cont);
 
 	/**
 	* @brief Adiciona um contato ao vetor do tipo contatos enviados
 	*
-	* @param Recebe um par‚metro do tipo Contato
+	* @param Recebe um par√¢metro do tipo Contato
 	*/
 	void addmsgEnv(Contato cont);
 	
 	/**
 	* @brief Imprime as mensagens recebidas
 	*/
-	void lerMensagens() const;			//LÍ todas as mensagens recebidas atravÈs de cada um dos an˙ncios
+	void lerMensagens() const;			//L√™ todas as mensagens recebidas atrav√©s de cada um dos an√∫ncios
 
 	/**
 	* @brief Adiciona um anuncio ao vetor de anuncios
 	*
-	* @param Recebe um par‚metro do tipo Anuncio
+	* @param Recebe um par√¢metro do tipo Anuncio
 	*/
 	void addAnuncio(Anuncio* anuncio);
 
 	/**
 	* @brief Modifica o email
 	*
-	* @param Recebe um par‚metro do tipo string
+	* @param Recebe um par√¢metro do tipo string
 	*/
 	void setEmail(const string& email);
 
 	/**
 	* @brief Modifica a localizacao
 	*
-	* @param Recebe um par‚metro do tipo Localizacao
+	* @param Recebe um par√¢metro do tipo Localizacao
 	*/
 	void setLocalizacao(const Localizacao& localizacao);
 
 	/**
 	* @brief Modifica a visibilidade o nome
 	*
-	* @param Recebe um par‚metro do tipo string
+	* @param Recebe um par√¢metro do tipo string
 	*/
 	void setNome(const string& nome);
 
 	/**
 	* @brief Modifica o telefone
 	*
-	* @param Recebe um par‚metro do tipo inteiro
+	* @param Recebe um par√¢metro do tipo inteiro
 	*/
 	void setTelefone(int telefone);
 
 	/**
 	* @brief Modifica a visibilidade do email
 	*
-	* @param Recebe um par‚metro do tipo booleano
+	* @param Recebe um par√¢metro do tipo booleano
 	*/
 	void setVisEmail(bool visEmail);
 
 	/**
 	* @brief Modifica a visibilidade do nome
 	*
-	* @param Recebe um par‚metro do tipo booleano
+	* @param Recebe um par√¢metro do tipo booleano
 	*/
 	void setVisNome(bool visNome);
 
 	/**
 	* @brief Modifica a visibilidade do telefone
 	*
-	* @param Recebe um par‚metro do tipo booleano
+	* @param Recebe um par√¢metro do tipo booleano
 	*/
 	void setVisTelefone(bool visTelefone);
 
 	/**
-	* @brief Overload do operator << para os dados visÌveis do utilizador
+	* @brief Overload do operator << para os dados vis√≠veis do utilizador
 	*
-	* @param Recebe um par‚metro do tipo Utilizador e do tipo ostream para permitir imprimir os dados do utilizador
+	* @param Recebe um par√¢metro do tipo Utilizador e do tipo ostream para permitir imprimir os dados do utilizador
 	*/
 	friend ostream& operator<<(ostream& os, const Utilizador& user);
 };

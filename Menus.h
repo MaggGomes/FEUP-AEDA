@@ -1,16 +1,16 @@
 #ifndef MENUS_H_
 #define MENUS_H_
 
-#include <string>
-#include <fstream>
-
-#include "functions.h"
-
-using namespace std;
+#include "Functions.h"
 
 /**
 * @brief Menu Inicial
 */
-void createMenu();
+void createMenuInicial();
+
+/**
+* @brief Menu Pesquisa
+*/
+void createMenuPesquisa();
 
 #endif /*MENUS_H_*/

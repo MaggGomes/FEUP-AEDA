@@ -84,6 +84,7 @@
     <ClCompile Include="Localizacao.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menus.cpp" />
+    <ClCompile Include="OLZ.cpp" />
     <ClCompile Include="Utilizador.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +95,7 @@
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Localizacao.h" />
     <ClInclude Include="Menus.h" />
+    <ClInclude Include="OLZ.h" />
     <ClInclude Include="Utilizador.h" />
     <ClInclude Include="Variables.h" />
   </ItemGroup>

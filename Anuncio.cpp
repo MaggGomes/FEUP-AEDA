@@ -1,4 +1,185 @@
 #include "Anuncio.h"
 
-//Anuncio::Anuncio(Utilizador ut){}
+Anuncio::Anuncio(Utilizador ut, string tit, string cat, string des, bool pNeg, float pr)
+{
+	Anunciante = ut;
+	titulo = tit;
+	categoria = cat;
+	descricao = des;
+	id = last_id;
+	time_t t = time(0);
+	tm* timePtr = localtime(&t);
+	int dia = timePtr->tm_mday;
+	int mes = timePtr->tm_mon;
+	int ano = timePtr->tm_year;
+	Data temp(dia,mes,ano);
+	datacriacao = temp;
+	possivelNegociar = pNeg;
+	num_clicks = 0;
+	preco = pr;
+}
+
+string Anuncio::getTitulo() const{
+	return titulo;
+}
+
+string Anuncio::getCategoria() const{
+	return categoria;
+}
+
+string Anuncio::getDescricao() const{
+	return descricao;
+}
+
+vector<string> Anuncio::getImagens() const{
+	return imagens;
+}
+
+int Anuncio::getID() const{
+	return id;
+}
+
+Data Anuncio::getDataCriacao()  const{
+	return datacriacao;
+}
+
+bool Anuncio::getNegociar() const{
+	return possivelNegociar;
+}
+
+int Anuncio::getClicks() const{
+	return num_clicks;
+}
+
+float Anuncio::getPreco() const{
+	return preco;
+}
+
+void Anuncio::setTitulo(string tit){
+	titulo = tit;
+}
+
+void Anuncio::setCategoria(string cat){
+	categoria = cat;
+}
+
+void Anuncio::setDescricao(string desr){
+	descricao = desr;
+}
+
+void Anuncio::setId(int tId){
+	id = tId;
+}
+
+void Anuncio::setDataCriacao(Data dt){
+	datacriacao = dt;
+}
+
+void Anuncio::setPossivelNegociar(bool neg){
+	possivelNegociar = neg;
+}
+
+void Anuncio::setNum_clicks(int clicks){
+	num_clicks = clicks;
+}
+
+void Anuncio::addClick(){
+	num_clicks++;
+}
+
+void Anuncio::setPreco(float pr){
+	preco = pr;
+}
+
+//------------------------------
+
+AnuncioVenda::AnuncioVenda(Utilizador ut, string tit, string cat, string des, bool pNeg, float pr, string est) :Anuncio( ut, tit, cat, des, pNeg, pr)
+{
+	estado = est;
+}
+
+string AnuncioVenda::getEstado()
+{
+	return estado;
+}
+
+void AnuncioVenda::setEstado(string est)
+{
+	estado = est;
+}
+
+bool AnuncioVenda::isVenda()
+{
+	return true;
+}
+
+void AnuncioVenda::visAnuncio()
+{
+	cout << "Titulo: " << titulo << endl;
+	cout << "Categoria: " << categoria << endl;
+	cout << "Descricao: " << descricao << endl << endl;
+
+	for (unsigned int i = 0; i < imagens.size(); i++){
+		cout << "Imagem: " << imagens[i] << endl;
+	}
+
+	cout << "Estado: " << estado << endl;
+
+	cout << "Preco: " << preco << endl;
+	num_clicks++;
+	cout << "Visualizacoes: " << num_clicks;
+
+	if (possivelNegociar)
+		cout << "Negociavel.";
+}
+
+//------------------------------
+
+AnuncioCompra::AnuncioCompra(Utilizador ut, string tit, string cat, string des, bool pNeg, float pr, vector<Anuncio> tr) : Anuncio(ut, tit, cat, des, pNeg, pr)
+{
+	troca = tr;
+}
+
+vector<Anuncio> AnuncioCompra::getTroca()
+{
+	return troca;
+}
+
+void AnuncioCompra::setTroca(vector<Anuncio> tr)
+{
+	troca = tr;
+}
+
+bool AnuncioCompra::isVenda()
+{
+	return false;
+}
+
+void AnuncioCompra::visAnuncio()
+{
+	cout << "Titulo: " << titulo << endl;
+	cout << "Categoria: " << categoria << endl;
+	cout << "Descricao: " << descricao << endl << endl;
+
+	for (unsigned int i = 0; i < imagens.size(); i++){
+		cout << "Imagem: " << imagens[i] << endl;
+	}
+
+	cout << "Preco: " << preco << endl;
+	num_clicks++;
+	cout << "Visualizacoes: " << num_clicks;
+
+	if (possivelNegociar)
+		cout << "Negociavel.";
+	
+	if (troca.size()>0)
+	{
+		cout << "Possíveis trocas:" << endl;
+		for (int i = 0; i < troca.size(); i++)
+		{
+			cout << "- " << troca[i].getTitulo() << " (ID: " << troca[i].getID() << ")" << endl;
+		}
+	}
+}
+
 
