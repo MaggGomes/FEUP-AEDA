@@ -79,10 +79,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Anuncio.cpp" />
+    <ClCompile Include="Auxfunc.cpp" />
     <ClCompile Include="Contato.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="Localizacao.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menus.cpp" />
     <ClCompile Include="Utilizador.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -33,6 +33,12 @@
     <ClCompile Include="Contato.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Menus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Auxfunc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contato.h">
