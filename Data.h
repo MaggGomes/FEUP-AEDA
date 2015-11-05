@@ -70,11 +70,6 @@ public:
 	* @param Recebe um parâmetro do tipo Data e do tipo ostream para permitir imprimir a Data
 	*/
 	friend ostream& operator<<(ostream& os, const Data& d); // Overloading do operador "<<"
-
-	/**
-	* @brief Destrutor da classe Data
-	*/
-	~Data();
 };
 
 #endif /*DATA_H_*/

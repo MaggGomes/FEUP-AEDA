@@ -2,6 +2,9 @@
 
 Data::Data()
 {
+	dia = 0;
+	mes = 0;
+	ano = 0;
 }
 
 Data::Data(int dia, int mes, int ano) : dia(dia), mes(mes), ano(ano){}

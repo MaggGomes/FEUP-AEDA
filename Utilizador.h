@@ -161,6 +161,7 @@ public:
 	*
 	* @param Recebe um parâmetro do tipo Utilizador e do tipo ostream para permitir imprimir os dados do utilizador
 	*/
+
 	friend ostream& operator<<(ostream& os, const Utilizador& user);
 };
 

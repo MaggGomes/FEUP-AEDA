@@ -1,13 +1,13 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
-#include <iomanip>
+
 #include <iostream>
 #include <windows.h>
-#include <cstddef>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fstream>
+//#include <cstddef>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <fstream>
 #include <iomanip>
 #include <conio.h>
 
@@ -15,7 +15,7 @@
 
 using namespace std;
 
-void clrscreen()
+/*void clrScreen()
 {
 	COORD coordScreen = { 0, 0 }; // Canto superior esquerdo
 	DWORD cCharsWritten;
@@ -30,8 +30,8 @@ void clrscreen()
 	FillConsoleOutputAttribute(hCon, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
 	// Cursor no canto superior esquerdo
 	SetConsoleCursorPosition(hCon, coordScreen);
-}
-
+}*/
+/*
 void set_color(unsigned int color, unsigned int background_color) // Altera a cor das letras da consola
 {
 	HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -40,6 +40,6 @@ void set_color(unsigned int color, unsigned int background_color) // Altera a co
 	else
 		SetConsoleTextAttribute(hCon, color | BACKGROUND_BLUE | BACKGROUND_GREEN |
 		BACKGROUND_RED);
-}
+}*/
 
 #endif /*FUNCTIONS_H_*/

@@ -1,18 +1,27 @@
 #include "Anuncio.h"
 
-Anuncio::Anuncio(Utilizador ut, string tit, string cat, string des, bool pNeg, float pr)
+int Anuncio::last_id = 1;
+
+Anuncio::Anuncio(Utilizador * ut, string tit, string cat, string des, bool pNeg, float pr)
 {
 	Anunciante = ut;
 	titulo = tit;
 	categoria = cat;
 	descricao = des;
 	id = last_id;
-	time_t t = time(0);
-	tm* timePtr = localtime(&t);
+	last_id++;
+
+	time_t t = time(NULL);
+	struct tm* timePtr = localtime(&t);
+	
 	int dia = timePtr->tm_mday;
 	int mes = timePtr->tm_mon;
 	int ano = timePtr->tm_year;
+	
+
 	Data temp(dia,mes,ano);
+	
+	imagens = {};
 	datacriacao = temp;
 	possivelNegociar = pNeg;
 	num_clicks = 0;
@@ -93,7 +102,7 @@ void Anuncio::setPreco(float pr){
 
 //------------------------------
 
-AnuncioVenda::AnuncioVenda(Utilizador ut, string tit, string cat, string des, bool pNeg, float pr, string est) :Anuncio( ut, tit, cat, des, pNeg, pr)
+AnuncioVenda::AnuncioVenda(Utilizador *ut, string tit, string cat, string des, bool pNeg, float pr, string est) :Anuncio( ut, tit, cat, des, pNeg, pr)
 {
 	estado = est;
 }
@@ -108,16 +117,14 @@ void AnuncioVenda::setEstado(string est)
 	estado = est;
 }
 
-bool AnuncioVenda::isVenda()
-{
-	return true;
-}
+
 
 void AnuncioVenda::visAnuncio()
 {
 	cout << "Titulo: " << titulo << endl;
 	cout << "Categoria: " << categoria << endl;
 	cout << "Descricao: " << descricao << endl << endl;
+	cout << "ID: " << id << endl;
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
 		cout << "Imagem: " << imagens[i] << endl;
@@ -127,32 +134,27 @@ void AnuncioVenda::visAnuncio()
 
 	cout << "Preco: " << preco << endl;
 	num_clicks++;
-	cout << "Visualizacoes: " << num_clicks;
+	cout << "Visualizacoes: " << num_clicks<<endl;
 
 	if (possivelNegociar)
-		cout << "Negociavel.";
+		cout << "Negociavel."<<endl;
 }
 
 //------------------------------
 
-AnuncioCompra::AnuncioCompra(Utilizador ut, string tit, string cat, string des, bool pNeg, float pr, vector<Anuncio> tr) : Anuncio(ut, tit, cat, des, pNeg, pr)
+AnuncioCompra::AnuncioCompra(Utilizador * ut, string tit, string cat, string des, bool pNeg, float pr, vector<Anuncio*> tr) : Anuncio(ut, tit, cat, des, pNeg, pr)
 {
 	troca = tr;
 }
 
-vector<Anuncio> AnuncioCompra::getTroca()
+vector<Anuncio*> AnuncioCompra::getTroca()
 {
 	return troca;
 }
 
-void AnuncioCompra::setTroca(vector<Anuncio> tr)
+void AnuncioCompra::setTroca(vector<Anuncio*> tr)
 {
 	troca = tr;
-}
-
-bool AnuncioCompra::isVenda()
-{
-	return false;
 }
 
 void AnuncioCompra::visAnuncio()
@@ -160,6 +162,7 @@ void AnuncioCompra::visAnuncio()
 	cout << "Titulo: " << titulo << endl;
 	cout << "Categoria: " << categoria << endl;
 	cout << "Descricao: " << descricao << endl << endl;
+	cout << "ID: " << id << endl;
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
 		cout << "Imagem: " << imagens[i] << endl;
@@ -175,9 +178,9 @@ void AnuncioCompra::visAnuncio()
 	if (troca.size()>0)
 	{
 		cout << "Possíveis trocas:" << endl;
-		for (int i = 0; i < troca.size(); i++)
+		for (unsigned int i = 0; i < troca.size(); i++)
 		{
-			cout << "- " << troca[i].getTitulo() << " (ID: " << troca[i].getID() << ")" << endl;
+			cout << "- " << troca[i]->getTitulo() << " (ID: " << troca[i]->getID() << ")" << endl;
 		}
 	}
 }

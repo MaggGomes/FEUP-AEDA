@@ -19,12 +19,12 @@ class Utilizador; // Diz ao compilador que a classe Utilizador se encontra defin
 class Anuncio
 {
 public:
-	Utilizador Anunciante;
+	Utilizador * Anunciante;
 	string titulo;
 	string categoria;
 	string descricao;
 	int id;
-	vector <string > imagens;
+	vector <string> imagens;
 	Data datacriacao;
 	bool possivelNegociar;
 	int num_clicks;
@@ -34,7 +34,7 @@ public:
 	/**
 	* @brief Construtor da classe Anuncio
 	*/
-	Anuncio(Utilizador ut,string tit,string cat,string des,bool pNeg,float pr);
+	Anuncio(Utilizador * ut,string tit,string cat,string des,bool pNeg,float pr);
 	/**
 	* @return Retorna o titulo
 	*/
@@ -71,10 +71,6 @@ public:
 	* @return Retorna o preço de venda/compra
 	*/
 	float getPreco() const;
-	/**
-	* @return Retorna se o anuncio é de venda ou não
-	*/
-	virtual bool isVenda() const;
 	/**
 	* @brief Modifica o título do anuncio
 	*
@@ -148,17 +144,13 @@ public:
 	/**
 	* @brief Construtor da classe AnuncioVenda
 	*/
-	AnuncioVenda(Utilizador ut, string tit, string cat, string des, bool pNeg, float pr, string est);
+	AnuncioVenda(Utilizador * ut, string tit, string cat, string des, bool pNeg, float pr, string est);
 	/**
 	* @return Retorna o estado do artigo
 	*/
 	string getEstado();
 
 	void setEstado(string est);
-	/**
-	* @return Retorna true pois é um anuncio de venda
-	*/
-	bool isVenda();
 	/**
 	* @brief Permite a visualização do anunucio
 	*/
@@ -172,27 +164,23 @@ public:
 class AnuncioCompra: public Anuncio
 {
 private:
-	vector<Anuncio> troca;
+	vector<Anuncio*> troca;
 public:
 
 	/**
 	* @brief Construtor da classe AnuncioCompra
 	*/
-	AnuncioCompra(Utilizador ut, string tit, string cat, string des, bool pNeg, float pr, vector<Anuncio> tr);
+	AnuncioCompra(Utilizador * ut, string tit, string cat, string des, bool pNeg, float pr, vector<Anuncio*> tr);
 	/**
 	* @return Retorna o vetor com os anuncios pelos quais o utilizador está disposta a trocar
 	*/
-	vector<Anuncio> getTroca();
+	vector<Anuncio*> getTroca();
 	/**
 	* @brief Modifica os anuncios para troca
 	*
 	* @param Recebe um parâmetro do tipo vector<Anuncio>
 	*/
-	void setTroca(vector<Anuncio> tr);
-	/**
-	* @return Retorna false pois não é um anuncio de venda
-	*/
-	bool isVenda();
+	void setTroca(vector<Anuncio*> tr);
 	/**
 	* @brief Permite a visualização do anunucio
 	*/
