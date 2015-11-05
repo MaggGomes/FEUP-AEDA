@@ -1,11 +1,37 @@
 #include "Contato.h"
 
-
-Contato::Contato()
+Contato::Contato(Anuncio * anun, string rem, string mens, string cont)
 {
+	anuncio = anun;
+	mensagem = rem;
+	contacto = mens;
+	remetente = cont;
+}
+
+std::string Contato::getRementente() const {
+	return remetente;
 }
 
 
-Contato::~Contato()
-{
+std::string Contato::getMensagem() const {
+	return mensagem;
+}
+
+std::string Contato::getContacto() const {
+	return contacto;
+}
+
+Anuncio * Contato::getAnuncio() const{
+	return anuncio;
+}
+void Contato::setRemetente(std::string rem){
+	remetente = rem;
+}
+
+void Contato::setMensagem(std::string mens){
+	mensagem = mens;
+}
+
+void Contato::setContacto(std::string cont){
+	contacto = cont;
 }
