@@ -1,5 +1,7 @@
 #include "Localizacao.h"
 
+Localizacao::Localizacao(){}
+
 Localizacao::Localizacao(string f, string c, string d) : freguesia(f), concelho(c), distrito(d){}
 
 string Localizacao::getFreguesia() const{
@@ -25,5 +27,3 @@ void Localizacao::setConcelho(const string& concelho){
 void Localizacao::setDistrito(const string& distrito){
 	this->distrito = distrito;
 }
-
-

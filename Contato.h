@@ -9,65 +9,65 @@
 
 using namespace std;
 
-/**
-* @brief Classe Utilizador
-*/
+class Anuncio; // Diz ao compilador que a classe Anuncio se encontra definida
 
+/**
+* @brief Classe Contato
+*/
 class Contato
 {
 private:
 	Anuncio * anuncio;
-	std::string mensagem;
-	std::string contacto;
-	std::string remetente;
+	string mensagem;
+	string contacto;
+	string remetente;
 public:
 
 	/**
-	* @brief Construtor da classe Data
+	* @brief Construtor da classe Contato
 	*/
-	Contato(Anuncio * anun, std::string rem,  std::string mens,std::string cont);
+	Contato(Anuncio * anun, string rem, string mens, string cont);
 
 	/**
 	* @return Retorna o remetente
 	*/
-	std::string getRementente() const;
+	string getRemetente() const;
 
 	/**
 	* @return Retorna a mensagem
 	*/
-	std::string getMensagem() const;
+	string getMensagem() const;
 
 	/**
 	* @return Retorna o contato
 	*/
-	std::string getContacto() const;
+	string getContacto() const;
 
 	/**
 	* @return Retorna o anuncio
 	*/
-	Anuncio * getAnuncio() const;
+	Anuncio* getAnuncio() const;
 
 	/**
 	* @brief Modifica o remetente
 	*
 	* @param Recebe um parâmetro do tipo string
 	*/
-	void setRemetente(std::string rem);
+	void setRemetente(string rem);
 
 	/**
 	* @brief Modifica a mensagem
 	*
 	* @param Recebe um parâmetro do tipo string
 	*/
-	void setMensagem(std::string mens);
+	void setMensagem(string mens);
 
 	/**
 	* @brief Modifica o contato
 	*
 	* @param Recebe um parâmetro do tipo string
 	*/
-	void setContacto(std::string cont);
-
+	void setContacto(string cont);
 };
 
 #endif /*CONTATO_H_*/

@@ -1,14 +1,12 @@
-#include <string>
-
 #include "Utilizador.h"
 
-using namespace std;
+Utilizador::Utilizador(){};
 
-Utilizador(const std::string &nome, const std::string &email, int telefone, Localizacao localizacao){
+Utilizador::Utilizador(const string &nome, const string &email, int telefone, Localizacao local){
 	this->nome = nome;
 	this->email = email;
 	this-> telefone = telefone;
-	this->localizacao = localizacao;
+	this->local = local;
 }
 
 string Utilizador::getNome() const{
@@ -25,7 +23,7 @@ int Utilizador::getTelefone() const{
 
 
 Localizacao Utilizador::getLocalizacao() const{
-	return localizacao;
+	return local;
 }
 
 vector<Anuncio *> Utilizador::getAnuncios() const{
@@ -55,9 +53,9 @@ void Utilizador::addmsgEnv(Contato cont){
 void Utilizador::lerMensagens() const{	
 
 	for (unsigned int i = 0; i < mensagensRecebidas.size(); i++){
-		cout << "Nome: " << mensagensRecebidas.size()[i].getRemetente() << endl;
-		cout << "Contato: " << mensagensRecebidas.size()[i].getContacto() << endl << endl;
-		cout << "Mensagem: "<<mensagensRecebidas.size()[i].getMensagem() << endl << endl;
+		cout << "Nome: " << mensagensRecebidas[i].getRemetente() << endl;
+		cout << "Contato: " << mensagensRecebidas[i].getContacto() << endl << endl;
+		cout << "Mensagem: "<<mensagensRecebidas[i].getMensagem() << endl << endl;
 	}
 }
 
@@ -69,8 +67,8 @@ void Utilizador::setEmail(const string& email){
 	this->email = email;
 }
 
-void Utilizador::setLocalizacao(const Localizacao& localizacao){
-	this->localizacao = localizacao;
+void Utilizador::setLocalizacao(const Localizacao& local){
+	this->local = local;
 }
 
 void Utilizador::setNome(const string& nome){
@@ -95,14 +93,14 @@ void Utilizador::setVisTelefone(bool visTelefone){
 
 ostream& operator<<(ostream& os, const Utilizador& user){
 	
-	if (vis_nome)
-		os << "Nome: " << nome << endl;
-	if (vis_email)
-		os << "Email: " << email << endl;
-	if (vis_telefone)
-		os << "Telefone: " << telefone << endl;
+	if (user.vis_nome)
+		os << "Nome: " << user.nome << endl;
+	if (user.vis_email)
+		os << "Email: " << user.email << endl;
+	if (user.vis_telefone)
+		os << "Telefone: " << user.telefone << endl;
 
-	if (!vis_nome && !vis_email && !vis_telefone)
+	if (!user.vis_nome && !user.vis_email && !user.vis_telefone)
 		os << "O Utilizador nao pertende mostrar as suas informações. " << endl;
 
 	os << endl;

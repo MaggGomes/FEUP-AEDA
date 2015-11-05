@@ -1,24 +1,25 @@
 #ifndef ANUNCIO_H_
 #define ANUNCIO_H_
 
-#include <string>
 #include <vector>
 #include <iostream>
 
+#include "Utilizador.h"
 #include "Data.h"
 #include "Contato.h"
-#include "Utilizador.h"
 
 using namespace std;
+
+class Utilizador; // Diz ao compilador que a classe Utilizador se encontra definida
 
 class Anuncio
 {
 private:
-	Utilizador Anunciante;
-	std::string titulo;
-	std::string categoria;
-	std::string descricao;
-	vector<std::string> imagens;
+	Utilizador* Anunciante;
+	string titulo;
+	string categoria;
+	string descricao;
+	vector<string> imagens;
 	int id;
 	Data datacriacao;
 	bool possivelNegociar;

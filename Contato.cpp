@@ -8,7 +8,7 @@ Contato::Contato(Anuncio * anun, string rem, string mens, string cont)
 	remetente = cont;
 }
 
-std::string Contato::getRementente() const {
+std::string Contato::getRemetente() const {
 	return remetente;
 }
 

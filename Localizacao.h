@@ -17,6 +17,11 @@ private:
 public:
 
 	/**
+	* @brief Construtor Default da classe Localizacao
+	*/
+	Localizacao();
+
+	/**
 	* @brief Construtor da classe Localizacao
 	*/
 	Localizacao(string f, string c, string d);
@@ -56,11 +61,6 @@ public:
 	* @param Recebe um parâmetro do tipo string
 	*/
 	void setDistrito(const string& distrito);
-
-	/**
-	* @brief Destrutor da classe Localizacao
-	*/
-	~Localizacao();
 };
 
 

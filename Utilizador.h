@@ -1,24 +1,27 @@
 #ifndef UTILIZADOR_H_
 #define UTILIZADOR_H_
 
-#include <string>
 #include <vector>
+#include <iostream>
 
-#include "Contato.h"
-#include "Anuncio.h"
 #include "Localizacao.h"
+#include "Anuncio.h"
+#include "Contato.h"
+
 
 using namespace std;
+
+class Contato; // Diz ao compilador que a classe Contato se encontra definida
+class Anuncio; // // Diz ao compilador que a classe Anuncio se encontra definida
 
 /**
 * @brief Classe Utilizador
 */
-
 class Utilizador {
-	std::string nome;
-	std::string email;
+	string nome;
+	string email;
 	int telefone;
-	Localizacao localizacao;
+	Localizacao local;
 	vector<Anuncio *> anuncios;
 	vector<Contato> mensagensRecebidas;
 	vector<Contato> mensagensEnviadas;
@@ -29,9 +32,14 @@ class Utilizador {
 public:
 
 	/**
-	* @brief Construtor da classe Data
+	* @brief Construtor Default da classe Utilizador
 	*/
-	Utilizador(const std::string &nome, const std::string &email, int telefone, Localizacao localizacao);
+	Utilizador();
+
+	/**
+	* @brief Construtor da classe Utilizador
+	*/
+	Utilizador(const string &nome, const string &email, int telefone, Localizacao loc);
 
 	/**
 	* @return Retorna o nome
@@ -154,11 +162,6 @@ public:
 	* @param Recebe um parâmetro do tipo Utilizador e do tipo ostream para permitir imprimir os dados do utilizador
 	*/
 	friend ostream& operator<<(ostream& os, const Utilizador& user);
-
-	/**
-	* @brief Destrutor da classe Localizacao
-	*/
-	~Utilizador();
 };
 
 #endif /*UTILIZADOR_H_*/
