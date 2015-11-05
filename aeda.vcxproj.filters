@@ -36,9 +36,6 @@
     <ClCompile Include="Menus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Auxfunc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contato.h">
@@ -54,6 +51,18 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Utilizador.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Variables.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Algoritmos.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Functions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

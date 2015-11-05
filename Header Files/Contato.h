@@ -51,21 +51,21 @@ public:
 	/**
 	* @brief Modifica o remetente
 	*
-	* @param Recebe um parâmetro do tipo string
+	* @param Recebe um par?metro do tipo string
 	*/
 	void setRemetente(string rem);
 
 	/**
 	* @brief Modifica a mensagem
 	*
-	* @param Recebe um parâmetro do tipo string
+	* @param Recebe um par?metro do tipo string
 	*/
 	void setMensagem(string mens);
 
 	/**
 	* @brief Modifica o contato
 	*
-	* @param Recebe um parâmetro do tipo string
+	* @param Recebe um par?metro do tipo string
 	*/
 	void setContacto(string cont);
 };

@@ -79,7 +79,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Anuncio.cpp" />
-    <ClCompile Include="Auxfunc.cpp" />
     <ClCompile Include="Contato.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="Localizacao.cpp" />
@@ -88,11 +87,15 @@
     <ClCompile Include="Utilizador.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Algoritmos.h" />
     <ClInclude Include="Anuncio.h" />
     <ClInclude Include="Contato.h" />
     <ClInclude Include="Data.h" />
+    <ClInclude Include="Functions.h" />
     <ClInclude Include="Localizacao.h" />
+    <ClInclude Include="Menus.h" />
     <ClInclude Include="Utilizador.h" />
+    <ClInclude Include="Variables.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,21 +1,19 @@
-/*#include <string>
-#include <fstream>
+#include "Menus.h"
 
-using  namespace std;
-
+// FALTA TERMINAR - MENU INICIAL
 
 void createMenu()
 {
-	string Menu[3] = { "<<    INICIAR JOGO   >>", "<<     TOP SCORES    >>", "<<    SAIR DO JOGO   >>" };
+	string Menu[3] = { "<<    CRIAR UTILIZADOR   >>", "<<     PESQUISAR ANUNCIO   >>", "<<    SAIR DE OLZ   >>" };
 	bool validade = true;
 	int pointer = 0;
 
 	while (validade)
 	{
 		clrscr();
-		impressaoTitulo();
+		// FALTA TERMINAR - IMPRIMIR TITULO QUE SE PRETENDE COLOCAR
 		setcolor(11, 0);
-		cout << setw(51) << "<<<<<< MENU JOGO >>>>>>" << endl << endl;
+		cout << setw(51) << "<<<<<< MENU INICIAL >>>>>>" << endl << endl;
 
 		for (int i = 0; i < 3; ++i)
 		{
@@ -73,7 +71,7 @@ void createMenu()
 				case 1:
 				{
 					clrscr();
-					showScore();
+					//FALTA ACABAR - Colocar aqui o que é suposto fazer ao selecionar esta opção
 					setcolor(7, 0);
 					cout << endl << ">> PRESSIONE CIMA/BAIXO PARA VOLTAR AO MENU";
 					setcolor(7, 0);
@@ -84,4 +82,4 @@ void createMenu()
 			}
 		}
 	}
-}*/
+}
