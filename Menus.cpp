@@ -168,7 +168,7 @@ void createMenuUser(){
 				case 2:
 					exit(0); // FALTA IMPLEMENTAR
 				case 3:
-					exit(0);  // FALTA IMPLEMENTAR
+					createMenuPesquisa();
 				case 4:
 					exit(0);// FALTA IMPLEMENTAR
 				case 5:
