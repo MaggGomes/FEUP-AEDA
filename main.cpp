@@ -4,8 +4,10 @@
 using namespace std;
 
 int main(){
-
+	
 	//createMenuInicial();
+	
+	createMenuUser();
 
 	// CODIGO PARA TESTAR
 

@@ -81,6 +81,7 @@
     <ClCompile Include="Anuncio.cpp" />
     <ClCompile Include="Contato.cpp" />
     <ClCompile Include="Data.cpp" />
+    <ClCompile Include="Functions.cpp" />
     <ClCompile Include="Localizacao.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menus.cpp" />

@@ -23,9 +23,7 @@ public:
 	*/
 	~OLZ();
 
-	/**
-	* @brief Destructor da classe OLZ
-	*
+	/**	
 	* @return Retorna vetor com os utilizadores registados
 	*/
 	vector<Utilizador> getUtilizadores() const;
@@ -46,4 +44,4 @@ public:
 	void addAnuncio(Anuncio * anunc);
 };
 
-#endif OLZ_H_
+#endif /*OLZ_H_*/

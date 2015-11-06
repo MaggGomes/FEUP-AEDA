@@ -9,6 +9,11 @@
 void createMenuInicial();
 
 /**
+* @brief Menu Utilizador
+*/
+void createMenuUser();
+
+/**
 * @brief Menu Pesquisa
 */
 void createMenuPesquisa();
