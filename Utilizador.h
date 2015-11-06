@@ -22,6 +22,7 @@ class Utilizador {
 	string email;
 	int telefone;
 	Localizacao local;
+	string password;
 	vector<Contato> mensagensRecebidas;
 	vector<Contato> mensagensEnviadas;
 	bool vis_nome;
@@ -38,7 +39,7 @@ public:
 	/**
 	* @brief Construtor da classe Utilizador
 	*/
-	Utilizador(const string &nome, const string &email, int telefone, Localizacao loc);
+	Utilizador(const string &nome, const string &email, int telefone, Localizacao loc, const string &password);
 
 	/**
 	* @return Retorna o nome
@@ -60,6 +61,10 @@ public:
 	*/
 	Localizacao getLocalizacao() const;
 
+	/**	
+	* @return Recebe um parâmetro do tipo string que corresponde à password
+	*/
+	string getPass() const;
 
 	/**
 	* @return Retorna as mensagens recebidas
@@ -132,6 +137,13 @@ public:
 	* @param Recebe um parâmetro do tipo inteiro
 	*/
 	void setTelefone(int telefone);
+
+	/**
+	* @brief Modifica password
+	*
+	* @param Recebe um parâmetro do tipo string
+	*/
+	void setPass(const string &pass);
 
 	/**
 	* @brief Modifica a visibilidade do email

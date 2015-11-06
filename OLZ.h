@@ -14,6 +14,7 @@ class OLZ
 private:
 	vector<Utilizador> utilizadores;
 	vector <Anuncio *> anuncios;
+	string userOnline; // Infica qual o e-mail do utilizador que efetuou login
 	bool userLogado;
 public:
 
@@ -87,7 +88,7 @@ public:
 	*
 	* @return Se for igual, retorna true. Se não houver nenhum igual, retorna false
 	*/
-	bool comparaEmail(string mail);
+	bool existeEmail(string mail);
 
 	/**
 	* @brief Regista o telefone do utilizador
@@ -104,7 +105,21 @@ public:
 	bool setVisTelefone();
 
 	/**
-	* @Brief regista a localizacao do utilizador
+	* @brief Regista a password de utilizador
+	*
+	* @return Retorna a password que é um parâmetro do tipo string
+	*/
+	string setPass();
+	
+	/**
+	* @brief Verifica se o telefone ja existe
+	*
+	* @return Retorna true se ja existe, false caso contrário
+	*/
+	bool existeTelefone(int tele);
+
+	/**
+	* @brief regista a localizacao do utilizador
 	*
 	* @return a localizacao do utilizador
 	*/
@@ -124,6 +139,16 @@ public:
 	* @brief Retorna um booleano se o utilizador está ou não logado
 	*/
 	bool getuserLogado() const;
+
+	/**
+	* @brief Verifica a validação do nickname e password do Utilizador e loga o mesmo na sua conta de utilizador
+	*/
+	void logar();
+
+	/**
+	* @brief Cria um anúncio
+	*/
+	void criaAnuncio();
 
 	/**
 	* @brief Menu Inicial
@@ -151,15 +176,24 @@ public:
 	void createMenuAdmin();
 		
 	/**
-	* @brief Menu Pesquisa
+	* @brief Menu Pesquisa Visitante
 	*/
-	void createMenuPesquisa();
+	void createMenuPesquisaVis();
+
+	/**
+	* @brief Menu Pesquisa Utilizador
+	*/
+	void createMenuPesquisaUser();
+
+	/**
+	* @brief Menu Meus Anuncios do utilizador
+	*/
+	void createMenuAnuncios();
 
 	/**
 	* @brief Guarda todos os dados criados em dois ficheiros .txt
 	*/
 	void saveData();
-
 
 	/**
 	* @brief Carrega todos os dados de dois ficheiros .txt para os vetores correspondentes

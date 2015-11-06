@@ -2,11 +2,12 @@
 
 Utilizador::Utilizador(){};
 
-Utilizador::Utilizador(const string &nome, const string &email, int telefone, Localizacao local){
+Utilizador::Utilizador(const string &nome, const string &email, int telefone, Localizacao local, const string &password){
 	this->nome = nome;
 	this->email = email;
 	this-> telefone = telefone;
 	this->local = local;
+	this->password = password;
 }
 
 string Utilizador::getNome() const{
@@ -31,6 +32,10 @@ vector<Contato> Utilizador::getMensRec() const{
 
 vector<Contato> Utilizador::getMensEnv() const {
 	return mensagensEnviadas;
+}
+
+string Utilizador::getPass() const{
+	return password;
 }
 
 bool Utilizador::getVisNome() const{
@@ -72,6 +77,10 @@ void Utilizador::setLocalizacao(const Localizacao& local){
 
 void Utilizador::setNome(const string& nome){
 	this->nome = nome;
+}
+
+void Utilizador::setPass(const string &pass){
+	password = pass;
 }
 
 void Utilizador::setTelefone(int telefone){

@@ -7,14 +7,17 @@ int main(){
 
 	OLZ OLZ;	
 	//OLZ.saveData();
-	OLZ.createMenuInicial();
+	//OLZ.createMenuInicial();
 	
 	// CODIGO PARA TESTAR
+	// "jose.oliveira@gmail.com"
 
-	/*Localizacao local("porto","porto","porto");
-	Utilizador ut("Jose", "jose.oliveira@gmail.com", 966870031, local);
+	Localizacao local("porto","porto","porto");
+	Utilizador ut("Jose", "jose", 966870031, local, "password");
+	OLZ.addUtilizador(ut);
+	OLZ.createMenuInicial();
 	
-	ut.setVisNome(true);
+	/*ut.setVisNome(true);
 	ut.setVisEmail(false);
 	ut.setVisTelefone(true);
 	cout << local.getFreguesia() << " " << local.getConcelho() << " " << local.getDistrito() << endl;

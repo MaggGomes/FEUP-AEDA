@@ -37,7 +37,7 @@ string OLZ::registarNome() {
 	clrscr();
 	impressaoTitulo();
 
-	cout << ">> NOME UTILIZADOR (entre 3 e 12 caracteres): ";
+	cout << ">> NICKNAME DE UTILIZADOR (entre 3 e 12 caracteres): ";
 	getline(cin, nomeTemp);
 
 	try{
@@ -47,7 +47,7 @@ string OLZ::registarNome() {
 	catch (...){
 		clean_buffer();
 		setcolor(4, 0);
-		cout << ":: ERRO: Nome invalido! Tente novamente." << endl << endl;
+		cout << ":: ERRO: Nickname invalido! Tente novamente." << endl << endl;
 		setcolor(7, 0);
 		Sleep(1000);	
 		registarNome();
@@ -93,17 +93,17 @@ string OLZ::registarEmail(){
 	clrscr();
 	impressaoTitulo();
 
-	cout << ">> EMAIL: ";
+	cout << ">> E-MAIL: ";
 	getline(cin, emailTemp);
 
 	try{
-		if (cin.fail() || !validaEmail(emailTemp) || existeEmai(emailTemp))			//Caso o cin falhe, ou o mail nao seja válido ou já exista
+		if (cin.fail() || !validaEmail(emailTemp) || existeEmail(emailTemp))			//Caso o cin falhe, ou o mail nao seja válido ou já exista
 			throw emailTemp;
 	}
 	catch (...){
 		clean_buffer();
 		setcolor(4, 0);
-		cout << ":: ERRO: Mail invalido! Tente novamente." << endl << endl;
+		cout << ":: ERRO: E-mail invalido! Tente novamente." << endl << endl;
 		setcolor(7, 0);
 		Sleep(1000);
 		registarEmail();
@@ -120,7 +120,7 @@ bool OLZ::validaEmail(string mail)
 {
 	bool oneat = false;
 
-	for (int i = 0; i < mail.size(); i++)
+	for (unsigned int i = 0; i < mail.size(); i++)
 	{
 		if (oneat == true && mail[i] == '@')				//Se ler mais que um @
 			return false;
@@ -133,7 +133,7 @@ bool OLZ::validaEmail(string mail)
 
 bool OLZ::existeEmail(string mail)
 {
-	for (int i = 0; i < utilizadores.size(); i++)
+	for (unsigned int i = 0; i < utilizadores.size(); i++)
 	{
 		if (mail == utilizadores[i].getEmail())
 			return true;
@@ -150,6 +150,7 @@ int OLZ::registarTelefone(){
 
 	cout << ">> TELEFONE (9 digitos): ";
 	cin >> tlfTemp;
+	cin.ignore(100, '\n');
 
 	try{
 		if (cin.fail() || tlfTemp < 900000000 || tlfTemp > 999999999 || existeTelefone(tlfTemp))
@@ -176,6 +177,7 @@ bool OLZ::setVisTelefone(){
 
 	cout << ">> DESEJA QUE O SEU TELEFONE FIQUE VISIVEL? (<S>im / <N>ao): ";
 	getline(cin, vis);
+	
 
 	try{
 		if (cin.fail() || vis.length() != 1)
@@ -199,7 +201,7 @@ bool OLZ::setVisTelefone(){
 
 bool OLZ::existeTelefone(int tele)
 {
-	for (int i = 0; i < utilizadores.size(); i++)
+	for (unsigned int i = 0; i < utilizadores.size(); i++)
 	{
 		if (tele == utilizadores[i].getTelefone())
 			return true;
@@ -209,14 +211,20 @@ bool OLZ::existeTelefone(int tele)
 }
 Localizacao OLZ::registarLoc(){
 
-	int tlfTemp;
+	string fregTemp;
+	string concTemp;
+	string distTemp;
 
 	clrscr();
 	impressaoTitulo();
 
-	cout << ">> TELEFONE (9 digitos): ";
-	cin >> tlfTemp;
-
+	cout << ">>  FREGUESIA ONDE MORA :";
+	getline(cin, fregTemp);
+	cout << endl << " >> CONCELHO ONDE MORA: ";
+	getline(cin, concTemp);
+	cout << endl << " >> DISTRITO ONDE MORA : ";
+	getline(cin, distTemp);
+	/*
 	try{
 		if (cin.fail() || tlfTemp < 900000000 || tlfTemp > 999999999 || existeTelefone(tlfTemp))
 			throw tlfTemp;
@@ -229,9 +237,24 @@ Localizacao OLZ::registarLoc(){
 		Sleep(800);
 		registarTelefone();
 	}
+	
+	return tlfTemp;*/
 
-	return tlfTemp;
+	Localizacao temp;
+
+	return temp;
 }
+
+///////////// FALTA IMPLEMENTAR
+string OLZ::setPass(){
+
+	// PASSWORD DEVE TER ENTRE 6 E 12 CARACTERES
+
+	string passTemp; ///////////// FALTA IMPLEMENTAR
+
+	return passTemp;
+}
+
 
 void OLZ::registar() {		
 	//string emailTemp;
@@ -253,13 +276,133 @@ void OLZ::registar() {
 		
 	
 
-	/*Utilizador userTemp(nomeTemp, emailTemp, tlfTemp, locTemp);
+	/*Utilizador userTemp(nomeTemp, emailTemp, tlfTemp, locTemp, passTemp);
 	userTemp.setVisNome(vis_nomeTemp);
 	userTemp.setVisEmail(vis_emailTemp);	
 	userTemp.setVisTelefone(vis_telefoneTemp);
-	utilizadores.push_back(userTemp);
-	userLogado = true;*/
+	utilizadores.push_back(userTemp);*/
+	userLogado = true;
+	userOnline = emailTemp;
 	createMenuLogado();
+}
+
+void OLZ::logar(){
+	
+	string emailTemp, nomeTemp, passTemp;
+	int i = 0;
+	bool validaEmail = false;
+	bool validaPass = false;
+
+	clrscr();
+	impressaoTitulo();
+
+	cout << ">> E-MAIL DE UTILIZADOR: ";
+	getline(cin, emailTemp);
+	
+	// Verifica a existência do email
+
+	try{
+		if (cin.fail())
+			throw emailTemp;
+
+		for (unsigned int i = 0; i < utilizadores.size(); i++){
+			if (utilizadores[i].getEmail() == emailTemp){
+				validaEmail = true;
+				nomeTemp = utilizadores[i].getNome();
+				break;
+			}
+		}
+
+		if (!validaEmail)
+			throw emailTemp;
+	}
+	catch (...){
+		clean_buffer();
+		setcolor(4, 0);
+		cout << ":: ERRO: E-mail de registo nao encontrado! Tente novamente." << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		logar();
+	}
+
+	while (i < 3 && !validaPass){ // Verifica se a password está correta; O utilizador tem 3 tentativas para efetuar o login
+
+		int tentativas = 3 - i;
+		clrscr();
+		impressaoTitulo();
+
+		if (i == 0){
+			setcolor(10, 0);
+			cout << ":: AVISO: Tem " << tentativas << " tentativas restante(s)." << endl << endl;
+			setcolor(7, 0);
+		}
+
+		if (i == 1){
+			setcolor(14, 0);
+			cout << ":: AVISO: Tem " << tentativas << " tentativas restante(s)." << endl << endl;
+			setcolor(7, 0);
+		}
+		if (i == 2){
+			setcolor(4, 0);
+			cout << ":: AVISO: Tem " << tentativas << " tentativas restante(s)." << endl << endl;
+			setcolor(7, 0);
+		}
+
+		cout << ">> PASSWORD DE UTILIZADOR: ";
+		getline(cin, passTemp);
+
+		try{
+			if (cin.fail() || passTemp.length() < 6 || passTemp.length() > 12)
+				throw passTemp;
+
+			for (unsigned int i = 0; i < utilizadores.size(); i++){
+				if (utilizadores[i].getEmail() == emailTemp){
+					if (utilizadores[i].getPass() == passTemp)
+						validaPass = true;
+					break;
+				}
+			}
+
+			if (!validaPass)
+				throw passTemp;
+		}
+		catch (...){
+			clean_buffer();
+			setcolor(4, 0);
+			cout << ":: ERRO: Password invalida! Tente novamente." << endl << endl;
+			setcolor(7, 0);
+			Sleep(1000);
+		}
+
+		i++;
+	}
+
+	if (!validaPass){
+		setcolor(4, 0);
+		cout << ":: ERRO: Falhou login! Voltando ao Menu Iniciar..." << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		createMenuInicial();
+	}
+	
+	clrscr();
+	impressaoTitulo();
+	setcolor(10, 0);
+	cout << endl << endl << setw(40) <<":: BENVINDO "<< nomeTemp<<" !!!" << endl << endl;
+	setcolor(7, 0);
+	Sleep(2000);
+
+	userLogado = true;
+	userOnline = emailTemp;
+	createMenuLogado();
+}
+
+// FALTA IMPLEMENTAR
+
+void OLZ::criaAnuncio(){
+
+	// FALTA IMPLEMENTAR
+
 }
 
 void OLZ::setuserLogado(bool &log){
@@ -352,8 +495,6 @@ void OLZ::createMenuInicial(){
 	}
 }
 
-// FALTA TERMINAR
-
 void OLZ::createMenuVisitante(){
 	string Menu[4] = { "<<   MENU INICIAL     >>", "<<   REGISTAR         >>", "<<   PESQUISAR        >>", "<<   SAIR             >>" };
 	bool validade = true;
@@ -426,7 +567,7 @@ void OLZ::createMenuVisitante(){
 					break;
 				case 2:
 					validade = false;
-					createMenuPesquisa();
+					createMenuPesquisaVis();
 					break;
 				case 3:
 					exiting();
@@ -435,8 +576,6 @@ void OLZ::createMenuVisitante(){
 		}
 	}
 }
-
-// FALTA TERMINAR
 
 void OLZ::createMenuUser(){
 	string Menu[3] = { "<<   MENU INICIAL     >>", "<<   LOGIN            >>", "<<   SAIR             >>" };
@@ -506,7 +645,7 @@ void OLZ::createMenuUser(){
 					break;
 				case 1:
 					validade = false;
-					// FALTA OPÇAO PARA FAZER O LOGIN
+					logar();
 					break;
 				case 2:
 					exiting();
@@ -582,16 +721,17 @@ void OLZ::createMenuLogado(){
 				{
 				case 0:
 					validade = false;
+					userLogado = false;
 					createMenuInicial();
 					break;
 				case 1:
 					validade = false;
-					createMenuUser();
+					// FALTA IMPLEMENTAR
 					break;
 				case 2:
-					exiting(); // FALTA IMPLEMENTAR
+					createMenuAnuncios();
 				case 3:
-					createMenuPesquisa();
+					createMenuPesquisaUser();
 				case 4:
 					exiting();// FALTA IMPLEMENTAR
 				case 5:
@@ -601,6 +741,91 @@ void OLZ::createMenuLogado(){
 		}
 	}
 }
+
+void OLZ::createMenuAnuncios(){
+	string Menu[6] = { "<<   MENU USER        >>", "<<   VER TODOS        >>", "<<   MAIS RECENTE     >>", "<<   MAIS CLICKS      >>", "<<   COM INTERESSADOS >>", "<<   SAIR             >>" };
+	bool validade = true;
+	int pointer = 0;
+
+	while (validade)
+	{
+		clrscr();
+		impressaoTitulo();
+		setcolor(11, 0);
+		cout << setw(51) << "<<<<< MEUS ANUNCIO >>>>>" << endl << endl;
+
+		for (int i = 0; i < 6; ++i)
+		{
+			if (i == pointer)
+			{
+				cout << "                           ";
+				setcolor(3, 1);
+				cout << Menu[i] << endl << endl;
+			}
+			else
+			{
+				setcolor(3, 0);
+				cout << setw(51) << Menu[i] << endl << endl;
+			}
+		}
+		setcolor(7, 0);
+
+		while (validade)
+		{
+			int ch = _getch();
+
+			if (ch == 0 || ch == 224)
+				ch = 256 + _getch();
+
+			if (ch == ARROW_DOWN) {
+				Beep(250, 160);
+				pointer += 1;
+				if (pointer == 6)
+				{
+					pointer = 0;
+				}
+				break;
+			}
+
+			if (ch == ARROW_UP){
+				Beep(250, 160);
+				pointer -= 1;
+				if (pointer == -1)
+				{
+					pointer = 5;
+				}
+				break;
+			}
+
+			if (ch == '\r')
+			{
+				setcolor(7, 0);
+				Beep(200, 160);
+
+				switch (pointer)
+				{
+				case 0:
+					validade = false;
+					createMenuLogado();
+					break;
+				case 1:
+					validade = false;
+					exiting(); // FALTA IMPLEMENTAR
+					break;
+				case 2:
+					exiting(); // FALTA IMPLEMENTAR
+				case 3:
+					exiting(); //FALTA IMPLEMENTAR
+				case 4:
+					exiting();// FALTA IMPLEMENTAR
+				case 5:
+					exiting();
+				}
+			}
+		}
+	}
+}
+
 
 // FALTA TERMINAR
 
@@ -688,7 +913,7 @@ void OLZ::createMenuAdmin(){
 
 // FALTA TERMINAR
 
-void OLZ::createMenuPesquisa(){
+void OLZ::createMenuPesquisaVis(){
 	string Menu[6] = { "<<   MENU INICIAR     >>", "<<   CATEGORIA        >>", "<<   LOCALIZACAO      >>", "<<   PALAVRA-CHAVE    >>", "<<   PRECO            >>", "<<   SAIR             >>" };
 	bool validade = true;
 	int pointer = 0;
@@ -752,6 +977,7 @@ void OLZ::createMenuPesquisa(){
 				{
 				case 0:
 					validade = false;
+					userLogado = false;
 					createMenuInicial();
 					break;
 				case 1:
@@ -776,6 +1002,90 @@ void OLZ::createMenuPesquisa(){
 	}
 }
 
+// FALTA TERMINAR
+
+void OLZ::createMenuPesquisaUser(){
+	string Menu[6] = { "<<   MENU USER        >>", "<<   CATEGORIA        >>", "<<   LOCALIZACAO      >>", "<<   PALAVRA-CHAVE    >>", "<<   PRECO            >>", "<<   SAIR             >>" };
+	bool validade = true;
+	int pointer = 0;
+
+	while (validade)
+	{
+		clrscr();
+		impressaoTitulo();
+		setcolor(11, 0);
+		cout << setw(51) << "<<<<<   PESQUISA   >>>>>" << endl << endl;
+
+		for (int i = 0; i < 6; ++i)
+		{
+			if (i == pointer)
+			{
+				cout << "                           ";
+				setcolor(3, 1);
+				cout << Menu[i] << endl << endl;
+			}
+			else
+			{
+				setcolor(3, 0);
+				cout << setw(51) << Menu[i] << endl << endl;
+			}
+		}
+		setcolor(7, 0);
+
+		while (validade)
+		{
+			int ch = _getch();
+
+			if (ch == 0 || ch == 224)
+				ch = 256 + _getch();
+
+			if (ch == ARROW_DOWN) {
+				Beep(250, 160);
+				pointer += 1;
+				if (pointer == 6)
+				{
+					pointer = 0;
+				}
+				break;
+			}
+
+			if (ch == ARROW_UP){
+				Beep(250, 160);
+				pointer -= 1;
+				if (pointer == -1)
+				{
+					pointer = 5;
+				}
+				break;
+			}
+
+			if (ch == '\r')
+			{
+				setcolor(7, 0);
+				Beep(200, 160);
+
+				switch (pointer)
+				{
+				case 0:
+					validade = false;
+					createMenuLogado();
+					break;
+				case 1:
+					exiting(); // FALTA IMPLEMENTAR
+				case 2:
+					exiting(); // FALTA IMPLEMENTAR
+				case 3:
+					exiting();  // FALTA IMPLEMENTAR
+				case 4:
+					exiting();// FALTA IMPLEMENTAR
+				case 5:					
+					exiting();
+				}
+			}
+		}
+	}
+}
+
 void OLZ::saveData()
 {
 	ofstream utFile; // variavel que vai conter o vector de Utilizadores
@@ -784,17 +1094,17 @@ void OLZ::saveData()
 	remove("utilizadores.csv");	
 	utFile.open("utilizadores.csv");
 	
-	for (int i = 0; i < utilizadores.size(); i++)
+	for (unsigned int i = 0; i < utilizadores.size(); i++)
 	{
 		Utilizador temp = utilizadores[i];
 		utFile << temp.getNome() << ";" << temp.getEmail() << ";" << temp.getTelefone() << ";" << temp.getLocalizacao().getFreguesia() << ";" << temp.getLocalizacao().getConcelho() << ";" << temp.getLocalizacao().getDistrito() << ";";
 
-		for (int j = 0; j < temp.getMensRec().size(); j++)
+		for (unsigned int j = 0; j < temp.getMensRec().size(); j++)
 		{
 			utFile << temp.getMensRec()[j].getAnuncio()->getID() << ";" << temp.getMensRec()[j].getContacto() << ";" << temp.getMensRec()[j].getMensagem() << ";" << temp.getMensRec()[j].getRemetente() << ";";
 		}
 
-		for (int j = 0; j < temp.getMensEnv().size(); j++)
+		for (unsigned int j = 0; j < temp.getMensEnv().size(); j++)
 		{
 			utFile << temp.getMensEnv()[j].getAnuncio()->getID() << ";" << temp.getMensEnv()[j].getContacto() << ";" << temp.getMensEnv()[j].getMensagem() << ";" << temp.getMensEnv()[j].getRemetente() << ";";
 		}
@@ -806,11 +1116,11 @@ void OLZ::saveData()
 	remove("anuncios.csv");
 	anFile.open("anuncios.csv");
 
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		Anuncio * temp = anuncios[i];
 		anFile << temp->getAnunciante()->getEmail() << ";" << temp->getTitulo() << ";" << temp->getCategoria() << ";" << temp->getDescricao() << ";" << temp->getID() << ";";
-		for (int j = 0; j < temp->getImagens().size(); j++)
+		for (unsigned int j = 0; j < temp->getImagens().size(); j++)
 		{
 			anFile << temp->getImagens()[j] << ";";
 		}
