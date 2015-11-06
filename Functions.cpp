@@ -9,7 +9,7 @@ void clrscr(void)
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	GetConsoleScreenBufferInfo(hCon, &csbi);
 	dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
-	// Preenchimento com espaços
+	// Preenchimento com espaï¿½os
 	FillConsoleOutputCharacter(hCon, TEXT(' '), dwConSize, coordScreen, &cCharsWritten);
 	GetConsoleScreenBufferInfo(hCon, &csbi);
 	FillConsoleOutputAttribute(hCon, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
@@ -37,4 +37,30 @@ void impressaoTitulo()
 	cout << titulo << endl << endl;
 
 	setcolor(7, 0);
+}
+
+void exiting(){
+	clrscr();
+	impressaoTitulo();
+	setcolor(11, 0);
+	cout << endl<<endl<<setw(51) << "<<<<<<<<<<<<+>>>>>>>>>>>>" << endl;
+	cout << setw(51) << "<<<<<               >>>>>" << endl;
+	cout << setw(51) << "<<<<< A SAIR DE OLZ >>>>>" << endl;
+	cout << setw(51) << "<<<<<               >>>>>" << endl;
+	cout << setw(51) << "<<<<<<<<<<<<+>>>>>>>>>>>>" << endl << endl << endl;
+	setcolor(7, 0);
+	exit(0);
+}
+
+void clean_buffer()
+{
+	if (cin.fail())
+	{
+		cin.ignore(1000, '\n');
+		cin.clear();
+	}
+
+	cin.clear();
+	fflush(stdin);
+
 }

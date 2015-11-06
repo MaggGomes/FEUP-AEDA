@@ -21,13 +21,16 @@ int Utilizador::getTelefone() const{
 	return telefone;
 }
 
-
 Localizacao Utilizador::getLocalizacao() const{
 	return local;
 }
 
-vector<Anuncio *> Utilizador::getAnuncios() const{
-	return anuncios;
+vector<Contato> Utilizador::getMensRec() const{
+	return mensagensRecebidas;
+}
+
+vector<Contato> Utilizador::getMensEnv() const {
+	return mensagensEnviadas;
 }
 
 bool Utilizador::getVisNome() const{
@@ -57,10 +60,6 @@ void Utilizador::lerMensagens() const{
 		cout << "Contato: " << mensagensRecebidas[i].getContacto() << endl << endl;
 		cout << "Mensagem: "<<mensagensRecebidas[i].getMensagem() << endl << endl;
 	}
-}
-
-void Utilizador::addAnuncio(Anuncio* anuncio){
-	anuncios.push_back(anuncio);
 }
 
 void Utilizador::setEmail(const string& email){

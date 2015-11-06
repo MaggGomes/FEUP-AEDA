@@ -35,6 +35,12 @@ public:
 	* @brief Construtor da classe Anuncio
 	*/
 	Anuncio(Utilizador * ut,string tit,string cat,string des,bool pNeg,float pr);
+	
+	/**
+	* @return Retorna o anunciante
+	*/
+	Utilizador * getAnunciante() const;
+	
 	/**
 	* @return Retorna o titulo
 	*/
@@ -129,6 +135,10 @@ public:
 	* @brief Função virtual pura que será implementada nas classes derivadas e que irá permitir visualizar o anúncio
 	*/
 	virtual void visAnuncio() = 0;
+	/**
+	* @return Retorna ture/false conforme seja ou não anuncio de venda
+	*/
+	virtual bool isVenda() const = 0;
 };
 
 /**
@@ -155,6 +165,10 @@ public:
 	* @brief Permite a visualização do anunucio
 	*/
 	void visAnuncio();
+	/**
+	* @return Retorna true pois é um anuncio de venda
+	*/
+	bool isVenda() const;
 };
 
 /**
@@ -164,27 +178,32 @@ public:
 class AnuncioCompra: public Anuncio
 {
 private:
-	vector<Anuncio*> troca;
+	vector<AnuncioVenda> troca;
 public:
 
 	/**
 	* @brief Construtor da classe AnuncioCompra
 	*/
-	AnuncioCompra(Utilizador * ut, string tit, string cat, string des, bool pNeg, float pr, vector<Anuncio*> tr);
+	AnuncioCompra(Utilizador * ut, string tit, string cat, string des, bool pNeg, float pr, vector<AnuncioVenda> tr);
 	/**
 	* @return Retorna o vetor com os anuncios pelos quais o utilizador está disposta a trocar
 	*/
-	vector<Anuncio*> getTroca();
+	vector<AnuncioVenda> getTroca();
 	/**
 	* @brief Modifica os anuncios para troca
 	*
 	* @param Recebe um parâmetro do tipo vector<Anuncio>
 	*/
-	void setTroca(vector<Anuncio*> tr);
+	void setTroca(vector<AnuncioVenda> tr);
 	/**
 	* @brief Permite a visualização do anunucio
 	*/
 	void visAnuncio();
+	/**
+	* @return Retorna false pois não é um anuncio de venda
+	*/
+	bool isVenda() const;
+
 };
 
 #endif /*ANUNCIO_H_*/

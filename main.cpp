@@ -1,14 +1,14 @@
-#include "Menus.h"
+#include "OLZ.H"
 #include "Anuncio.h"
 
 using namespace std;
 
 int main(){
-	
-	//createMenuInicial();
-	
-	createMenuUser();
 
+	OLZ OLZ;	
+	//OLZ.saveData();
+	OLZ.createMenuInicial();
+	
 	// CODIGO PARA TESTAR
 
 	/*Localizacao local("porto","porto","porto");
@@ -38,5 +38,12 @@ int main(){
 
 	anun2.visAnuncio();*/
 
+	/*OLZ.addUtilizador(ut);
+	OLZ.addAnuncio(anun);
+	OLZ.addAnuncio(anun2);
+
+	cout << OLZ.getAnuncios()[0]->getCategoria();*/
+
+	OLZ.saveData();
 	return 0;
 }

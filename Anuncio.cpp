@@ -28,6 +28,11 @@ Anuncio::Anuncio(Utilizador * ut, string tit, string cat, string des, bool pNeg,
 	preco = pr;
 }
 
+Utilizador * Anuncio::getAnunciante() const
+{
+	return Anunciante;
+}
+
 string Anuncio::getTitulo() const{
 	return titulo;
 }
@@ -140,19 +145,24 @@ void AnuncioVenda::visAnuncio()
 		cout << "Negociavel."<<endl;
 }
 
+bool AnuncioVenda::isVenda() const
+{
+	return true;
+}
+
 //------------------------------
 
-AnuncioCompra::AnuncioCompra(Utilizador * ut, string tit, string cat, string des, bool pNeg, float pr, vector<Anuncio*> tr) : Anuncio(ut, tit, cat, des, pNeg, pr)
+AnuncioCompra::AnuncioCompra(Utilizador * ut, string tit, string cat, string des, bool pNeg, float pr, vector<AnuncioVenda> tr) : Anuncio(ut, tit, cat, des, pNeg, pr)
 {
 	troca = tr;
 }
 
-vector<Anuncio*> AnuncioCompra::getTroca()
+vector<AnuncioVenda> AnuncioCompra::getTroca()
 {
 	return troca;
 }
 
-void AnuncioCompra::setTroca(vector<Anuncio*> tr)
+void AnuncioCompra::setTroca(vector<AnuncioVenda> tr)
 {
 	troca = tr;
 }
@@ -177,12 +187,15 @@ void AnuncioCompra::visAnuncio()
 	
 	if (troca.size()>0)
 	{
-		cout << "Possíveis trocas:" << endl;
+		cout << "PossÃ­veis trocas:" << endl;
 		for (unsigned int i = 0; i < troca.size(); i++)
 		{
-			cout << "- " << troca[i]->getTitulo() << " (ID: " << troca[i]->getID() << ")" << endl;
+			cout << "- " << troca[i].getTitulo() << " (ID: " << troca[i].getID() << ")" << endl;
 		}
 	}
 }
 
-
+bool AnuncioCompra::isVenda() const
+{
+	return false;
+}

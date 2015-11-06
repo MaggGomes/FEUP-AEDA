@@ -26,4 +26,14 @@ void setcolor(unsigned int color, unsigned int background_color); // Altera a co
 */
 void impressaoTitulo();
 
+/**
+*@ Imprime aviso de saída da aplicação
+*/
+void exiting();
+
+/**
+*@brief Limpa o buffer
+*/
+void clean_buffer();
+
 #endif /*FUNCTIONS_H_*/

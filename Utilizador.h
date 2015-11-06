@@ -22,7 +22,6 @@ class Utilizador {
 	string email;
 	int telefone;
 	Localizacao local;
-	vector<Anuncio *> anuncios;
 	vector<Contato> mensagensRecebidas;
 	vector<Contato> mensagensEnviadas;
 	bool vis_nome;
@@ -61,10 +60,16 @@ public:
 	*/
 	Localizacao getLocalizacao() const;
 
+
 	/**
-	* @return Retorna os anúncios do utilizador
+	* @return Retorna as mensagens recebidas
 	*/
-	vector<Anuncio *> getAnuncios() const;
+	vector<Contato> getMensRec() const;
+
+	/**
+	* @return Retorna as mensagens enviadas
+	*/
+	vector<Contato> getMensEnv() const;
 
 	/**
 	* @return Retorna se o utilizador quer o nome visível
@@ -99,13 +104,6 @@ public:
 	* @brief Imprime as mensagens recebidas
 	*/
 	void lerMensagens() const;			//Lê todas as mensagens recebidas através de cada um dos anúncios
-
-	/**
-	* @brief Adiciona um anuncio ao vetor de anuncios
-	*
-	* @param Recebe um parâmetro do tipo Anuncio
-	*/
-	void addAnuncio(Anuncio* anuncio);
 
 	/**
 	* @brief Modifica o email

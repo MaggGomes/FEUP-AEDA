@@ -33,9 +33,6 @@
     <ClCompile Include="Contato.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Menus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OLZ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,9 +63,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Functions.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Menus.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="OLZ.h">
