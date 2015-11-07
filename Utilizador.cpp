@@ -26,11 +26,11 @@ Localizacao Utilizador::getLocalizacao() const{
 	return local;
 }
 
-vector<Contato> Utilizador::getMensRec() const{
+vector<int> Utilizador::getMensRec() const{
 	return mensagensRecebidas;
 }
 
-vector<Contato> Utilizador::getMensEnv() const {
+vector<int> Utilizador::getMensEnv() const {
 	return mensagensEnviadas;
 }
 
@@ -51,13 +51,16 @@ bool Utilizador::getVisTelefone() const{
 }
 
 void Utilizador::addmsgRec(Contato cont){
-	mensagensRecebidas.push_back(cont);
+	mensagensRecebidas.push_back(cont.getID());
 }
 
 void Utilizador::addmsgEnv(Contato cont){
-	mensagensEnviadas.push_back(cont);
+	mensagensEnviadas.push_back(cont.getID());
 }
 
+
+
+/*
 void Utilizador::lerMensagens() const{	
 
 	for (unsigned int i = 0; i < mensagensRecebidas.size(); i++){
@@ -66,7 +69,7 @@ void Utilizador::lerMensagens() const{
 		cout << "Mensagem: "<<mensagensRecebidas[i].getMensagem() << endl << endl;
 	}
 }
-
+*/
 void Utilizador::setEmail(const string& email){
 	this->email = email;
 }
@@ -99,6 +102,15 @@ void Utilizador::setVisTelefone(bool visTelefone){
 	vis_telefone = visTelefone;
 }
 
+void Utilizador::setME(vector<int> vME)
+{
+	mensagensEnviadas = vME;
+}
+
+void Utilizador::setMR(vector<int> vMR)
+{
+	mensagensRecebidas = vMR;
+}
 ostream& operator<<(ostream& os, const Utilizador& user){
 	
 	if (user.vis_nome)

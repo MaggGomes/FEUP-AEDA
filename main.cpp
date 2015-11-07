@@ -13,27 +13,30 @@ int main(){
 	// "jose.oliveira@gmail.com"
 
 	Localizacao local("porto", "porto", "porto");
-	Utilizador ut("Jose", "jose", 966870031, local, "password");
+	Utilizador ut("Jose", "jose@gmail.com", 966870031, local, "password");
 	OLZ.addUtilizador(ut);
-	OLZ.createMenuInicial();
+	//OLZ.createMenuInicial();
 
-	/*ut.setVisNome(true);
+	ut.setVisNome(true);
 	ut.setVisEmail(false);
 	ut.setVisTelefone(true);
 	cout << local.getFreguesia() << " " << local.getConcelho() << " " << local.getDistrito() << endl;
 
 	if (ut.getVisEmail())
-	cout << ut.getEmail() << endl;
+		cout << ut.getEmail() << endl;
 	if (ut.getVisTelefone())
-	cout << ut.getTelefone() << endl;
+		cout << ut.getTelefone() << endl;
 	if (ut.getVisNome())
-	cout << ut.getNome() << endl;
+		cout << ut.getNome() << endl;
 
 	Anuncio * anun = new AnuncioVenda (&ut, "CARRO", "automoveis","asdfsafasdfasdf" , true, 5000,"pecas");
 
 	anun->visAnuncio();
 	anun->visAnuncio();
 	anun->visAnuncio();
+	anun->addImagem("8495");
+	anun->addImagem("f5sfsd4566");
+	anun->addImagem("tgfg");
 	anun->visAnuncio();
 	anun->visAnuncio();
 
@@ -44,8 +47,6 @@ int main(){
 	OLZ.addUtilizador(ut);
 	OLZ.addAnuncio(anun);
 	OLZ.addAnuncio(anun2);
-
-	cout << OLZ.getAnuncios()[0]->getCategoria();*/
 
 	OLZ.saveData();
 

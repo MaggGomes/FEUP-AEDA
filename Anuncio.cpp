@@ -15,8 +15,8 @@ Anuncio::Anuncio(Utilizador * ut, string tit, string cat, string des, bool pNeg,
 	struct tm* timePtr = localtime(&t);
 	
 	int dia = timePtr->tm_mday;
-	int mes = timePtr->tm_mon;
-	int ano = timePtr->tm_year;
+	int mes = timePtr->tm_mon + 1;
+	int ano = timePtr->tm_year + 1900 ;
 	
 
 	Data temp(dia,mes,ano);
@@ -89,6 +89,11 @@ void Anuncio::setDataCriacao(Data dt){
 	datacriacao = dt;
 }
 
+void Anuncio::addImagem(string im)
+{
+	imagens.push_back(im);
+}
+
 void Anuncio::setPossivelNegociar(bool neg){
 	possivelNegociar = neg;
 }
@@ -104,6 +109,8 @@ void Anuncio::addClick(){
 void Anuncio::setPreco(float pr){
 	preco = pr;
 }
+
+
 
 //------------------------------
 
@@ -122,7 +129,10 @@ void AnuncioVenda::setEstado(string est)
 	estado = est;
 }
 
-
+vector<Anuncio *> AnuncioVenda::getTroca() const
+{
+	return {};
+}
 
 void AnuncioVenda::visAnuncio()
 {
@@ -201,4 +211,15 @@ void AnuncioCompra::visAnuncio()
 bool AnuncioCompra::isVenda() const
 {
 	return false;
+}
+
+string AnuncioCompra::getEstado() const
+{
+	string temp = {};
+	return temp;
+}
+
+void Anuncio::setImagens(vector<string> tIma)
+{
+	imagens = tIma;
 }

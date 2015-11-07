@@ -1322,25 +1322,32 @@ void OLZ::saveData()
 {
 	ofstream utFile; // variavel que vai conter o vector de Utilizadores
 	ofstream anFile; // variavel que vai conter o vector de Anuncios
-	
+	ofstream ctFile; // variavel que vai conter o vector de Contatos
+
 	remove("utilizadores.csv");	
 	utFile.open("utilizadores.csv");
 	
 	for (unsigned int i = 0; i < utilizadores.size(); i++)
 	{
 		Utilizador temp = utilizadores[i];
-		utFile << temp.getNome() << ";" << temp.getEmail() << ";" << temp.getTelefone() << ";" << temp.getLocalizacao().getFreguesia() << ";" << temp.getLocalizacao().getConcelho() << ";" << temp.getLocalizacao().getDistrito() << ";";
+		utFile << temp.getNome() << ";" << temp.getEmail() << ";" << temp.getTelefone() << ";" << temp.getLocalizacao().getFreguesia() << ";" << temp.getLocalizacao().getConcelho() << ";" << temp.getLocalizacao().getDistrito() << ";" << temp.getPass() << ";";
 
+		utFile << temp.getMensRec().size() << ";";
 		for (unsigned int j = 0; j < temp.getMensRec().size(); j++)
 		{
-			utFile << temp.getMensRec()[j].getAnuncio()->getID() << ";" << temp.getMensRec()[j].getContacto() << ";" << temp.getMensRec()[j].getMensagem() << ";" << temp.getMensRec()[j].getRemetente() << ";";
+			utFile << temp.getMensRec()[j] << ";";
 		}
 
+		utFile << temp.getMensEnv().size() << ";";
 		for (unsigned int j = 0; j < temp.getMensEnv().size(); j++)
 		{
-			utFile << temp.getMensEnv()[j].getAnuncio()->getID() << ";" << temp.getMensEnv()[j].getContacto() << ";" << temp.getMensEnv()[j].getMensagem() << ";" << temp.getMensEnv()[j].getRemetente() << ";";
+			utFile << temp.getMensEnv()[j] << ";";
 		}
-		utFile << temp.getVisNome() << ";" << temp.getVisEmail() << ";" << temp.getVisTelefone() << "\n";
+
+		if (i != utilizadores.size() - 1)
+			utFile << temp.getVisNome() << ";" << temp.getVisEmail() << ";" << temp.getVisTelefone() << "\n";
+		else 
+			utFile << temp.getVisNome() << ";" << temp.getVisEmail() << ";" << temp.getVisTelefone();
 	}
 
 	utFile.close();
@@ -1352,6 +1359,8 @@ void OLZ::saveData()
 	{
 		Anuncio * temp = anuncios[i];
 		anFile << temp->getAnunciante()->getEmail() << ";" << temp->getTitulo() << ";" << temp->getCategoria() << ";" << temp->getDescricao() << ";" << temp->getID() << ";";
+		
+		anFile << temp->getImagens().size() << ";";
 		for (unsigned int j = 0; j < temp->getImagens().size(); j++)
 		{
 			anFile << temp->getImagens()[j] << ";";
@@ -1359,20 +1368,61 @@ void OLZ::saveData()
 
 		anFile << temp->getDataCriacao().getDia() << ";" << temp->getDataCriacao().getMes() << ";" << temp->getDataCriacao().getAno() << ";" << temp->getNegociar() << ";" << temp->getClicks() << ";" << temp->getPreco() << ";";
 		
-		if (temp->isVenda())
-		{ 
-			anFile << temp->getEstado() << "\n";
+		if (i != anuncios.size() - 1)
+		{
+			if (temp->isVenda())
+			{
+				anFile << true << ";";
+				anFile << temp->getEstado() << "\n";
+			}
+			else
+			{
+				anFile << false << ";";
+				for (size_t i = 0; i < temp->getTroca().size(); i++)
+				{
+					if (i = temp->getTroca().size() - 1)
+						anFile << temp->getTroca()[i]->getID() << "\n";
+					else
+						anFile << temp->getTroca()[i]->getID() << ";";
+				}
+			}
 		}
 		else
 		{
-			for (size_t i = 0; i < temp->getTroca().size(); i++)
+			if (temp->isVenda())
 			{
-				if (i = temp->getTroca().size() - 1)
-					anFile << temp->getTroca()[i]->getID() << "\n";
-				else
-					anFile << temp->getTroca()[i]->getID() << ";";
+				anFile << true << ";";
+				anFile << temp->getEstado();
+			}
+			else
+			{
+				anFile << false << ";";
+				for (size_t i = 0; i < temp->getTroca().size(); i++)
+				{
+					if (i = temp->getTroca().size() - 1)
+						anFile << temp->getTroca()[i]->getID();
+					else
+						anFile << temp->getTroca()[i]->getID() << ";";
+				}
 			}
 		}
+	}
+
+	ctFile.close();
+
+	remove("contatos.csv");
+	ctFile.open("contatos.csv");
+
+	for (unsigned int i = 0; i < contatos.size(); i++)
+	{
+		Contato temp = contatos[i];
+		
+		ctFile << temp.getID() << ";" << temp.getAnuncio()->getID() << ";" << temp.getMensagem() << ";" << temp.getContacto() << ";";
+
+		if (i = contatos.size() - 1)
+			ctFile << temp.getRemetente();
+		else
+			ctFile << temp.getRemetente() << "\n";
 	}
 
 	anFile.close();
@@ -1380,7 +1430,227 @@ void OLZ::saveData()
 
 void OLZ::loadData()
 {
+	ifstream utFile; // variavel que vai conter o ficheiro de Utilizadores
+	ifstream anFile; // variavel que vai conter o ficheiro de Anuncios
+	ifstream ctFile; // variavel que vai conter o ficheiro de Contatos
+	
 
+	utFile.open("utilizadores.txt");
+	while (!utFile.eof())
+	{
+		string tNome;
+		getline(utFile, tNome, ';');
+		
+		string tEmail;
+		getline(utFile, tEmail, ';');
+		
+		string stNr;
+		getline(utFile, stNr, ';');
+		int tNr = atoi(stNr.c_str());
+
+		string tFreg;
+		getline(utFile, tFreg, ';');
+
+		string tConc;
+		getline(utFile, tConc, ';');
+
+		string tDist;
+		getline(utFile, tDist, ';');
+
+		Localizacao tLoc(tFreg, tConc, tDist);
+
+		string tPass;
+		getline(utFile, tPass, ';');
+
+		Utilizador tUti(tNome, tEmail, tNr, tLoc, tPass);
+
+		string siMR;
+		getline(utFile, siMR, ';');
+		int iMR = atoi(siMR.c_str());
+
+		vector<int> tMR;
+		for (int i = 0; i < iMR; i++)
+		{
+			string abc;
+			getline(utFile, abc, ';');
+			int x = atoi(abc.c_str());
+			tMR.push_back(x);
+		}
+
+		tUti.setMR(tMR);
+
+		string siME;
+		getline(utFile, siME, ';');
+		int iME = atoi(siME.c_str());
+
+		vector<int> tME;
+		for (int i = 0; i < iME; i++)
+		{
+			string abc;
+			getline(utFile, abc, ';');
+			int x = atoi(abc.c_str());
+			tME.push_back(x);
+		}
+
+
+		tUti.setME(tME);
+
+		string stVisN;
+		getline(utFile, stVisN, ';');
+		int itVisN = atoi(stVisN.c_str());
+		bool tVisN = itVisN;
+
+		tUti.setVisNome(tVisN);
+		
+		string stVisE;
+		getline(utFile, stVisE, ';');
+		int itVisE = atoi(stVisE.c_str());
+		bool tVisE = itVisE;
+
+		tUti.setVisEmail(tVisE);
+
+		string stVisT;
+		getline(utFile, stVisT, ';');
+		int itVisT = atoi(stVisT.c_str());
+		bool tVisT = itVisT;
+
+		tUti.setVisTelefone(tVisT);
+
+		utilizadores.push_back(tUti);
+	}
+	utFile.close();
+
+	anFile.open("anuncios.txt");
+	while (!anFile.eof())
+	{
+		string tEmail;
+		getline(anFile, tEmail, ';');
+
+		int iAn = searchUtilizador(tEmail);
+
+		Utilizador tAn = utilizadores[iAn];
+
+		string tTit;
+		getline(anFile, tTit, ';');
+
+		string tCat;
+		getline(anFile, tCat, ';');
+
+		string tDes;
+		getline(anFile, tDes, ';');
+
+		string stID;
+		getline(anFile, stID, ';');
+		int tID = atoi(stID.c_str());
+
+		string stIma;
+		getline(anFile, stIma, ';');
+		int tIma = atoi(stIma.c_str());
+
+		vector<string> viIma;
+
+		for (int i = 0; i < tIma; i++)
+		{
+			string tABC;
+			getline(anFile, tABC, ';');
+			viIma.push_back(tABC);
+		}
+
+		string stDia;
+		getline(anFile, stDia, ';');
+		int tDia = atoi(stDia.c_str());
+
+		string stMes;
+		getline(anFile, stMes, ';');
+		int tMes = atoi(stMes.c_str());
+
+		string stAno;
+		getline(anFile, stAno, ';');
+		int tAno = atoi(stAno.c_str());
+
+		Data tData(tDia, tMes, tAno);
+
+		string stNeg;
+		getline(anFile, stNeg, ';');
+		int itNeg = atoi(stNeg.c_str());
+		bool tNeg = itNeg;
+
+		string stCl;
+		getline(anFile, stCl, ';');
+		int tCl = atoi(stCl.c_str());
+
+		string stPr;
+		getline(anFile, stPr, ';');
+		int tPr = atof(stPr.c_str());
+
+		string stVen;
+		getline(anFile, stVen, ';');
+		int itVen = atoi(stVen.c_str());
+		bool tVen = itVen;
+
+
+		if (tVen)
+		{
+			string tEst;
+			getline(anFile, tEst, ';');
+			Anuncio * anun = new AnuncioVenda(&tAn, tTit, tCat, tDes, tNeg, tPr, tEst);
+			anuncios.push_back(anun);
+		}
+		else
+		{
+			vector<Anuncio *> tTroca;
+
+			string stTr;
+			getline(anFile, stTr, ';');
+			int tTr = atof(stTr.c_str());
+			for (int i = 0; i < tTr; i++)
+			{
+				string stAnI;
+				getline(anFile, stAnI, ';');
+				int tAnI = atof(stAnI.c_str());
+				int x = searchAnuncio(tAnI);
+				tTroca.push_back(anuncios[x]);
+			}
+			Anuncio * anun = new AnuncioCompra(&tAn, tTit, tCat, tDes, tNeg, tPr, tTroca);
+
+			anun->setDataCriacao(tData);
+
+			anun->setNum_clicks(tCl);
+
+			anun->setImagens(viIma);
+
+			anuncios.push_back(anun);
+		}
+	}
+	anFile.close();
+
+	ctFile.open("anuncios.txt");
+	while (!ctFile.eof())
+	{
+		string stID;
+		getline(anFile, stID, ';');
+		int tID = atof(stID.c_str());
+
+		string stAnID;
+		getline(anFile, stAnID, ';');
+		int tAnID = atof(stAnID.c_str());
+
+		int x = searchAnuncio(tAnID);
+
+		string tMens;
+		getline(anFile, tMens, ';');
+		
+		string tCont;
+		getline(anFile, tCont, ';');
+
+		string tRem;
+		getline(anFile, tRem, ';');
+
+		Contato tCt(anuncios[x], tRem, tMens, tCont);
+
+		contatos.push_back(tCt);
+	}
+	ctFile.close();
 }
 
 Utilizador * OLZ::pesquisaEmail(string mail)
@@ -1460,8 +1730,98 @@ string OLZ::registarCategoria()
 		cout << ":: ERRO: Titulo invalido! Tente novamente." << endl << endl;
 		setcolor(7, 0);
 		Sleep(1000);
-		registarTitulo();
+		registarCategoria();
 	}
 
 	return catTemp;
+}
+/*
+vector<string> OLZ::registarImagens()
+{
+	bool querImagens;
+	char quer;
+
+	bool valido = false;
+	while (!valido)
+	{
+		clrscr();
+		impressaoTitulo();
+		cout << " >> DESEJA INSERIR IMAGENS NO SEU ANUNCIO? ((S)im/(N)ao) : ";
+
+		if (quer == 'S' || quer == 's')
+		{
+			querImagens = true;
+			valido = true;
+		}
+		else if (quer == 'N' || quer == 'n')
+		{
+			querImagens = false;
+			valido = true;
+		}
+		else
+		{
+			clean_buffer();
+			setcolor(4, 0);
+			cout << ":: ERRO: Comando invalido! Tente novamente." << endl << endl;
+			setcolor(7, 0);
+			Sleep(1000);
+		}
+	}
+
+	vector<string> img;
+
+	while (querImagens)
+	{
+		string img1;
+		cout << " >> INSIRA UMA IMAGEM: ";
+		getline(cin, img1);
+		img.push_back(img1);
+		valido = false;
+		while (!valido)
+		{
+			cout << endl << ">> QUER INSERIR MAIS IMAGENS? ((S)im/(N)ao) : ";
+			cin >> querImagens;
+			cin.ignore(100, '\n');
+			if (quer == 'S' || quer == 's')
+			{
+				querImagens = true;
+				valido = true;
+			}
+			else if (quer == 'N' || quer == 'n')
+			{
+				querImagens = false;
+				valido = true;
+			}
+			else
+			{
+				clean_buffer();
+				setcolor(4, 0);
+				cout << ":: ERRO: Comando invalido! Tente novamente." << endl << endl;
+				setcolor(7, 0);
+				Sleep(1000);
+			}
+		}
+	}
+
+	return img;
+}*/
+
+int OLZ::searchUtilizador(string emailUt)
+{
+	for (int i = 0; i < utilizadores.size(); i++)
+	{
+		if (utilizadores[i].getEmail() == emailUt)
+			return i;
+	}
+	return -1;
+}
+
+int OLZ::searchAnuncio(int AnID)
+{
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		if (anuncios[i]->getID() == AnID)
+			return i;
+	}
+	return -1;
 }

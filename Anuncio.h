@@ -101,12 +101,28 @@ public:
 	* @param Recebe um parâmetro do tipo int
 	*/
 	void setId(int tId);
+
 	/**
 	* @brief Modifica a data de criação do anuncio
 	*
 	* @param Recebe um parâmetro do tipo Data
 	*/
 	void setDataCriacao(Data dt);
+	
+	/**
+	* @brief adiciona uma imagem
+	*
+	* @param Recebe um parâmetro do tipo string
+	*/
+	void addImagem(string im);
+
+	/**
+	* @brief Modifica o vetor de imagens
+	*
+	* @param Recebe um parâmetro do tipo vector<string>
+	*/
+	void setImagens(vector<string> tIma);
+
 	/**
 	* @brief Modifica se a possibilidade de negociar o anuncio
 	*
@@ -143,7 +159,6 @@ public:
 	/**
 	* @return Retorna o estado
 	*/
-	
 	virtual string getEstado() const = 0;
 
 	virtual vector<Anuncio *> getTroca() const = 0;
@@ -177,6 +192,10 @@ public:
 	* @return Retorna true pois é um anuncio de venda
 	*/
 	bool isVenda() const;
+	/**
+	* @return Retorna um vetor vazio
+	*/
+	vector<Anuncio *> getTroca() const;
 };
 
 /**
@@ -211,6 +230,8 @@ public:
 	* @return Retorna false pois não é um anuncio de venda
 	*/
 	bool isVenda() const;
+
+	string getEstado() const;
 
 };
 

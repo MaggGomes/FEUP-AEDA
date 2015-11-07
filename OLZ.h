@@ -16,6 +16,8 @@ class OLZ
 private:
 	vector<Utilizador> utilizadores;
 	vector <Anuncio *> anuncios;
+	vector <Contato> contatos;
+
 	string userOnline; // Infica qual o e-mail do utilizador que efetuou login
 	bool userLogado;
 public:
@@ -281,5 +283,22 @@ public:
 	* @return True se for valido, false se nao for
 	*/
 	bool validarCategoria(string cat);
+	
+	vector<string> registarImagens();
+
+	/**
+	* @brief Procura um determinado utilizador através do seu email, baseado em sequential search
+	*
+	* @return Retorna a posiçao do utilizador com o email pretendido, -1 se nao for encontrado 
+	*/
+	int searchUtilizador(string emailUt);
+
+	/**
+	* @brief Procura um determinado anuncio através do seu id, baseado em sequential search
+	*
+	* @return Retorna a posiçao do anuncio com o email pretendido, -1 se nao for encontrado
+	*/
+	int searchAnuncio(int AnID);
+
 };
 #endif /*OLZ_H_*/

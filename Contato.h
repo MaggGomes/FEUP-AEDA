@@ -17,10 +17,12 @@ class Anuncio; // Diz ao compilador que a classe Anuncio se encontra definida
 class Contato
 {
 private:
+	int id;
 	Anuncio * anuncio;
 	string mensagem;
 	string contacto;
 	string remetente;
+	static int last_id;
 public:
 
 	/**
@@ -49,6 +51,11 @@ public:
 	Anuncio* getAnuncio() const;
 
 	/**
+	* @return Retorna o ID
+	*/
+	int getID() const;
+
+	/**
 	* @brief Modifica o remetente
 	*
 	* @param Recebe um parâmetro do tipo string
@@ -68,6 +75,13 @@ public:
 	* @param Recebe um parâmetro do tipo string
 	*/
 	void setContacto(string cont);
+
+	/**
+	* @brief Modifica o ID
+	*
+	* @param Recebe um parâmetro do tipo int
+	*/
+	void setID(int nID);
 };
 
 #endif /*CONTATO_H_*/

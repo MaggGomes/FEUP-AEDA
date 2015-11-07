@@ -23,8 +23,8 @@ class Utilizador {
 	int telefone;
 	Localizacao local;
 	string password;
-	vector<Contato> mensagensRecebidas;
-	vector<Contato> mensagensEnviadas;
+	vector<int> mensagensRecebidas;
+	vector<int> mensagensEnviadas;
 	bool vis_nome;
 	bool vis_email;
 	bool vis_telefone;
@@ -69,12 +69,12 @@ public:
 	/**
 	* @return Retorna as mensagens recebidas
 	*/
-	vector<Contato> getMensRec() const;
+	vector<int> getMensRec() const;
 
 	/**
 	* @return Retorna as mensagens enviadas
 	*/
-	vector<Contato> getMensEnv() const;
+	vector<int> getMensEnv() const;
 
 	/**
 	* @return Retorna se o utilizador quer o nome visível
@@ -105,10 +105,12 @@ public:
 	*/
 	void addmsgEnv(Contato cont);
 	
+	
 	/**
 	* @brief Imprime as mensagens recebidas
 	*/
-	void lerMensagens() const;			//Lê todas as mensagens recebidas através de cada um dos anúncios
+	//void lerMensagens() const;			//Lê todas as mensagens recebidas através de cada um dos anúncios
+	
 
 	/**
 	* @brief Modifica o email
@@ -166,6 +168,21 @@ public:
 	*/
 	void setVisTelefone(bool visTelefone);
 
+
+	/**
+	* @brief Modifica o vetor de mensagens enviadas
+	*
+	* @param Recebe um parâmetro do tipo vector<int>
+	*/
+	void setME(vector<int> vME);
+
+	/**
+	* @brief Modifica o vetor de mensagens recebidas
+	*
+	* @param Recebe um parâmetro do tipo vector<int>
+	*/
+	void setMR(vector<int> vMR);
+
 	/**
 	* @brief Overload do operator << para os dados visíveis do utilizador
 	*
@@ -182,6 +199,6 @@ private:
 
 public:
 	EmailNaoEncontrado(string mail) { email = mail; };
-	string getEmail() { return email; };
+	string Email() { return email; };
 };
 #endif /*UTILIZADOR_H_*/
