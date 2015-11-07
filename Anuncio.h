@@ -29,7 +29,7 @@ public:
 	bool possivelNegociar;
 	int num_clicks;
 	float preco;
-	static int last_id;  // falta inicializar
+	static int last_id;
  
 	/**
 	* @brief Construtor da classe Anuncio

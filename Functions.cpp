@@ -64,3 +64,16 @@ void clean_buffer()
 	fflush(stdin);
 
 }
+
+string hidePass(){
+	string pass = "";
+	char ch;
+	ch = _getch();
+	while (ch != 13){//character 13 is enter
+		pass.push_back(ch);
+		cout << '*';
+		ch = _getch();
+	}
+
+	return pass;
+}

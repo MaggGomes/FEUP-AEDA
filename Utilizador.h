@@ -175,4 +175,13 @@ public:
 	friend ostream& operator<<(ostream& os, const Utilizador& user);
 };
 
+class EmailNaoEncontrado
+{
+private:
+	string email;
+
+public:
+	EmailNaoEncontrado(string mail) { email = mail; };
+	string getEmail() { return email; };
+};
 #endif /*UTILIZADOR_H_*/

@@ -1,4 +1,4 @@
-#ifndef OLZ_H_
+Ôªø#ifndef OLZ_H_
 #define OLZ_H_
 
 #include <fstream>
@@ -7,7 +7,7 @@
 #include "Functions.h"
 
 /**
-* @brief Classe OLZ que armazena todos utilizadores e an˙ncios da aplicaÁ„o
+* @brief Classe OLZ que armazena todos utilizadores e an√∫ncios da aplica√ß√£o
 */
 class OLZ
 {
@@ -24,7 +24,7 @@ public:
 	OLZ();
 
 	/**
-	* @brief Destructor da classe OLZ que remove todos os an˙ncios
+	* @brief Destructor da classe OLZ que remove todos os an√∫ncios
 	*/
 	~OLZ();
 
@@ -56,7 +56,7 @@ public:
 	string registarNome();
 
 	/**
-	* @brief Regista se o nome fica visÌvel
+	* @brief Regista se o nome fica vis√≠vel
 	*
 	* @return Retorna a visibilidade do nome do utilizador
 	*/
@@ -70,7 +70,7 @@ public:
 	string registarEmail();
 
 	/**
-	* @brief Regista se o email fica visÌvel
+	* @brief Regista se o email fica vis√≠vel
 	*
 	* @return Retorna a visibilidade do email do utilizador
 	*/
@@ -79,14 +79,14 @@ public:
 	/**
 	* @brief Verifica se o email tem o caracter @
 	* 
-	* @return Se tiver o @, retorna true, sen„o retorna false
+	* @return Se tiver o @, retorna true, sen√£o retorna false
 	*/
 	bool validaEmail(string mail);
 
 	/**
-	* @brief Verifica se o email È igual ao email de outros utilizadores
+	* @brief Verifica se o email √© igual ao email de outros utilizadores
 	*
-	* @return Se for igual, retorna true. Se n„o houver nenhum igual, retorna false
+	* @return Se for igual, retorna true. Se n√£o houver nenhum igual, retorna false
 	*/
 	bool existeEmail(string mail);
 
@@ -98,23 +98,30 @@ public:
 	int registarTelefone();
 
 	/**
-	* @brief Regista se o telefone fica visÌvel
+	* @brief Regista se o telefone fica vis√≠vel
 	*
-	* @return Retorna se o telefone fica visÌvel
+	* @return Retorna se o telefone fica vis√≠vel
 	*/
 	bool setVisTelefone();
 
 	/**
 	* @brief Regista a password de utilizador
 	*
-	* @return Retorna a password que È um par‚metro do tipo string
+	* @return Retorna a password que √© um par√¢metro do tipo string
 	*/
 	string setPass();
 	
 	/**
+	* @brief Verifica se a password √© v√°lida
+	*
+	* @return Retorna true se for v√°lida, false se n√£o for.
+	*/
+	bool validarPassword(string pass);
+
+	/**
 	* @brief Verifica se o telefone ja existe
 	*
-	* @return Retorna true se ja existe, false caso contr·rio
+	* @return Retorna true se ja existe, false caso contr√°rio
 	*/
 	bool existeTelefone(int tele);
 
@@ -126,27 +133,55 @@ public:
 	Localizacao registarLoc();
 
 	/**
+	* @brief Verifica se o nome do local √© v√°lido
+	*
+	* @return True caso seja v√°lido, false caso n√£o seja
+	*/
+	bool validarLocal(string local);
+
+	/**
+	* @brief Regista a Freguesia do utilizador
+	*
+	* @return a freguesia introduzida
+	*/
+	string registarFreg();
+
+	/**
+	* @brief Regista o Concelho do utilizador
+	*
+	* @return o concelho introduzida
+	*/
+	string registarConc();
+
+	/**
+	* @brief Regista o Distrito do utilizador
+	*
+	* @return o distrito introduzida
+	*/
+	string registarDistr();
+
+	/**
 	* @brief cria e regista um utilizador
 	*/
 	void registar();
 
 	/**
-	* @brief Especifica se o utilizador est· ou n„o logado
+	* @brief Especifica se o utilizador est√° ou n√£o logado
 	*/
 	void setuserLogado(bool &log);
 	
 	/**
-	* @brief Retorna um booleano se o utilizador est· ou n„o logado
+	* @brief Retorna um booleano se o utilizador est√° ou n√£o logado
 	*/
 	bool getuserLogado() const;
 
 	/**
-	* @brief Verifica a validaÁ„o do nickname e password do Utilizador e loga o mesmo na sua conta de utilizador
+	* @brief Verifica a valida√ß√£o do nickname e password do Utilizador e loga o mesmo na sua conta de utilizador
 	*/
 	void logar();
 
 	/**
-	* @brief Cria um an˙ncio
+	* @brief Cria um an√∫ncio
 	*/
 	void criaAnuncio();
 
@@ -199,6 +234,20 @@ public:
 	* @brief Carrega todos os dados de dois ficheiros .txt para os vetores correspondentes
 	*/
 	void loadData();
+
+	/**
+	* @brief Procura no vetor de Utilizadores o utilizador com o email inserido
+	*
+	* @return o utilizador encontrado
+	*/
+	Utilizador * pesquisaEmail(string mail);
+
+	/**
+	* @brief Verifica se o titulo do Anuncio e valido
+	*
+	* @return True se for valido, false se nao for
+	*/
+	bool verificarTitulo(string tit);
 };
 
 #endif /*OLZ_H_*/

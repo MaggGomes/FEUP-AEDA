@@ -29,19 +29,19 @@ int main(){
 	if (ut.getVisNome())
 		cout << ut.getNome() << endl;
 
-	AnuncioVenda anun(&ut, "CARRO", "automoveis","asdfsafasdfasdf" , true, 5000,"pecas");
+	Anuncio * anun = new AnuncioVenda (&ut, "CARRO", "automoveis","asdfsafasdfasdf" , true, 5000,"pecas");
 
-	anun.visAnuncio();
-	anun.visAnuncio();
-	anun.visAnuncio();
-	anun.visAnuncio();
-	anun.visAnuncio();
+	anun->visAnuncio();
+	anun->visAnuncio();
+	anun->visAnuncio();
+	anun->visAnuncio();
+	anun->visAnuncio();
 
-	AnuncioVenda anun2(&ut, "CASA", "Imoveis", "asdfsafasdfasdasdf", false, 9000, "novo");
+	Anuncio * anun2 = new AnuncioVenda(&ut, "CASA", "Imoveis", "asdfsafasdfasdasdf", false, 9000, "novo");
 
-	anun2.visAnuncio();*/
+	anun2->visAnuncio();
 
-	/*OLZ.addUtilizador(ut);
+	OLZ.addUtilizador(ut);
 	OLZ.addAnuncio(anun);
 	OLZ.addAnuncio(anun2);
 

@@ -32,8 +32,13 @@ void impressaoTitulo();
 void exiting();
 
 /**
-*@brief Limpa o buffer
+* @brief Limpa o buffer
 */
 void clean_buffer();
+
+/**
+* @brief Esconde a password com asteriscos
+*/
+string hidePass();
 
 #endif /*FUNCTIONS_H_*/
