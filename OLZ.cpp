@@ -529,10 +529,13 @@ void OLZ::logar(){
 
 // FALTA IMPLEMENTAR
 
-void OLZ::criaAnuncio(){
+void OLZ::criaAnuncioCompra(){
 
 	Utilizador * userTemp;
-	string titTemp;
+
+	clrscr();
+	impressaoTitulo();
+
 	try
 	{
 		userTemp = pesquisaEmail(userOnline);
@@ -547,6 +550,10 @@ void OLZ::criaAnuncio(){
 		createMenuInicial();
 	}
 
+	string titTemp = registarTitulo();
+
+	string catTemp;
+	
 	return;
 
 }
@@ -888,6 +895,85 @@ void OLZ::createMenuLogado(){
 	}
 }
 
+void OLZ::createMenuCriaAnuncio(){
+	string Menu[3] = { "<<   MENU INICIAL     >>", "<<   ANUNCIO VENDA    >>", "<<   ANUNCIO COMPRA   >>" };
+	bool validade = true;
+	int pointer = 0;
+
+	while (validade)
+	{
+		clrscr();
+		impressaoTitulo();
+		setcolor(11, 0);
+		cout << setw(51) << "<<<  TIPO DE ANUNCIO >>>" << endl << endl;
+
+		for (int i = 0; i < 6; ++i)
+		{
+			if (i == pointer)
+			{
+				cout << "                           ";
+				setcolor(3, 1);
+				cout << Menu[i] << endl << endl;
+			}
+			else
+			{
+				setcolor(3, 0);
+				cout << setw(51) << Menu[i] << endl << endl;
+			}
+		}
+		setcolor(7, 0);
+
+		while (validade)
+		{
+			int ch = _getch();
+
+			if (ch == 0 || ch == 224)
+				ch = 256 + _getch();
+
+			if (ch == ARROW_DOWN) {
+				Beep(250, 160);
+				pointer += 1;
+				if (pointer == 6)
+				{
+					pointer = 0;
+				}
+				break;
+			}
+
+			if (ch == ARROW_UP){
+				Beep(250, 160);
+				pointer -= 1;
+				if (pointer == -1)
+				{
+					pointer = 5;
+				}
+				break;
+			}
+
+			if (ch == '\r')
+			{
+				setcolor(7, 0);
+				Beep(200, 160);
+
+				switch (pointer)
+				{
+				case 0:
+					validade = false;
+					userLogado = true;
+					createMenuLogado();
+					break;
+				case 1:
+					validade = false;
+					// FALTA IMPLEMENTAR
+					break;
+				case 2:
+					//FALTA IMPLEMENTAR
+					break;
+				}
+			}
+		}
+	}
+}
 void OLZ::createMenuAnuncios(){
 	string Menu[6] = { "<<   MENU USER        >>", "<<   VER TODOS        >>", "<<   MAIS RECENTE     >>", "<<   MAIS CLICKS      >>", "<<   COM INTERESSADOS >>", "<<   SAIR             >>" };
 	bool validade = true;
@@ -1281,10 +1367,10 @@ void OLZ::saveData()
 		{
 			for (size_t i = 0; i < temp->getTroca().size(); i++)
 			{
-				if (i >= temp->getTroca().size() - 1)
-					anFile << temp->getTroca()[i].getID() << "\n";
+				if (i = temp->getTroca().size() - 1)
+					anFile << temp->getTroca()[i]->getID() << "\n";
 				else
-					anFile << temp->getTroca()[i].getID() << ";";
+					anFile << temp->getTroca()[i]->getID() << ";";
 			}
 		}
 	}
@@ -1317,7 +1403,7 @@ bool OLZ::validarTitulo(string tit)
 		return true;
 }
 
-/*string OLZ::registarTitulo()
+string OLZ::registarTitulo()
 {
 	string titTemp;
 
@@ -1343,4 +1429,39 @@ bool OLZ::validarTitulo(string tit)
 	}
 
 	return titTemp;
-}*/
+}
+
+bool OLZ::validarCategoria(string cat)
+{
+	if (cat.size() < 1 || cat.size() > 15)
+		return false;
+	else
+		return true;
+}
+string OLZ::registarCategoria()
+{
+	string catTemp;
+
+	clrscr();
+	impressaoTitulo();
+
+	cout << ">> CATEGORIA DO PRODUTO (menos de 15 caracteres) :";
+	getline(cin, catTemp);
+
+	try
+	{
+		if (cin.fail() || !validarCategoria(catTemp))
+			throw catTemp;
+	}
+	catch (...)
+	{
+		clean_buffer();
+		setcolor(4, 0);
+		cout << ":: ERRO: Titulo invalido! Tente novamente." << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		registarTitulo();
+	}
+
+	return catTemp;
+}

@@ -13,7 +13,6 @@
 using namespace std;
 
 class Utilizador; // Diz ao compilador que a classe Utilizador se encontra definida
-
 /**
 * @brief Classe base Anuncio
 */
@@ -147,7 +146,7 @@ public:
 	
 	virtual string getEstado() const = 0;
 
-	virtual vector<AnuncioVenda> getTroca() const = 0;
+	virtual vector<Anuncio *> getTroca() const = 0;
 };
 
 /**
@@ -187,23 +186,23 @@ public:
 class AnuncioCompra: public Anuncio
 {
 private:
-	vector<AnuncioVenda> troca;
+	vector<Anuncio *> troca;
 public:
 
 	/**
 	* @brief Construtor da classe AnuncioCompra
 	*/
-	AnuncioCompra(Utilizador * ut, string tit, string cat, string des, bool pNeg, float pr, vector<AnuncioVenda> tr);
+	AnuncioCompra(Utilizador * ut, string tit, string cat, string des, bool pNeg, float pr, vector<Anuncio *> tr);
 	/**
 	* @return Retorna o vetor com os anuncios pelos quais o utilizador está disposta a trocar
 	*/
-	vector<AnuncioVenda> getTroca() const;
+	vector<Anuncio *> getTroca() const;
 	/**
 	* @brief Modifica os anuncios para troca
 	*
 	* @param Recebe um parâmetro do tipo vector<Anuncio>
 	*/
-	void setTroca(vector<AnuncioVenda> tr);
+	void setTroca(vector<Anuncio *> tr);
 	/**
 	* @brief Permite a visualização do anunucio
 	*/

@@ -183,9 +183,14 @@ public:
 	void logar();
 
 	/**
-	* @brief Cria um anúncio
+	* @brief Cria um anúncio de Compra
 	*/
-	void criaAnuncio();
+	void criaAnuncioCompra();
+
+	/**
+	* @brief Cria um anúncio de Venda
+	*/
+	void criaAnuncioVenda();
 
 	/**
 	* @brief Menu Inicial
@@ -206,6 +211,11 @@ public:
 	* @brief Menu Utilizador Logado
 	*/
 	void createMenuLogado();
+
+	/**
+	* @brief Menu Utilizador de Criar Anuncio
+	*/
+	void OLZ::createMenuCriaAnuncio();
 
 	/**
 	* @brief Menu Administrador
@@ -257,5 +267,19 @@ public:
 	* @return o titulo do anuncio
 	*/
 	string registarTitulo();
+
+	/**
+	* @brief Regista a categoria do produto do anuncio
+	*
+	* @return categoria do anuncio
+	*/
+	string registarCategoria();
+
+	/**
+	* @brief Verifica se a Categoria do Anuncio e valida
+	*
+	* @return True se for valido, false se nao for
+	*/
+	bool validarCategoria(string cat);
 };
 #endif /*OLZ_H_*/
