@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <ctime>
+#include <string>
 
 #include "Utilizador.h"
 #include "Data.h"
@@ -136,9 +137,17 @@ public:
 	*/
 	virtual void visAnuncio() = 0;
 	/**
-	* @return Retorna ture/false conforme seja ou não anuncio de venda
+	* @return Retorna true/false conforme seja ou não anuncio de venda
 	*/
 	virtual bool isVenda() const = 0;
+
+	/**
+	* @return Retorna o estado
+	*/
+	
+	virtual string getEstado() const = 0;
+
+	virtual vector<AnuncioVenda> getTroca() const = 0;
 };
 
 /**
@@ -158,7 +167,7 @@ public:
 	/**
 	* @return Retorna o estado do artigo
 	*/
-	string getEstado();
+	string getEstado() const;
 
 	void setEstado(string est);
 	/**
@@ -188,7 +197,7 @@ public:
 	/**
 	* @return Retorna o vetor com os anuncios pelos quais o utilizador está disposta a trocar
 	*/
-	vector<AnuncioVenda> getTroca();
+	vector<AnuncioVenda> getTroca() const;
 	/**
 	* @brief Modifica os anuncios para troca
 	*

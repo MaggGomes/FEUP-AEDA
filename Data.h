@@ -1,4 +1,4 @@
-#ifndef DATA_H_
+Ôªø#ifndef DATA_H_
 #define DATA_H_
 
 #include <iostream>
@@ -7,7 +7,7 @@
 using namespace std;
 
 /**
-* @brief Classe Data: classe que armazena a data criada aquando do registo de an˙ncios ou da venda/compra de produtos registados nos an˙ncios
+* @brief Classe Data: classe que armazena a data criada aquando do registo de an√∫ncios ou da venda/compra de produtos registados nos an√∫ncios
 */
 
 class Data
@@ -46,28 +46,28 @@ public:
 	/**
 	* @brief Modifica o dia
 	*
-	* @param Recebe um par‚metro do tipo inteiro
+	* @param Recebe um par√¢metro do tipo inteiro
 	*/
 	void setDia(int dia);
 
 	/**
 	* @brief Modifica o mes
 	*
-	* @param Recebe um par‚metro do tipo inteiro
+	* @param Recebe um par√¢metro do tipo inteiro
 	*/
 	void setMes(int mes);
 
 	/**
 	* @brief Modifica o ano
 	*
-	* @param Recebe um par‚metro do tipo inteiro
+	* @param Recebe um par√¢metro do tipo inteiro
 	*/
 	void setAno(int ano);
 	
 	/**
 	* @brief Overload do operator << para imprimir a data
 	*
-	* @param Recebe um par‚metro do tipo Data e do tipo ostream para permitir imprimir a Data
+	* @param Recebe um par√¢metro do tipo Data e do tipo ostream para permitir imprimir a Data
 	*/
 	friend ostream& operator<<(ostream& os, const Data& d); // Overloading do operador "<<"
 };

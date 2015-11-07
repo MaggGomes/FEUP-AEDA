@@ -2,7 +2,7 @@
 #define VARIABLES_H
 
 /**
-* @brief Código de cores e das setas para navegação nos menus
+* @brief CÃ³digo de cores e das setas para navegaÃ§Ã£o nos menus
 */
 
 #define BLACK 0

@@ -6,6 +6,8 @@
 #include "Utilizador.h"
 #include "Functions.h"
 
+using namespace std;
+
 /**
 * @brief Classe OLZ que armazena todos utilizadores e anúncios da aplicação
 */
@@ -28,12 +30,12 @@ public:
 	*/
 	~OLZ();
 
-	/**	
+	/**
 	* @return Retorna vetor com os utilizadores registados
 	*/
 	vector<Utilizador> getUtilizadores() const;
 
-	/**	
+	/**
 	* @return Retorna vetor com os anuncios
 	*/
 	vector<Anuncio *> getAnuncios() const;
@@ -47,7 +49,7 @@ public:
 	* @brief Adiciona um anuncio
 	*/
 	void addAnuncio(Anuncio * anunc);
-	
+
 	/**
 	* @ Brief Regista o nome
 	*
@@ -78,7 +80,7 @@ public:
 
 	/**
 	* @brief Verifica se o email tem o caracter @
-	* 
+	*
 	* @return Se tiver o @, retorna true, senão retorna false
 	*/
 	bool validaEmail(string mail);
@@ -110,7 +112,7 @@ public:
 	* @return Retorna a password que é um parâmetro do tipo string
 	*/
 	string setPass();
-	
+
 	/**
 	* @brief Verifica se a password é válida
 	*
@@ -169,7 +171,7 @@ public:
 	* @brief Especifica se o utilizador está ou não logado
 	*/
 	void setuserLogado(bool &log);
-	
+
 	/**
 	* @brief Retorna um booleano se o utilizador está ou não logado
 	*/
@@ -209,21 +211,21 @@ public:
 	* @brief Menu Administrador
 	*/
 	void createMenuAdmin();
-		
+	
 	/**
-	* @brief Menu Pesquisa Visitante
+	* @brief Menu dos anuncios do Utilizador
+	*/
+	void createMenuAnuncios();
+
+	/**
+	* @brief Menu de pesquisa dos Visitantes
 	*/
 	void createMenuPesquisaVis();
 
 	/**
-	* @brief Menu Pesquisa Utilizador
+	* @brief Menu de pesquisa do Utilizador
 	*/
 	void createMenuPesquisaUser();
-
-	/**
-	* @brief Menu Meus Anuncios do utilizador
-	*/
-	void createMenuAnuncios();
 
 	/**
 	* @brief Guarda todos os dados criados em dois ficheiros .txt
@@ -247,7 +249,13 @@ public:
 	*
 	* @return True se for valido, false se nao for
 	*/
-	bool verificarTitulo(string tit);
-};
+	bool validarTitulo(string tit);
 
+	/**
+	* @brief Regista o titulo do anuncio
+	*
+	* @return o titulo do anuncio
+	*/
+	string registarTitulo();
+};
 #endif /*OLZ_H_*/

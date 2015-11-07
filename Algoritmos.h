@@ -1,11 +1,11 @@
-#ifndef ALGORITMOS_H_
+ï»¿#ifndef ALGORITMOS_H_
 #define ALGORITMOS_H_
 
 #include <vector>
 
 using namespace std;
 
-// Colocar aqui os algoritmos de pesquia e ordenação que se utilizem
+// Colocar aqui os algoritmos de pesquia e ordenaÃ§Ã£o que se utilizem
 
 template <class Comparable>
 int sequentialSearch(const vector<Comparable> &v, Comparable x)

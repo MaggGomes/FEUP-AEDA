@@ -141,6 +141,7 @@ bool OLZ::existeEmail(string mail)
 
 	return false;
 }
+
 int OLZ::registarTelefone(){
 
 	int tlfTemp;
@@ -348,7 +349,7 @@ string OLZ::setPass(){
 
 bool OLZ::validarPassword(string pass)
 {
-	for (int i = 0; i < pass.size(); i++)
+	for (unsigned int i = 0; i < pass.size(); i++)
 	{
 		if (pass[i] == ' ')
 			return false;
@@ -531,15 +532,22 @@ void OLZ::logar(){
 void OLZ::criaAnuncio(){
 
 	Utilizador * userTemp;
+	string titTemp;
 	try
 	{
 		userTemp = pesquisaEmail(userOnline);
 	}
-	catch (EmailNaoEncontrado)
+	catch (EmailNaoEncontrado)					//Caso haja um problema na base de dados
 	{
-
+		clrscr();
+		impressaoTitulo();
+		cout << "Houve um problema com a base de dados. O seu email não está registado. Registe-se novamente por favor" << endl;
+		userLogado = false;
+		userOnline = "";
+		createMenuInicial();
 	}
 
+	return;
 
 }
 
@@ -1267,9 +1275,18 @@ void OLZ::saveData()
 		
 		if (temp->isVenda())
 		{ 
+			anFile << temp->getEstado() << "\n";
 		}
 		else
-		{ }
+		{
+			for (size_t i = 0; i < temp->getTroca().size(); i++)
+			{
+				if (i >= temp->getTroca().size() - 1)
+					anFile << temp->getTroca()[i].getID() << "\n";
+				else
+					anFile << temp->getTroca()[i].getID() << ";";
+			}
+		}
 	}
 
 	anFile.close();
@@ -1280,14 +1297,50 @@ void OLZ::loadData()
 
 }
 
-Utilizador & OLZ::pesquisaEmail(string mail)
+Utilizador * OLZ::pesquisaEmail(string mail)
 {
-	for (int i = 0; i < utilizadores.size(); i++)
+	for (unsigned int i = 0; i < utilizadores.size(); i++)
 	{
 		if (utilizadores[i].getEmail() == mail)
-			return utilizadores[i];
+			return &utilizadores[i];
 	}
 
 	EmailNaoEncontrado m(mail);
 	throw(m);
 }
+
+bool OLZ::validarTitulo(string tit)
+{
+	if (tit.size() < 1 || tit.size() > 30)
+		return false;
+	else
+		return true;
+}
+
+/*string OLZ::registarTitulo()
+{
+	string titTemp;
+
+	clrscr();
+	impressaoTitulo();
+
+	cout << ">> TITULO DO ANUNCIO (menos de 30 caracteres) :";
+	getline(cin, titTemp);
+
+	try
+	{
+		if (cin.fail() || !validarTitulo(titTemp))
+			throw titTemp;
+	}
+	catch (...)
+	{
+		clean_buffer();
+		setcolor(4, 0);
+		cout << ":: ERRO: Titulo invalido! Tente novamente." << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		registarTitulo();
+	}
+
+	return titTemp;
+}*/

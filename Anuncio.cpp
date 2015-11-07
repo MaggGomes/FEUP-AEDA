@@ -1,4 +1,4 @@
-#include "Anuncio.h"
+﻿#include "Anuncio.h"
 
 int Anuncio::last_id = 1;
 
@@ -112,7 +112,7 @@ AnuncioVenda::AnuncioVenda(Utilizador *ut, string tit, string cat, string des, b
 	estado = est;
 }
 
-string AnuncioVenda::getEstado()
+string AnuncioVenda::getEstado() const
 {
 	return estado;
 }
@@ -150,14 +150,12 @@ bool AnuncioVenda::isVenda() const
 	return true;
 }
 
-//------------------------------
-
 AnuncioCompra::AnuncioCompra(Utilizador * ut, string tit, string cat, string des, bool pNeg, float pr, vector<AnuncioVenda> tr) : Anuncio(ut, tit, cat, des, pNeg, pr)
 {
 	troca = tr;
 }
 
-vector<AnuncioVenda> AnuncioCompra::getTroca()
+vector<AnuncioVenda> AnuncioCompra::getTroca() const
 {
 	return troca;
 }

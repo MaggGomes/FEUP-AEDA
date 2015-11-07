@@ -1,4 +1,4 @@
-#ifndef FUNCTIONS_H_
+﻿#ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
 #include <string>

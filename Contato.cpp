@@ -1,4 +1,4 @@
-#include "Contato.h"
+﻿#include "Contato.h"
 
 Contato::Contato(Anuncio * anun, string rem, string mens, string cont)
 {
