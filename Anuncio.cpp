@@ -138,7 +138,7 @@ void AnuncioVenda::visAnuncio()
 {
 	cout << "Titulo: " << titulo << endl;
 	cout << "Categoria: " << categoria << endl;
-	cout << "Descricao: " << descricao << endl << endl;
+	cout << "Descricao: " << descricao << endl;
 	cout << "ID: " << id << endl;
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
@@ -153,6 +153,8 @@ void AnuncioVenda::visAnuncio()
 
 	if (possivelNegociar)
 		cout << "Negociavel."<<endl;
+	
+	cout << endl;
 }
 
 bool AnuncioVenda::isVenda() const
@@ -184,7 +186,7 @@ void AnuncioCompra::visAnuncio()
 {
 	cout << "Titulo: " << titulo << endl;
 	cout << "Categoria: " << categoria << endl;
-	cout << "Descricao: " << descricao << endl << endl;
+	cout << "Descricao: " << descricao << endl;
 	cout << "ID: " << id << endl;
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
@@ -206,6 +208,8 @@ void AnuncioCompra::visAnuncio()
 			cout << "- " << troca[i]->getTitulo() << " (ID: " << troca[i]->getID() << ")" << endl;
 		}
 	}
+
+	cout << endl;
 }
 
 bool AnuncioCompra::isVenda() const

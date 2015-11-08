@@ -2,9 +2,12 @@
 
 Data::Data()
 {
-	dia = 0;
-	mes = 0;
-	ano = 0;
+	time_t t = time(NULL);
+	struct tm* timePtr = localtime(&t);
+
+	int dia = timePtr->tm_mday;
+	int mes = timePtr->tm_mon + 1;
+	int ano = timePtr->tm_year + 1900 ;
 }
 
 Data::Data(int dia, int mes, int ano) : dia(dia), mes(mes), ano(ano){}

@@ -83,7 +83,9 @@ bool OLZ::setVisNome() {
 		setcolor(7, 0);
 		Sleep(1000);
 		setVisNome();
-	}	
+	}
+
+	return true;
 }
 
 string OLZ::registarEmail(){
@@ -128,7 +130,13 @@ bool OLZ::validaEmail(string mail)
 			oneat = true;
 	}
 
-	return oneat;
+	for (unsigned int i = 0; i < mail.size(); i++)
+	{
+		if (mail[i] == '.')			//Ao ler um '.' retorna true
+			return true;
+	}
+
+	return false;
 }
 
 bool OLZ::existeEmail(string mail)
@@ -198,6 +206,8 @@ bool OLZ::setVisTelefone(){
 		Sleep(1000);
 		setVisTelefone();
 	}
+
+	return true;
 }
 
 bool OLZ::existeTelefone(int tele)
@@ -231,7 +241,6 @@ bool OLZ::validarLocal(string local)
 
 	return true;
 }
-
 
 string OLZ::registarFreg()
 {
@@ -319,14 +328,12 @@ string OLZ::registarDistr()
 
 string OLZ::setPass(){
 
-	// PASSWORD DEVE TER ENTRE 6 E 12 CARACTERES
-
 	string passTemp;
 
 	clrscr();
 	impressaoTitulo();
 
-	cout << " >> PASSWORD : ";
+	cout << " >> PASSWORD (Entre 6 e 12 caracteres): ";
 	getline(cin, passTemp);
 
 	try
@@ -358,12 +365,7 @@ bool OLZ::validarPassword(string pass)
 	return true;
 }
 
-void OLZ::registar() {		
-	//string emailTemp;
-	//Localizacao locTemp;	
-	//bool vis_emailTemp = true;
-
-
+void OLZ::registar() {
 
 	string nomeTemp = registarNome();
 	bool vis_nomeTemp = setVisNome();
@@ -376,10 +378,7 @@ void OLZ::registar() {
 	int tlfTemp = registarTelefone();
 	bool vis_telefoneTemp = setVisTelefone();
 
-	Localizacao locTemp = registarLoc();
-	
-		
-	
+	Localizacao locTemp = registarLoc();	
 
 	Utilizador userTemp(nomeTemp, emailTemp, tlfTemp, locTemp, passTemp);
 	userTemp.setVisNome(vis_nomeTemp);
@@ -528,7 +527,7 @@ void OLZ::logar(){
 }
 
 // FALTA IMPLEMENTAR
-
+/*
 void OLZ::criaAnuncioCompra(){
 
 	Utilizador * userTemp;
@@ -552,12 +551,24 @@ void OLZ::criaAnuncioCompra(){
 
 	string titTemp = registarTitulo();
 
-	string catTemp;
+	string catTemp = registarCategoria();
+
+	string descrTemp = 
+
+	vector<string> imgTemp = registarImagens();
 	
+	Data DatacriacaoTemp;
+	
+	float precoTemp = registarPreco();
+
+	bool possivelNegociarTemp = registarPossivelNegociar();
+
+	Anuncio * temp = new Anuncio(userTemp, titTemp, catTemp, descrTemp, possivelNegociarTemp, precoTemp);
+
 	return;
-
+	
 }
-
+*/
 void OLZ::setuserLogado(bool &log){
 	userLogado = log;
 }
@@ -641,6 +652,7 @@ void OLZ::createMenuInicial(){
 					createMenuAdmin();
 					break;
 				case 3:
+					saveData();
 					exiting();
 				}
 			}
@@ -723,6 +735,7 @@ void OLZ::createMenuVisitante(){
 					createMenuPesquisaVis();
 					break;
 				case 3:
+					saveData();
 					exiting();
 				}
 			}
@@ -801,6 +814,7 @@ void OLZ::createMenuUser(){
 					logar();
 					break;
 				case 2:
+					saveData();
 					exiting();
 				}
 			}
@@ -879,7 +893,7 @@ void OLZ::createMenuLogado(){
 					break;
 				case 1:
 					validade = false;
-					// FALTA IMPLEMENTAR
+					createMenuCriaAnuncio();
 					break;
 				case 2:
 					createMenuAnuncios();
@@ -888,6 +902,7 @@ void OLZ::createMenuLogado(){
 				case 4:
 					exiting();// FALTA IMPLEMENTAR
 				case 5:
+					saveData();
 					exiting();
 				}
 			}
@@ -896,7 +911,7 @@ void OLZ::createMenuLogado(){
 }
 
 void OLZ::createMenuCriaAnuncio(){
-	string Menu[3] = { "<<   MENU INICIAL     >>", "<<   ANUNCIO VENDA    >>", "<<   ANUNCIO COMPRA   >>" };
+	string Menu[4] = { "<<   MENU USER        >>", "<<   ANUNCIO VENDA    >>", "<<   ANUNCIO COMPRA   >>", "<<   SAIR             >>"  };
 	bool validade = true;
 	int pointer = 0;
 
@@ -905,9 +920,9 @@ void OLZ::createMenuCriaAnuncio(){
 		clrscr();
 		impressaoTitulo();
 		setcolor(11, 0);
-		cout << setw(51) << "<<<  TIPO DE ANUNCIO >>>" << endl << endl;
+		cout << setw(51) << "<<<<< TIPO ANUNCIO >>>>>" << endl << endl;
 
-		for (int i = 0; i < 6; ++i)
+		for (int i = 0; i < 4; ++i)
 		{
 			if (i == pointer)
 			{
@@ -933,7 +948,7 @@ void OLZ::createMenuCriaAnuncio(){
 			if (ch == ARROW_DOWN) {
 				Beep(250, 160);
 				pointer += 1;
-				if (pointer == 6)
+				if (pointer == 4)
 				{
 					pointer = 0;
 				}
@@ -945,7 +960,7 @@ void OLZ::createMenuCriaAnuncio(){
 				pointer -= 1;
 				if (pointer == -1)
 				{
-					pointer = 5;
+					pointer = 3;
 				}
 				break;
 			}
@@ -969,6 +984,9 @@ void OLZ::createMenuCriaAnuncio(){
 				case 2:
 					//FALTA IMPLEMENTAR
 					break;
+				case 3:
+					saveData();
+					exiting();
 				}
 			}
 		}
@@ -1051,6 +1069,7 @@ void OLZ::createMenuAnuncios(){
 				case 4:
 					exiting();// FALTA IMPLEMENTAR
 				case 5:
+					saveData();
 					exiting();
 				}
 			}
@@ -1136,6 +1155,143 @@ void OLZ::createMenuAdmin(){
 					// FALTA OPÇÃO PARA GERIR ANUNCIOS
 					break;
 				case 3:
+					saveData();
+					exiting();
+				}
+			}
+		}
+	}
+}
+
+// FALT TERMINAR
+
+void OLZ::apagarUser(){
+	
+	string emailTemp;
+	bool validaEmail = false;
+
+	clrscr();
+	impressaoTitulo();
+
+	cout << ">> E-MAIL DE UTILIZADOR: ";
+	getline(cin, emailTemp);
+
+	// Verifica a existência do email
+
+	try{
+		if (cin.fail())
+			throw emailTemp;
+
+		// FALTA TERMINAR ESTA FUNÇAO QUE VERIFICA A EXISTENCAI DO EMAIL E APGA EM SEGUIDA O UTLIZADOR RESPETIVO, ASSIM COMO OS ANUNCIOS POR ELE
+		// COLOCADOS E OS CONTATOS ASSOCIADOS AOS MESMOS
+
+		/*for (unsigned int i = 0; i < utilizadores.size(); i++){
+			if (utilizadores[i].getEmail() == emailTemp){
+				utilizadores.erase(utilizadores.begin()+i);
+				for (unsigned int j = 0; j < anuncios.size(); j++){
+					if (anuncios[j]->getAnunciante()->getEmail() == emailTemp){
+						anuncios.erase(anuncios.begin() + j);
+						j--;
+					}
+				}
+
+				break;
+			}
+		}*/
+
+		if (!validaEmail)
+			throw emailTemp;
+	}
+	catch (...){
+		clean_buffer();
+		setcolor(4, 0);
+		cout << ":: ERRO: E-mail de registo nao encontrado! Tente novamente." << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		apagarUser();
+	}
+
+	createMenuGerirUsers();
+}
+
+// FALTA TERMINAR
+
+void OLZ::createMenuGerirUsers(){
+	string Menu[4] = { "<<   MENU ADMIN       >>", "<<   VER USERS        >>", "<<   APAGAR USER      >>", "<<   SAIR             >>" };
+	bool validade = true;
+	int pointer = 0;
+
+	while (validade)
+	{
+		clrscr();
+		impressaoTitulo();
+		setcolor(11, 0);
+		cout << setw(51) << "<<<<< GERIR USERS  >>>>>" << endl << endl;
+
+		for (int i = 0; i < 4; ++i)
+		{
+			if (i == pointer)
+			{
+				cout << "                           ";
+				setcolor(3, 1);
+				cout << Menu[i] << endl << endl;
+			}
+			else
+			{
+				setcolor(3, 0);
+				cout << setw(51) << Menu[i] << endl << endl;
+			}
+		}
+		setcolor(7, 0);
+
+		while (validade)
+		{
+			int ch = _getch();
+
+			if (ch == 0 || ch == 224)
+				ch = 256 + _getch();
+
+			if (ch == ARROW_DOWN) {
+				Beep(250, 160);
+				pointer += 1;
+				if (pointer == 4)
+				{
+					pointer = 0;
+				}
+				break;
+			}
+
+			if (ch == ARROW_UP){
+				Beep(250, 160);
+				pointer -= 1;
+				if (pointer == -1)
+				{
+					pointer = 3;
+				}
+				break;
+			}
+
+			if (ch == '\r')
+			{
+				setcolor(7, 0);
+				Beep(200, 160);
+
+				switch (pointer)
+				{
+				case 0:
+					validade = false;
+					createMenuInicial();
+					break;
+				case 1:
+					validade = false;
+					// FALTA OPÇAO PARA VER USERS
+					break;
+				case 2:
+					validade = false;
+					apagarUser();
+					break;
+				case 3:
+					saveData();
 					exiting();
 				}
 			}
@@ -1227,6 +1383,7 @@ void OLZ::createMenuPesquisaVis(){
 				case 4:
 					exiting();// FALTA IMPLEMENTAR
 				case 5:
+					saveData();
 					exiting();
 				}
 			}
@@ -1310,7 +1467,8 @@ void OLZ::createMenuPesquisaUser(){
 					exiting();  // FALTA IMPLEMENTAR
 				case 4:
 					exiting();// FALTA IMPLEMENTAR
-				case 5:					
+				case 5:	
+					saveData();
 					exiting();
 				}
 			}
@@ -1380,7 +1538,7 @@ void OLZ::saveData()
 				anFile << false << ";";
 				for (size_t i = 0; i < temp->getTroca().size(); i++)
 				{
-					if (i = temp->getTroca().size() - 1)
+					if (i == temp->getTroca().size() - 1)
 						anFile << temp->getTroca()[i]->getID() << "\n";
 					else
 						anFile << temp->getTroca()[i]->getID() << ";";
@@ -1399,7 +1557,7 @@ void OLZ::saveData()
 				anFile << false << ";";
 				for (size_t i = 0; i < temp->getTroca().size(); i++)
 				{
-					if (i = temp->getTroca().size() - 1)
+					if (i == temp->getTroca().size() - 1)
 						anFile << temp->getTroca()[i]->getID();
 					else
 						anFile << temp->getTroca()[i]->getID() << ";";
@@ -1408,7 +1566,7 @@ void OLZ::saveData()
 		}
 	}
 
-	ctFile.close();
+	anFile.close();
 
 	remove("contatos.csv");
 	ctFile.open("contatos.csv");
@@ -1419,212 +1577,245 @@ void OLZ::saveData()
 		
 		ctFile << temp.getID() << ";" << temp.getAnuncio()->getID() << ";" << temp.getMensagem() << ";" << temp.getContacto() << ";";
 
-		if (i = contatos.size() - 1)
+		if (i == contatos.size() - 1)
 			ctFile << temp.getRemetente();
 		else
 			ctFile << temp.getRemetente() << "\n";
 	}
 
-	anFile.close();
+	ctFile.close();
 }
 
 void OLZ::loadData()
 {
+	
 	ifstream utFile; // variavel que vai conter o ficheiro de Utilizadores
 	ifstream anFile; // variavel que vai conter o ficheiro de Anuncios
 	ifstream ctFile; // variavel que vai conter o ficheiro de Contatos
+		
+	utFile.open("utilizadores.csv");
+
+	string line;
 	
+	while (getline(utFile, line)){
+		istringstream ss(line);
 
-	utFile.open("utilizadores.txt");
-	while (!utFile.eof())
+		while (ss.good()) {
+
+	int i = 0;
+	string tNome;
+	getline(ss, tNome, ';');	
+	string tEmail;
+	getline(ss, tEmail, ';');
+
+
+	string stNr;
+	getline(ss, stNr, ';');
+	int tNr = atoi(stNr.c_str());
+
+	string tFreg;
+	getline(ss, tFreg, ';');
+
+	string tConc;
+	getline(ss, tConc, ';');
+
+	string tDist;
+	getline(ss, tDist, ';');
+
+	Localizacao tLoc(tFreg, tConc, tDist);
+
+	string tPass;
+	getline(ss, tPass, ';');
+
+	Utilizador tUti(tNome, tEmail, tNr, tLoc, tPass);
+
+	string siMR;
+	getline(ss, siMR, ';');
+	int iMR = atoi(siMR.c_str());
+
+	vector<int> tMR;
+	for (int i = 0; i < iMR; i++)
 	{
-		string tNome;
-		getline(utFile, tNome, ';');
-		
-		string tEmail;
-		getline(utFile, tEmail, ';');
-		
-		string stNr;
-		getline(utFile, stNr, ';');
-		int tNr = atoi(stNr.c_str());
-
-		string tFreg;
-		getline(utFile, tFreg, ';');
-
-		string tConc;
-		getline(utFile, tConc, ';');
-
-		string tDist;
-		getline(utFile, tDist, ';');
-
-		Localizacao tLoc(tFreg, tConc, tDist);
-
-		string tPass;
-		getline(utFile, tPass, ';');
-
-		Utilizador tUti(tNome, tEmail, tNr, tLoc, tPass);
-
-		string siMR;
-		getline(utFile, siMR, ';');
-		int iMR = atoi(siMR.c_str());
-
-		vector<int> tMR;
-		for (int i = 0; i < iMR; i++)
-		{
-			string abc;
-			getline(utFile, abc, ';');
-			int x = atoi(abc.c_str());
-			tMR.push_back(x);
-		}
-
-		tUti.setMR(tMR);
-
-		string siME;
-		getline(utFile, siME, ';');
-		int iME = atoi(siME.c_str());
-
-		vector<int> tME;
-		for (int i = 0; i < iME; i++)
-		{
-			string abc;
-			getline(utFile, abc, ';');
-			int x = atoi(abc.c_str());
-			tME.push_back(x);
-		}
-
-
-		tUti.setME(tME);
-
-		string stVisN;
-		getline(utFile, stVisN, ';');
-		int itVisN = atoi(stVisN.c_str());
-		bool tVisN = itVisN;
-
-		tUti.setVisNome(tVisN);
-		
-		string stVisE;
-		getline(utFile, stVisE, ';');
-		int itVisE = atoi(stVisE.c_str());
-		bool tVisE = itVisE;
-
-		tUti.setVisEmail(tVisE);
-
-		string stVisT;
-		getline(utFile, stVisT, ';');
-		int itVisT = atoi(stVisT.c_str());
-		bool tVisT = itVisT;
-
-		tUti.setVisTelefone(tVisT);
-
-		utilizadores.push_back(tUti);
+		string abc;
+		getline(ss, abc, ';');
+		int x = atoi(abc.c_str());
+		tMR.push_back(x);
 	}
+
+	tUti.setMR(tMR);
+
+	string siME;
+	getline(ss, siME, ';');
+	int iME = atoi(siME.c_str());
+
+	vector<int> tME;
+	for (int i = 0; i < iME; i++)
+	{
+		string abc;
+		getline(ss, abc, ';');
+		int x = atoi(abc.c_str());
+		tME.push_back(x);
+	}
+
+
+	tUti.setME(tME);
+
+	string stVisN;
+	getline(ss, stVisN, ';');
+	int itVisN = atoi(stVisN.c_str());
+	bool tVisN = itVisN;
+
+	tUti.setVisNome(tVisN);
+
+	string stVisE;
+	getline(ss, stVisE, ';');
+	int itVisE = atoi(stVisE.c_str());
+	bool tVisE = itVisE;
+
+	tUti.setVisEmail(tVisE);
+
+	string stVisT;
+	getline(ss, stVisT, ';');
+	int itVisT = atoi(stVisT.c_str());
+	bool tVisT = itVisT;
+
+	tUti.setVisTelefone(tVisT);
+
+	utilizadores.push_back(tUti);	
+		}
+	}	
+		
 	utFile.close();
+	
+	anFile.open("anuncios.csv");
 
-	anFile.open("anuncios.txt");
-	while (!anFile.eof())
-	{
-		string tEmail;
-		getline(anFile, tEmail, ';');
+	while (getline(anFile, line)){
+		istringstream ss(line);
+		
+		while (ss.good()) {
+			string tEmail;
+			getline(ss, tEmail, ';');
 
-		int iAn = searchUtilizador(tEmail);
+			cout << tEmail << endl;
 
-		Utilizador tAn = utilizadores[iAn];
+			int iAn = searchUtilizador(tEmail);
 
-		string tTit;
-		getline(anFile, tTit, ';');
+			Utilizador tAn = utilizadores[iAn];
+			
+			string tTit;
+			getline(ss, tTit, ';');
 
-		string tCat;
-		getline(anFile, tCat, ';');
+			string tCat;
+			getline(ss, tCat, ';');
 
-		string tDes;
-		getline(anFile, tDes, ';');
+			string tDes;
+			getline(ss, tDes, ';');
 
-		string stID;
-		getline(anFile, stID, ';');
-		int tID = atoi(stID.c_str());
+			string stID;
+			getline(ss, stID, ';');
+			int tID = atoi(stID.c_str());
 
-		string stIma;
-		getline(anFile, stIma, ';');
-		int tIma = atoi(stIma.c_str());
+			string stIma;
+			getline(ss, stIma, ';');
+			int tIma = atoi(stIma.c_str());
 
-		vector<string> viIma;
+			vector<string> viIma;
 
-		for (int i = 0; i < tIma; i++)
-		{
-			string tABC;
-			getline(anFile, tABC, ';');
-			viIma.push_back(tABC);
-		}
-
-		string stDia;
-		getline(anFile, stDia, ';');
-		int tDia = atoi(stDia.c_str());
-
-		string stMes;
-		getline(anFile, stMes, ';');
-		int tMes = atoi(stMes.c_str());
-
-		string stAno;
-		getline(anFile, stAno, ';');
-		int tAno = atoi(stAno.c_str());
-
-		Data tData(tDia, tMes, tAno);
-
-		string stNeg;
-		getline(anFile, stNeg, ';');
-		int itNeg = atoi(stNeg.c_str());
-		bool tNeg = itNeg;
-
-		string stCl;
-		getline(anFile, stCl, ';');
-		int tCl = atoi(stCl.c_str());
-
-		string stPr;
-		getline(anFile, stPr, ';');
-		int tPr = atof(stPr.c_str());
-
-		string stVen;
-		getline(anFile, stVen, ';');
-		int itVen = atoi(stVen.c_str());
-		bool tVen = itVen;
-
-
-		if (tVen)
-		{
-			string tEst;
-			getline(anFile, tEst, ';');
-			Anuncio * anun = new AnuncioVenda(&tAn, tTit, tCat, tDes, tNeg, tPr, tEst);
-			anuncios.push_back(anun);
-		}
-		else
-		{
-			vector<Anuncio *> tTroca;
-
-			string stTr;
-			getline(anFile, stTr, ';');
-			int tTr = atof(stTr.c_str());
-			for (int i = 0; i < tTr; i++)
+			for (int i = 0; i < tIma; i++)
 			{
-				string stAnI;
-				getline(anFile, stAnI, ';');
-				int tAnI = atof(stAnI.c_str());
-				int x = searchAnuncio(tAnI);
-				tTroca.push_back(anuncios[x]);
+				string tABC;
+				getline(ss, tABC, ';');
+				viIma.push_back(tABC);
 			}
-			Anuncio * anun = new AnuncioCompra(&tAn, tTit, tCat, tDes, tNeg, tPr, tTroca);
 
-			anun->setDataCriacao(tData);
+			string stDia;
+			getline(ss, stDia, ';');
+			int tDia = atoi(stDia.c_str());
 
-			anun->setNum_clicks(tCl);
+			string stMes;
+			getline(ss, stMes, ';');
+			int tMes = atoi(stMes.c_str());
 
-			anun->setImagens(viIma);
+			string stAno;
+			getline(ss, stAno, ';');
+			int tAno = atoi(stAno.c_str());
 
-			anuncios.push_back(anun);
+			Data tData(tDia, tMes, tAno);
+
+			string stNeg;
+			getline(ss, stNeg, ';');
+			int itNeg = atoi(stNeg.c_str());
+			bool tNeg = itNeg;
+
+			cout << tNeg << endl;
+
+			string stCl;
+			getline(ss, stCl, ';');
+			int tCl = atoi(stCl.c_str());
+
+			string stPr;
+			getline(ss, stPr, ';');
+			int tPr = atof(stPr.c_str());
+
+			string stVen;
+			getline(ss, stVen, ';');
+			int itVen = atoi(stVen.c_str());
+			bool tVen = itVen;
+
+
+			if (tVen)
+			{
+				string tEst;
+				getline(ss, tEst, ';');
+				Anuncio * anun = new AnuncioVenda(&tAn, tTit, tCat, tDes, tNeg, tPr, tEst);
+				anun->setDataCriacao(tData);
+
+				anun->setNum_clicks(tCl);
+
+				anun->setImagens(viIma);
+				anun->setId(tID);
+				anuncios.push_back(anun);
+			}
+			else
+			{
+				vector<Anuncio *> tTroca;
+
+				string stTr;
+				getline(ss, stTr, ';');
+				int tTr = atof(stTr.c_str());
+
+				for (int i = 0; i < tTr; i++)
+				{
+					string stAnI;
+					getline(ss, stAnI, ';');
+					int tAnI = atof(stAnI.c_str());
+					int x = searchAnuncio(tAnI);
+					tTroca.push_back(anuncios[x]);
+				}
+				Anuncio * anun = new AnuncioCompra(&tAn, tTit, tCat, tDes, tNeg, tPr, tTroca);
+
+				anun->setDataCriacao(tData);
+
+				anun->setNum_clicks(tCl);
+				anun->setId(tID);
+				anun->setImagens(viIma);
+
+				anuncios.push_back(anun);
+			}
 		}
 	}
-	anFile.close();
 
-	ctFile.open("anuncios.txt");
+	cout << "finis" << endl;
+
+	anFile.close();
+	cout << "finis2" << endl;
+
+	for (unsigned int i = 0; i < anuncios.size(); i++){
+		anuncios[i]->visAnuncio();
+	}
+
+	/*
+	ctFile.open("contatos.csv");
 	while (!ctFile.eof())
 	{
 		string stID;
@@ -1651,6 +1842,7 @@ void OLZ::loadData()
 		contatos.push_back(tCt);
 	}
 	ctFile.close();
+	*/
 }
 
 Utilizador * OLZ::pesquisaEmail(string mail)
@@ -1735,7 +1927,34 @@ string OLZ::registarCategoria()
 
 	return catTemp;
 }
-/*
+
+string OLZ::registarDescricao()
+{
+	string descrTemp;
+
+	clrscr();
+	impressaoTitulo();
+
+	cout << ">> DESCRICAO DO PRODUTO (menos de 1000 caracteres) :";
+	getline(cin, descrTemp);
+
+	try
+	{
+		if (cin.fail() || descrTemp.size() > 1000)
+			throw descrTemp;
+	}
+	catch (...)
+	{
+		clean_buffer();
+		setcolor(4, 0);
+		cout << ":: ERRO: Descricao com demasiados caracteres! Tente novamente." << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		registarDescricao();
+	}
+
+	return descrTemp;
+}
 vector<string> OLZ::registarImagens()
 {
 	bool querImagens;
@@ -1747,6 +1966,8 @@ vector<string> OLZ::registarImagens()
 		clrscr();
 		impressaoTitulo();
 		cout << " >> DESEJA INSERIR IMAGENS NO SEU ANUNCIO? ((S)im/(N)ao) : ";
+		cin >> quer;
+		cin.ignore(100, '\n');
 
 		if (quer == 'S' || quer == 's')
 		{
@@ -1804,8 +2025,65 @@ vector<string> OLZ::registarImagens()
 	}
 
 	return img;
-}*/
+}
 
+bool OLZ::registarPossivelNegociar()
+{
+	bool possivel;
+	string vis;
+
+	clrscr();
+	impressaoTitulo();
+
+	cout << ">> QUER PERMITIR A POSSIBILIDADE DE NEGOCIACAO DO PRECO? ((S)im/(N)ao) :";
+
+		try{
+		if (cin.fail() || vis.length() != 1)
+			throw vis;
+		if (vis == "s" || vis == "S")
+			possivel = true;
+		if (vis == "n" || vis == "N")
+			possivel = false;
+
+		throw vis;
+	}
+	catch (...){
+		clean_buffer();
+		setcolor(4, 0);
+		cout << ":: ERRO: Opcao invalida! Tente novamente." << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		registarPossivelNegociar();
+	}
+
+	return possivel;
+}
+
+float OLZ::registarPreco()
+{
+	float precoTemp;
+
+	clrscr();
+	impressaoTitulo();
+
+	cout << ">>INSIRA O PRECO DESEJADO: ";
+	cin >> precoTemp;
+	cin.ignore(1000, '\n');
+	try{
+		if (cin.fail() || precoTemp <= 0)
+			throw precoTemp;
+	}
+	catch (...){
+		clean_buffer();
+		setcolor(4, 0);
+		cout << ":: ERRO: Opcao invalida! Tente novamente." << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		registarPreco();
+	}
+
+	return precoTemp;
+}
 int OLZ::searchUtilizador(string emailUt)
 {
 	for (int i = 0; i < utilizadores.size(); i++)

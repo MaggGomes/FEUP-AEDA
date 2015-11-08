@@ -2,6 +2,7 @@
 #define OLZ_H_
 
 #include <fstream>
+#include <sstream>
 
 #include "Utilizador.h"
 #include "Functions.h"
@@ -17,8 +18,7 @@ private:
 	vector<Utilizador> utilizadores;
 	vector <Anuncio *> anuncios;
 	vector <Contato> contatos;
-
-	string userOnline; // Infica qual o e-mail do utilizador que efetuou login
+	string userOnline; // Indica qual o e-mail do utilizador que efetuou login
 	bool userLogado;
 public:
 
@@ -283,9 +283,34 @@ public:
 	* @return True se for valido, false se nao for
 	*/
 	bool validarCategoria(string cat);
-	
+
+	/**
+	* @brief Regista a descricao do produto do anuncio
+	*
+	* @return descricao do anuncio
+	*/
+	string registarDescricao();
+
+	/**
+	* @brief Regista o conjunto de imagens do produto do anuncio
+	*
+	* @return vetor imagens do anuncio
+	*/
 	vector<string> registarImagens();
 
+	/**
+	* @brief Regista se no anuncio se permite negociar ou nao
+	*
+	* @return true para ser possivel, false para nao ser possivel
+	*/
+	bool registarPossivelNegociar();
+
+	/**
+	* @brief Regista o preco do anuncio
+	*
+	* @return o valor do preco
+	*/
+	float registarPreco();
 	/**
 	* @brief Procura um determinado utilizador através do seu email, baseado em sequential search
 	*
@@ -299,6 +324,16 @@ public:
 	* @return Retorna a posiçao do anuncio com o email pretendido, -1 se nao for encontrado
 	*/
 	int searchAnuncio(int AnID);
+
+	/**
+	* @brief Cria menu para gerir os users
+	*/
+	void createMenuGerirUsers();
+
+	/**
+	* @brief Elimina um utilizador
+	*/
+	void apagarUser();
 
 };
 #endif /*OLZ_H_*/
