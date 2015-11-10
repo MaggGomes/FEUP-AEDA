@@ -424,5 +424,11 @@ public:
 	* @brief Pesquisa anuncios por categoria
 	*/
 	void pesquisaCat(const string &cat);
+
+	vector<Anuncio * > pesquisaAnPreco(float p);
+
+	vector<Anuncio * > pesquisaAnPalavra(string p);
+
+	void pesquisaPreco(float p);
 };
 #endif /*OLZ_H_*/

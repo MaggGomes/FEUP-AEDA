@@ -1687,12 +1687,21 @@ void OLZ::createMenuPesquisaVis(){
 					string cat;
 					clrscr();
 					impressaoTitulo();
-					cout << ">> CATEGORIA DO ANUNCIO: ";
+					cout << ">> PALAVRA CHAVE: ";
 					getline(cin, cat);
 					pesquisaCat(cat);
 				}
 				case 3:
-					exiting();  // FALTA IMPLEMENTAR				
+					float p;
+					clrscr();
+					impressaoTitulo();
+					cout << ">> PRECO: ";
+					cin >> p;
+					cin.ignore(1000, '\n');
+					pesquisaPreco(p);
+					system("Pause");
+					createMenuInicial();
+					exiting();  			
 				case 4:
 					saveData();
 					exiting();
@@ -1774,7 +1783,16 @@ void OLZ::createMenuPesquisaUser(){
 				case 2:
 					exiting(); // FALTA IMPLEMENTAR
 				case 3:
-					exiting();  // FALTA IMPLEMENTAR				
+					float p;
+					clrscr();
+					impressaoTitulo();
+					cout << ">> PRECO: ";
+					cin >> p;
+					cin.ignore(1000, '\n');
+					pesquisaPreco(p);
+					system("Pause");
+					createMenuPesquisaUser();
+					exiting();
 				case 4:	
 					saveData();
 					exiting();
@@ -2779,3 +2797,39 @@ vector<Anuncio * > OLZ::pesquisaAnTit(string tit)
 
 	return temp;
 }
+
+vector<Anuncio * > OLZ::pesquisaAnPreco(float p)
+{
+	vector<Anuncio * > temp;
+	
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		if (anuncios[i]->getPreco() <= p)
+			temp.push_back(anuncios[i]);
+	}
+
+	return temp;
+}
+/*
+vector<Anuncio * > OLZ::pesquisaAnPalavra(string p)
+{
+	vector<Anuncio *> temp;
+
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		if ()
+	}
+
+}
+*/
+
+void OLZ::pesquisaPreco(float p)
+{
+	vector<Anuncio *> temp = pesquisaAnPreco(p);
+	for (int i = 0; i < temp.size(); i++)
+	{
+		temp[i]->visAnuncio();
+	}
+	return;
+}
+
