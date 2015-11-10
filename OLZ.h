@@ -165,6 +165,13 @@ public:
 	string registarDistr();
 
 	/**
+	* @brief Regista estado do anuncio
+	*
+	* @return o estado introduzido
+	*/
+	string registarEstado();
+
+	/**
 	* @brief cria e regista um utilizador
 	*/
 	void registar();
@@ -217,7 +224,7 @@ public:
 	/**
 	* @brief Menu Utilizador de Criar Anuncio
 	*/
-	void OLZ::createMenuCriaAnuncio();
+	void createMenuCriaAnuncio();
 
 	/**
 	* @brief Menu Administrador
@@ -311,6 +318,29 @@ public:
 	* @return o valor do preco
 	*/
 	float registarPreco();
+
+
+	/**
+	* @brief Regista as trocas do anuncioCompra
+	*
+	* @return o vetor com os anuncios para trocar
+	*/
+	vector<Anuncio *> registarTroca();
+
+	/**
+	* @brief Procura todos os anuncios de venda do utilizador com o mail especificado
+	*
+	* @return vetor com os anuncios
+	*/
+	vector<Anuncio *> searchAnuncioVenda(string mailutilizador);
+
+	/**
+	* @brief Procura titulo do anuncio no vetor
+	*
+	* @return posicao no vetor
+	*/
+	int searchTituloNoVetor(string t, vector<Anuncio *> v);
+	
 	/**
 	* @brief Procura um determinado utilizador através do seu email, baseado em sequential search
 	*
@@ -329,11 +359,70 @@ public:
 	* @brief Cria menu para gerir os users
 	*/
 	void createMenuGerirUsers();
-
+	/**
+	* @brief Cria menu para gerir os anuncios
+	*/
+	void createMenuGerirAnuncios();
 	/**
 	* @brief Elimina um utilizador
 	*/
 	void apagarUser();
+	/**
+	* @brief Elimina anuncio e todos os contactos associados
+	*/
+	void apagarAnuncio();
+	/**
+	* @brief Mostra um resumo dos utilizadores existentes
+	*/
+	void adminMostraUsers();
+	/**
+	*@brief Mostra um resumo dos anuncios existentes
+	*/
+	void adminMostraAnuncios();
 
+	/**
+	* @brief Mostra os anuncios existentes
+	*/
+	void MostraAnunciosUser(string mail);
+	
+	/**
+	* @return Retorna os anuncios organizados por categoria
+	*/
+	vector<Anuncio * > ordenaAnCat();
+
+	/**
+	* @return Retorna os anuncios organizados por nome do utlizador
+	*/
+	vector<Anuncio * > ordenaAnUt();
+
+	/**
+	* @return Retorna os anuncios organizados por ID
+	*/
+	vector<Anuncio * > ordenaAnID();
+
+	/**
+	* @return Retorna os anuncios pertencentes a cada categoria
+	*/
+	vector<Anuncio * > pesquisaAnCat(string cat);
+
+	/**
+	* @return Retorna os anuncios que possam ter o mesmo titulo
+	*/
+	vector<Anuncio * > pesquisaAnTit(string tit);
+
+	/**
+	* @brief Mostra o anuncio do utilizador mais recente. Se dois anuncios possuem a mesma data, mostra o que aparece mais cedo alfabeticamente
+	*/
+	void AnuncUserRec();
+
+	/**
+	* @brief Mostra o anuncio do utilizador com mais clicks. Se dois anuncios possuem a mesma data, mostra o que aparece mais cedo alfabeticamente
+	*/
+	void AnuncUserClicks();
+
+	/**
+	* @brief Pesquisa anuncios por categoria
+	*/
+	void pesquisaCat(const string &cat);
 };
 #endif /*OLZ_H_*/

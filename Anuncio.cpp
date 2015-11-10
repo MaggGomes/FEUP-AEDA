@@ -136,10 +136,12 @@ vector<Anuncio *> AnuncioVenda::getTroca() const
 
 void AnuncioVenda::visAnuncio()
 {
+	setcolor(9, 0);	
+	cout << "ID: " << id << endl;
+	cout << "Anuncio de Venda" << endl;	
 	cout << "Titulo: " << titulo << endl;
 	cout << "Categoria: " << categoria << endl;
-	cout << "Descricao: " << descricao << endl;
-	cout << "ID: " << id << endl;
+	cout << "Descricao: " << descricao << endl;	
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
 		cout << "Imagem: " << imagens[i] << endl;
@@ -153,7 +155,8 @@ void AnuncioVenda::visAnuncio()
 
 	if (possivelNegociar)
 		cout << "Negociavel."<<endl;
-	
+
+	setcolor(7, 0);	
 	cout << endl;
 }
 
@@ -184,6 +187,9 @@ void AnuncioCompra::setTroca(vector<Anuncio *> tr)
 
 void AnuncioCompra::visAnuncio()
 {
+	setcolor(10, 0);
+	cout << "ID: " << id << endl;
+	cout << "Anuncio de Compra" << endl;
 	cout << "Titulo: " << titulo << endl;
 	cout << "Categoria: " << categoria << endl;
 	cout << "Descricao: " << descricao << endl;
@@ -208,7 +214,8 @@ void AnuncioCompra::visAnuncio()
 			cout << "- " << troca[i]->getTitulo() << " (ID: " << troca[i]->getID() << ")" << endl;
 		}
 	}
-
+	
+	setcolor(7, 0);
 	cout << endl;
 }
 

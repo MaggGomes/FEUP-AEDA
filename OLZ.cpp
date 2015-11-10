@@ -525,19 +525,106 @@ void OLZ::logar(){
 	userOnline = emailTemp;
 	createMenuLogado();
 }
-
 // FALTA IMPLEMENTAR
-/*
+
 void OLZ::criaAnuncioCompra(){
 
 	Utilizador * userTemp;
-
 	clrscr();
 	impressaoTitulo();
 
 	try
 	{
 		userTemp = pesquisaEmail(userOnline);
+		string titTemp = registarTitulo();
+
+		string catTemp = registarCategoria();
+
+		string descrTemp = registarDescricao();
+
+		vector<string> imgTemp = registarImagens();
+
+		Data DatacriacaoTemp;
+
+		float precoTemp = registarPreco();
+
+		bool possivelNegociarTemp = registarPossivelNegociar();
+
+		vector<Anuncio *> trocaTemp;
+
+		Anuncio * temp = new AnuncioCompra(userTemp, titTemp, catTemp, descrTemp, possivelNegociarTemp, precoTemp, trocaTemp);
+
+		anuncios.push_back(temp);
+	}
+	catch (EmailNaoEncontrado)					//Caso haja um problema na base de dados
+	{
+		clrscr();
+		impressaoTitulo();
+		cout << "Houve um problema com a base de dados. O seu email não está registado. Registe-se novamente por favor" << endl;
+		userLogado = false;
+		userOnline = "";
+		createMenuInicial();
+	}	
+	return;	
+}
+
+string OLZ::registarEstado()
+{
+	string estadoTemp;
+
+	clrscr();
+	impressaoTitulo();
+	clean_buffer();
+
+	cout << ">> ESTADO DO PRODUTO (novo/usado como novo/funcional/para pecas) :";
+	getline(cin, estadoTemp);
+
+	try
+	{
+		if (!(estadoTemp == "novo" || estadoTemp == "Novo" || estadoTemp == "usado como novo" || estadoTemp == "usado" || estadoTemp == "Usado como novo" || estadoTemp == "funcional" || estadoTemp == "Funcional" || estadoTemp == "para pecas" || estadoTemp == "Para pecas"))
+			throw estadoTemp;
+	}
+	catch (...)
+	{
+		clean_buffer();
+		setcolor(4, 0);
+		cout << ":: ERRO: Descricao com demasiados caracteres! Tente novamente." << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		registarEstado();
+	}
+
+	return estadoTemp;
+}
+
+void OLZ::criaAnuncioVenda()
+{
+	Utilizador * userTemp;
+	clrscr();
+	impressaoTitulo();
+
+	try
+	{
+		userTemp = pesquisaEmail(userOnline);
+		string titTemp = registarTitulo();
+
+		string catTemp = registarCategoria();
+
+		string descrTemp = registarDescricao();
+
+		vector<string> imgTemp = registarImagens();
+
+		Data DatacriacaoTemp;
+
+		float precoTemp = registarPreco();
+
+		bool possivelNegociarTemp = registarPossivelNegociar();
+
+		string estadoTemp = registarEstado();
+
+		Anuncio * temp = new AnuncioVenda(userTemp, titTemp, catTemp, descrTemp, possivelNegociarTemp, precoTemp, estadoTemp);
+
+		anuncios.push_back(temp);
 	}
 	catch (EmailNaoEncontrado)					//Caso haja um problema na base de dados
 	{
@@ -549,26 +636,8 @@ void OLZ::criaAnuncioCompra(){
 		createMenuInicial();
 	}
 
-	string titTemp = registarTitulo();
-
-	string catTemp = registarCategoria();
-
-	string descrTemp = 
-
-	vector<string> imgTemp = registarImagens();
-	
-	Data DatacriacaoTemp;
-	
-	float precoTemp = registarPreco();
-
-	bool possivelNegociarTemp = registarPossivelNegociar();
-
-	Anuncio * temp = new Anuncio(userTemp, titTemp, catTemp, descrTemp, possivelNegociarTemp, precoTemp);
-
 	return;
-	
 }
-*/
 void OLZ::setuserLogado(bool &log){
 	userLogado = log;
 }
@@ -822,8 +891,6 @@ void OLZ::createMenuUser(){
 	}
 }
 
-// FALTA TERMINAR
-
 void OLZ::createMenuLogado(){
 	string Menu[6] = { "<<   MENU INICIAR     >>", "<<   CRIAR ANUNCIO    >>", "<<   MEUS ANUNCIOS    >>", "<<   PESQUISA ANUNCIO >>", "<<   VER CONTATOS     >>", "<<   SAIR             >>" };
 	bool validade = true;
@@ -979,10 +1046,13 @@ void OLZ::createMenuCriaAnuncio(){
 					break;
 				case 1:
 					validade = false;
-					// FALTA IMPLEMENTAR
+					criaAnuncioVenda();
+					createMenuLogado();
 					break;
 				case 2:
-					//FALTA IMPLEMENTAR
+					validade = false;
+					criaAnuncioCompra();
+					createMenuLogado();
 					break;
 				case 3:
 					saveData();
@@ -992,8 +1062,9 @@ void OLZ::createMenuCriaAnuncio(){
 		}
 	}
 }
+
 void OLZ::createMenuAnuncios(){
-	string Menu[6] = { "<<   MENU USER        >>", "<<   VER TODOS        >>", "<<   MAIS RECENTE     >>", "<<   MAIS CLICKS      >>", "<<   COM INTERESSADOS >>", "<<   SAIR             >>" };
+	string Menu[5] = { "<<   MENU USER        >>", "<<   VER TODOS        >>", "<<   MAIS RECENTE     >>", "<<   MAIS CLICKS      >>", "<<   SAIR             >>" };
 	bool validade = true;
 	int pointer = 0;
 
@@ -1004,7 +1075,7 @@ void OLZ::createMenuAnuncios(){
 		setcolor(11, 0);
 		cout << setw(51) << "<<<<<   ANUNCIOS   >>>>>" << endl << endl;
 
-		for (int i = 0; i < 6; ++i)
+		for (int i = 0; i < 5; ++i)
 		{
 			if (i == pointer)
 			{
@@ -1030,7 +1101,7 @@ void OLZ::createMenuAnuncios(){
 			if (ch == ARROW_DOWN) {
 				Beep(250, 160);
 				pointer += 1;
-				if (pointer == 6)
+				if (pointer == 5)
 				{
 					pointer = 0;
 				}
@@ -1042,7 +1113,7 @@ void OLZ::createMenuAnuncios(){
 				pointer -= 1;
 				if (pointer == -1)
 				{
-					pointer = 5;
+					pointer = 4;
 				}
 				break;
 			}
@@ -1060,15 +1131,15 @@ void OLZ::createMenuAnuncios(){
 					break;
 				case 1:
 					validade = false;
-					exiting(); // FALTA IMPLEMENTAR
+					MostraAnunciosUser(userOnline);
 					break;
 				case 2:
-					exiting(); // FALTA IMPLEMENTAR
+					AnuncUserRec();
+					createMenuAnuncios();
 				case 3:
-					exiting(); //FALTA IMPLEMENTAR
+					AnuncUserClicks();
+					createMenuAnuncios();
 				case 4:
-					exiting();// FALTA IMPLEMENTAR
-				case 5:
 					saveData();
 					exiting();
 				}
@@ -1077,8 +1148,89 @@ void OLZ::createMenuAnuncios(){
 	}
 }
 
+void OLZ::AnuncUserClicks(){
 
-// FALTA TERMINAR
+	clrscr();
+	impressaoTitulo();
+	vector <Anuncio * > temp;
+
+	for (unsigned int i = 0; i < anuncios.size(); i++){
+		if (anuncios[i]->getAnunciante()->getEmail() == userOnline)
+			temp.push_back(anuncios[i]);
+	}
+
+	if (temp.size() == 0){
+		setcolor(4, 0);
+		cout << ":: ERRO: Nao possui qualquer anuncio ainda!" << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		createMenuAnuncios();
+	}
+
+	if (temp.size() == 1){
+		temp[0]->visAnuncio();
+		cout << endl;
+		system("pause");
+		createMenuAnuncios();
+	}
+
+	int id = 0;
+
+	for (unsigned int i = 0; i < temp.size() - 1; i++){
+		if (temp[i]->getClicks() >= temp[i + 1]->getClicks())
+			id = i;
+		else
+			id = i + 1;
+	}
+
+
+	temp[id]->visAnuncio();
+	cout << endl;
+	system("pause");
+	createMenuAnuncios();
+}
+
+void OLZ::AnuncUserRec(){
+	
+	clrscr();
+	impressaoTitulo();
+	vector <Anuncio * > temp;
+
+	for (unsigned int i = 0; i < anuncios.size(); i++){
+		if (anuncios[i]->getAnunciante()->getEmail() == userOnline)
+			temp.push_back(anuncios[i]);
+	}
+
+	if (temp.size() == 0){
+		setcolor(4, 0);
+		cout << ":: ERRO: Nao possui qualquer anuncio ainda!" << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		createMenuAnuncios();
+	}
+
+	if (temp.size() == 1){
+		temp[0]->visAnuncio();
+		cout << endl;
+		system("pause");
+		createMenuAnuncios();
+	}
+	
+	int id = 0;
+
+	for (unsigned int i = 0; i < temp.size()-1; i++){
+		if (temp[i]->getDataCriacao() < temp[i + 1]->getDataCriacao())
+			id = i;
+		else
+			id = i + 1;
+		}
+	
+
+	temp[id]->visAnuncio();
+	cout << endl;
+	system("pause");
+	createMenuAnuncios();
+}
 
 void OLZ::createMenuAdmin(){
 	string Menu[4] = { "<<   MENU INICIAL     >>", "<<   GERIR USERS      >>", "<<   GERIR ANUNCIOS   >>", "<<   SAIR             >>" };
@@ -1148,11 +1300,11 @@ void OLZ::createMenuAdmin(){
 					break;
 				case 1:
 					validade = false;
-					// FALTA OPÇAO PARA GERIR USERS
+					createMenuGerirUsers();
 					break;
 				case 2:
 					validade = false;
-					// FALTA OPÇÃO PARA GERIR ANUNCIOS
+					createMenuGerirAnuncios();
 					break;
 				case 3:
 					saveData();
@@ -1163,16 +1315,13 @@ void OLZ::createMenuAdmin(){
 	}
 }
 
-// FALT TERMINAR
-
 void OLZ::apagarUser(){
 	
 	string emailTemp;
 	bool validaEmail = false;
 
-	clrscr();
-	impressaoTitulo();
-
+	adminMostraUsers();
+	cout << endl;
 	cout << ">> E-MAIL DE UTILIZADOR: ";
 	getline(cin, emailTemp);
 
@@ -1182,39 +1331,74 @@ void OLZ::apagarUser(){
 		if (cin.fail())
 			throw emailTemp;
 
-		// FALTA TERMINAR ESTA FUNÇAO QUE VERIFICA A EXISTENCAI DO EMAIL E APGA EM SEGUIDA O UTLIZADOR RESPETIVO, ASSIM COMO OS ANUNCIOS POR ELE
-		// COLOCADOS E OS CONTATOS ASSOCIADOS AOS MESMOS
-
-		/*for (unsigned int i = 0; i < utilizadores.size(); i++){
-			if (utilizadores[i].getEmail() == emailTemp){
-				utilizadores.erase(utilizadores.begin()+i);
-				for (unsigned int j = 0; j < anuncios.size(); j++){
-					if (anuncios[j]->getAnunciante()->getEmail() == emailTemp){
-						anuncios.erase(anuncios.begin() + j);
-						j--;
-					}
-				}
-
-				break;
-			}
-		}*/
-
-		if (!validaEmail)
+		int x = searchUtilizador(emailTemp);
+		if (x == -1)
 			throw emailTemp;
-	}
-	catch (...){
+
+		Utilizador dUt = utilizadores[x];
+		
+		utilizadores.erase(utilizadores.begin()+x);
+		
+		for (unsigned int j = 0; j < anuncios.size(); j++){
+			if (anuncios[j]->getAnunciante()->getEmail() == emailTemp){
+				anuncios.erase(anuncios.begin() + j);
+				j--;	
+			}
+		}	
+
+	}catch (...){
 		clean_buffer();
 		setcolor(4, 0);
 		cout << ":: ERRO: E-mail de registo nao encontrado! Tente novamente." << endl << endl;
 		setcolor(7, 0);
 		Sleep(1000);
-		apagarUser();
+		createMenuGerirUsers();
 	}
 
 	createMenuGerirUsers();
 }
 
-// FALTA TERMINAR
+void OLZ::apagarAnuncio()
+{
+	int anunTemp;
+	bool validaTemp = false;
+
+	clrscr();
+	impressaoTitulo();
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		setcolor(4, 0);
+		cout << anuncios[i]->getID() << " - " << anuncios[i]->getTitulo() << endl;
+		setcolor(7, 0);
+	}
+		
+	cout << endl;
+	cout << ">> ID DO ANUNCIO: ";
+	cin >> anunTemp;
+
+	
+	try{
+		if (cin.fail())
+			throw anunTemp;
+
+		int x = searchAnuncio(anunTemp);
+		if (x == -1)
+			throw anunTemp;
+
+		anuncios.erase(anuncios.begin() + x);
+
+	}
+	catch (...){
+		clean_buffer();
+		setcolor(4, 0);
+		cout << ":: ERRO: Anuncio nao encontrado! Tente novamente." << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		createMenuGerirAnuncios();
+	}
+
+	createMenuGerirAnuncios();
+}
 
 void OLZ::createMenuGerirUsers(){
 	string Menu[4] = { "<<   MENU ADMIN       >>", "<<   VER USERS        >>", "<<   APAGAR USER      >>", "<<   SAIR             >>" };
@@ -1280,11 +1464,12 @@ void OLZ::createMenuGerirUsers(){
 				{
 				case 0:
 					validade = false;
-					createMenuInicial();
+					saveData();
+					createMenuAdmin();
 					break;
 				case 1:
 					validade = false;
-					// FALTA OPÇAO PARA VER USERS
+					adminMostraUsers();
 					break;
 				case 2:
 					validade = false;
@@ -1299,10 +1484,8 @@ void OLZ::createMenuGerirUsers(){
 	}
 }
 
-// FALTA TERMINAR
-
-void OLZ::createMenuPesquisaVis(){
-	string Menu[6] = { "<<   MENU INICIAR     >>", "<<   CATEGORIA        >>", "<<   LOCALIZACAO      >>", "<<   PALAVRA-CHAVE    >>", "<<   PRECO            >>", "<<   SAIR             >>" };
+void OLZ::createMenuGerirAnuncios(){
+	string Menu[4] = { "<<   MENU ADMIN       >>", "<<   VER ANUNCIOS     >>", "<<   APAGAR ANUNCIO   >>", "<<   SAIR             >>" };
 	bool validade = true;
 	int pointer = 0;
 
@@ -1311,9 +1494,9 @@ void OLZ::createMenuPesquisaVis(){
 		clrscr();
 		impressaoTitulo();
 		setcolor(11, 0);
-		cout << setw(51) << "<<<<<   PESQUISA   >>>>>" << endl << endl;
+		cout << setw(51) << "<<<< GERIR ANUNCIOS >>>>" << endl << endl;
 
-		for (int i = 0; i < 6; ++i)
+		for (int i = 0; i < 4; ++i)
 		{
 			if (i == pointer)
 			{
@@ -1339,7 +1522,7 @@ void OLZ::createMenuPesquisaVis(){
 			if (ch == ARROW_DOWN) {
 				Beep(250, 160);
 				pointer += 1;
-				if (pointer == 6)
+				if (pointer == 4)
 				{
 					pointer = 0;
 				}
@@ -1351,7 +1534,128 @@ void OLZ::createMenuPesquisaVis(){
 				pointer -= 1;
 				if (pointer == -1)
 				{
-					pointer = 5;
+					pointer = 3;
+				}
+				break;
+			}
+
+			if (ch == '\r')
+			{
+				setcolor(7, 0);
+				Beep(200, 160);
+
+				switch (pointer)
+				{
+				case 0:
+					validade = false;
+					saveData();
+					createMenuAdmin();
+					break;
+				case 1:
+					validade = false;
+					adminMostraAnuncios();
+					break;
+				case 2:
+					validade = false;
+					apagarAnuncio();
+					break;
+				case 3:
+					saveData();
+					exiting();
+				}
+			}
+		}
+	}
+}
+
+void OLZ::pesquisaCat(const string &cat){
+	clrscr();
+	impressaoTitulo();
+	vector <Anuncio * > temp;
+
+	for (unsigned int i = 0; i < anuncios.size(); i++){
+		if (anuncios[i]->getAnunciante()->getEmail() != userOnline){
+			if (anuncios[i]->getCategoria() ==cat)
+				temp.push_back(anuncios[i]);
+		}			
+	}
+
+	if (temp.size() == 0){
+		setcolor(4, 0);
+		cout << ":: ERRO: Nao existe qualquer anuncio de outra anunciante da categoria que procura!" << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		createMenuPesquisaVis();
+	}
+
+	if (temp.size() == 1){
+		temp[0]->visAnuncio();
+		cout << endl;
+		system("pause");
+		createMenuPesquisaVis();
+	}
+
+
+	for (unsigned int i = 0; i < temp.size() - 1; i++){
+		temp[i]->visAnuncio();
+	}
+	
+	cout << endl;
+	system("pause");
+	createMenuPesquisaVis();
+}
+
+void OLZ::createMenuPesquisaVis(){
+	string Menu[5] = { "<<   MENU INICIAR     >>", "<<   CATEGORIA        >>", "<<   PALAVRA-CHAVE    >>", "<<   PRECO            >>", "<<   SAIR             >>" };
+	bool validade = true;
+	int pointer = 0;
+
+	while (validade)
+	{
+		clrscr();
+		impressaoTitulo();
+		setcolor(11, 0);
+		cout << setw(51) << "<<<<<   PESQUISA   >>>>>" << endl << endl;
+
+		for (int i = 0; i < 5; ++i)
+		{
+			if (i == pointer)
+			{
+				cout << "                           ";
+				setcolor(3, 1);
+				cout << Menu[i] << endl << endl;
+			}
+			else
+			{
+				setcolor(3, 0);
+				cout << setw(51) << Menu[i] << endl << endl;
+			}
+		}
+		setcolor(7, 0);
+
+		while (validade)
+		{
+			int ch = _getch();
+
+			if (ch == 0 || ch == 224)
+				ch = 256 + _getch();
+
+			if (ch == ARROW_DOWN) {
+				Beep(250, 160);
+				pointer += 1;
+				if (pointer == 5)
+				{
+					pointer = 0;
+				}
+				break;
+			}
+
+			if (ch == ARROW_UP){
+				Beep(250, 160);
+				pointer -= 1;
+				if (pointer == -1)
+				{
+					pointer = 4;
 				}
 				break;
 			}
@@ -1366,23 +1670,30 @@ void OLZ::createMenuPesquisaVis(){
 				case 0:
 					validade = false;
 					userLogado = false;
+					saveData();
 					createMenuInicial();
 					break;
 				case 1:
-				{// FALTA IMPLMENTAR
+				{
+					string cat;
 					clrscr();
-					//showScore(); - SUBSTITUIR - implementar funcionalidade
-					setcolor(7, 0);
-					cout << endl << ">> PRESSIONE CIMA/BAIXO PARA VOLTAR AO MENU";
-					setcolor(7, 0);
-				} break;
+					impressaoTitulo();
+					cout << ">> CATEGORIA DO ANUNCIO: ";
+					getline(cin, cat);
+					pesquisaCat(cat);
+				}
 				case 2:
-					exiting(); // FALTA IMPLEMENTAR
+				{
+					string cat;
+					clrscr();
+					impressaoTitulo();
+					cout << ">> CATEGORIA DO ANUNCIO: ";
+					getline(cin, cat);
+					pesquisaCat(cat);
+				}
 				case 3:
-					exiting();  // FALTA IMPLEMENTAR
+					exiting();  // FALTA IMPLEMENTAR				
 				case 4:
-					exiting();// FALTA IMPLEMENTAR
-				case 5:
 					saveData();
 					exiting();
 				}
@@ -1391,10 +1702,8 @@ void OLZ::createMenuPesquisaVis(){
 	}
 }
 
-// FALTA TERMINAR
-
 void OLZ::createMenuPesquisaUser(){
-	string Menu[6] = { "<<   MENU USER        >>", "<<   CATEGORIA        >>", "<<   LOCALIZACAO      >>", "<<   PALAVRA-CHAVE    >>", "<<   PRECO            >>", "<<   SAIR             >>" };
+	string Menu[5] = { "<<   MENU USER        >>", "<<   CATEGORIA        >>", "<<   PALAVRA-CHAVE    >>", "<<   PRECO            >>", "<<   SAIR             >>" };
 	bool validade = true;
 	int pointer = 0;
 
@@ -1405,7 +1714,7 @@ void OLZ::createMenuPesquisaUser(){
 		setcolor(11, 0);
 		cout << setw(51) << "<<<<<   PESQUISA   >>>>>" << endl << endl;
 
-		for (int i = 0; i < 6; ++i)
+		for (int i = 0; i < 5; ++i)
 		{
 			if (i == pointer)
 			{
@@ -1431,7 +1740,7 @@ void OLZ::createMenuPesquisaUser(){
 			if (ch == ARROW_DOWN) {
 				Beep(250, 160);
 				pointer += 1;
-				if (pointer == 6)
+				if (pointer == 5)
 				{
 					pointer = 0;
 				}
@@ -1443,7 +1752,7 @@ void OLZ::createMenuPesquisaUser(){
 				pointer -= 1;
 				if (pointer == -1)
 				{
-					pointer = 5;
+					pointer = 4;
 				}
 				break;
 			}
@@ -1457,6 +1766,7 @@ void OLZ::createMenuPesquisaUser(){
 				{
 				case 0:
 					validade = false;
+					saveData();
 					createMenuLogado();
 					break;
 				case 1:
@@ -1464,10 +1774,8 @@ void OLZ::createMenuPesquisaUser(){
 				case 2:
 					exiting(); // FALTA IMPLEMENTAR
 				case 3:
-					exiting();  // FALTA IMPLEMENTAR
-				case 4:
-					exiting();// FALTA IMPLEMENTAR
-				case 5:	
+					exiting();  // FALTA IMPLEMENTAR				
+				case 4:	
 					saveData();
 					exiting();
 				}
@@ -1536,6 +1844,20 @@ void OLZ::saveData()
 			else
 			{
 				anFile << false << ";";
+
+			
+				anFile << temp->getTroca().size();
+				if (temp->getTroca().size() == 0)
+					anFile << "\n";
+				else
+					for (size_t i = 0; i < temp->getTroca().size(); i++)
+					{
+						if (i == temp->getTroca().size() - 1)
+							anFile << temp->getTroca()[i]->getID() << "\n";
+						else
+							anFile << temp->getTroca()[i]->getID() << ";";
+					}
+
 				for (size_t i = 0; i < temp->getTroca().size(); i++)
 				{
 					if (i == temp->getTroca().size() - 1)
@@ -1543,6 +1865,7 @@ void OLZ::saveData()
 					else
 						anFile << temp->getTroca()[i]->getID() << ";";
 				}
+
 			}
 		}
 		else
@@ -1672,6 +1995,100 @@ void OLZ::loadData()
 	int itVisE = atoi(stVisE.c_str());
 	bool tVisE = itVisE;
 
+
+	tUti.setVisEmail(tVisE);
+
+	string stVisT;
+	getline(ss, stVisT, ';');
+	int itVisT = atoi(stVisT.c_str());
+	bool tVisT = itVisT;
+
+	tUti.setVisTelefone(tVisT);
+
+	utilizadores.push_back(tUti);	
+		}
+	}	
+		
+	utFile.close();
+	
+	anFile.open("anuncios.csv");
+	/*
+	while (getline(anFile, line)){
+		istringstream ss(line);
+		
+		while (ss.good()) {
+			string tEmail;
+			getline(ss, tEmail, ';');
+
+			cout << tEmail << endl;
+
+			int iAn = searchUtilizador(tEmail);
+
+			Utilizador tAn = utilizadores[iAn];
+			
+			string tTit;
+			getline(ss, tTit, ';');
+
+			string tCat;
+			getline(ss, tCat, ';');
+
+			string tDes;
+			getline(ss, tDes, ';');
+
+			string stID;
+			getline(ss, stID, ';');
+			int tID = atoi(stID.c_str());
+
+			string stIma;
+			getline(ss, stIma, ';');
+			int tIma = atoi(stIma.c_str());
+
+			vector<string> viIma;
+
+			for (int i = 0; i < tIma; i++)
+			{
+				string tABC;
+				getline(ss, tABC, ';');
+				viIma.push_back(tABC);
+			}
+
+			string stDia;
+			getline(ss, stDia, ';');
+			int tDia = atoi(stDia.c_str());
+
+			string stMes;
+			getline(ss, stMes, ';');
+			int tMes = atoi(stMes.c_str());
+
+			string stAno;
+			getline(ss, stAno, ';');
+			int tAno = atoi(stAno.c_str());
+
+			Data tData(tDia, tMes, tAno);
+
+			string stNeg;
+			getline(ss, stNeg, ';');
+			int itNeg = atoi(stNeg.c_str());
+			bool tNeg = itNeg;
+
+			cout << tNeg << endl;
+
+			string stCl;
+			getline(ss, stCl, ';');
+			int tCl = atoi(stCl.c_str());
+
+			string stPr;
+			getline(ss, stPr, ';');
+			int tPr = atof(stPr.c_str());
+
+			string stVen;
+			getline(ss, stVen, ';');
+			int itVen = atoi(stVen.c_str());
+			bool tVen = itVen;
+
+
+
+
 	tUti.setVisEmail(tVisE);
 
 	string stVisT;
@@ -1763,6 +2180,7 @@ void OLZ::loadData()
 			bool tVen = itVen;
 
 
+
 			if (tVen)
 			{
 				string tEst;
@@ -1773,7 +2191,13 @@ void OLZ::loadData()
 				anun->setNum_clicks(tCl);
 
 				anun->setImagens(viIma);
+
+
 				anun->setId(tID);
+
+
+				anun->setId(tID);
+
 				anuncios.push_back(anun);
 			}
 			else
@@ -1797,13 +2221,43 @@ void OLZ::loadData()
 				anun->setDataCriacao(tData);
 
 				anun->setNum_clicks(tCl);
+
+				anun->setId(tID);
+				
+				anun->setImagens(viIma);
+
+=======
+
+				string stTr;
+				getline(ss, stTr, ';');
+				int tTr = atof(stTr.c_str());
+
+				for (int i = 0; i < tTr; i++)
+				{
+					string stAnI;
+					getline(ss, stAnI, ';');
+					int tAnI = atof(stAnI.c_str());
+					int x = searchAnuncio(tAnI);
+					tTroca.push_back(anuncios[x]);
+				}
+				Anuncio * anun = new AnuncioCompra(&tAn, tTit, tCat, tDes, tNeg, tPr, tTroca);
+
+				anun->setDataCriacao(tData);
+
+				anun->setNum_clicks(tCl);
 				anun->setId(tID);
 				anun->setImagens(viIma);
+
 
 				anuncios.push_back(anun);
 			}
 		}
 	}
+
+	
+	
+	anFile.close();
+
 
 	cout << "finis" << endl;
 
@@ -1813,6 +2267,7 @@ void OLZ::loadData()
 	for (unsigned int i = 0; i < anuncios.size(); i++){
 		anuncios[i]->visAnuncio();
 	}
+
 
 	/*
 	ctFile.open("contatos.csv");
@@ -1872,7 +2327,7 @@ string OLZ::registarTitulo()
 	clrscr();
 	impressaoTitulo();
 
-	cout << ">> TITULO DO ANUNCIO (menos de 30 caracteres) :";
+	cout << ">> TITULO DO ANUNCIO (menos de 30 caracteres): ";
 	getline(cin, titTemp);
 
 	try
@@ -1907,7 +2362,7 @@ string OLZ::registarCategoria()
 	clrscr();
 	impressaoTitulo();
 
-	cout << ">> CATEGORIA DO PRODUTO (menos de 15 caracteres) :";
+	cout << ">> CATEGORIA DO PRODUTO (menos de 15 caracteres): ";
 	getline(cin, catTemp);
 
 	try
@@ -1935,7 +2390,7 @@ string OLZ::registarDescricao()
 	clrscr();
 	impressaoTitulo();
 
-	cout << ">> DESCRICAO DO PRODUTO (menos de 1000 caracteres) :";
+	cout << ">> DESCRICAO DO PRODUTO (menos de 1000 caracteres): ";
 	getline(cin, descrTemp);
 
 	try
@@ -1965,7 +2420,7 @@ vector<string> OLZ::registarImagens()
 	{
 		clrscr();
 		impressaoTitulo();
-		cout << " >> DESEJA INSERIR IMAGENS NO SEU ANUNCIO? ((S)im/(N)ao) : ";
+		cout << " >> DESEJA INSERIR IMAGENS NO SEU ANUNCIO? ((S)im/(N)ao): ";
 		cin >> quer;
 		cin.ignore(100, '\n');
 
@@ -1993,28 +2448,39 @@ vector<string> OLZ::registarImagens()
 
 	while (querImagens)
 	{
-		string img1;
-		cout << " >> INSIRA UMA IMAGEM: ";
-		getline(cin, img1);
-		img.push_back(img1);
 		valido = false;
+		bool erro = false;
 		while (!valido)
 		{
-			cout << endl << ">> QUER INSERIR MAIS IMAGENS? ((S)im/(N)ao) : ";
-			cin >> querImagens;
-			cin.ignore(100, '\n');
+			if (!erro)
+			{
+				string img1;
+				clean_buffer();
+				cout << " >> INSIRA UMA IMAGEM: ";
+				getline(cin, img1);
+				img.push_back(img1);
+				clean_buffer();
+			}
+			clrscr();
+			impressaoTitulo();
+
+			cout << endl << ">> QUER INSERIR MAIS IMAGENS? ((S)im/(N)ao): ";
+			cin >> quer;
 			if (quer == 'S' || quer == 's')
 			{
 				querImagens = true;
 				valido = true;
+				erro = false;
 			}
 			else if (quer == 'N' || quer == 'n')
 			{
 				querImagens = false;
 				valido = true;
+				erro = false;
 			}
 			else
 			{
+				erro = true;
 				clean_buffer();
 				setcolor(4, 0);
 				cout << ":: ERRO: Comando invalido! Tente novamente." << endl << endl;
@@ -2029,36 +2495,42 @@ vector<string> OLZ::registarImagens()
 
 bool OLZ::registarPossivelNegociar()
 {
-	bool possivel;
+	bool possivel = true;
 	string vis;
 
 	clrscr();
 	impressaoTitulo();
 
-	cout << ">> QUER PERMITIR A POSSIBILIDADE DE NEGOCIACAO DO PRECO? ((S)im/(N)ao) :";
+	cout << ">> QUER PERMITIR A POSSIBILIDADE DE NEGOCIACAO DO PRECO? ((S)im/(N)ao): ";
 
-		try{
-		if (cin.fail() || vis.length() != 1)
-			throw vis;
+	cin >> vis;
+
+	try
+	{
+
+		cout << "fail" << endl;
 		if (vis == "s" || vis == "S")
-			possivel = true;
+			return true;
 		if (vis == "n" || vis == "N")
-			possivel = false;
+			return false;
+		else
+			throw vis;
 
-		throw vis;
 	}
 	catch (...){
+		cin.clear();
+		cin.ignore(1000, '\n');
 		clean_buffer();
 		setcolor(4, 0);
 		cout << ":: ERRO: Opcao invalida! Tente novamente." << endl << endl;
 		setcolor(7, 0);
 		Sleep(1000);
 		registarPossivelNegociar();
-	}
 
+	}
+	
 	return possivel;
 }
-
 float OLZ::registarPreco()
 {
 	float precoTemp;
@@ -2069,6 +2541,7 @@ float OLZ::registarPreco()
 	cout << ">>INSIRA O PRECO DESEJADO: ";
 	cin >> precoTemp;
 	cin.ignore(1000, '\n');
+	cin.clear();
 	try{
 		if (cin.fail() || precoTemp <= 0)
 			throw precoTemp;
@@ -2084,6 +2557,77 @@ float OLZ::registarPreco()
 
 	return precoTemp;
 }
+
+vector<Anuncio *> OLZ::registarTroca()
+{
+	vector<Anuncio *> trocatmp;
+	vector<Anuncio *> anunciosUser = searchAnuncioVenda(userOnline);
+	string tit;
+
+	while(true)
+	{
+		if(anunciosUser.size() == 0)
+			return trocatmp;
+
+		clrscr();
+		impressaoTitulo();
+
+		cout << ">> QUAIS ANUNCIOS E QUE QUER COLOCAR PARA TROCA? (escreva o titulo do anuncio): " << endl;
+		cout << " (Mais nenhum)" << endl;
+		for (int i = 0; i < anunciosUser.size(); i++)
+		{	
+
+			cout << anunciosUser[i]->titulo << endl;
+		}
+		cin >> tit;
+
+		int posicaoVetor = searchTituloNoVetor(tit, anunciosUser);
+		if (tit == "Nenhum" || tit == "nenhum" || tit == "Mais nenhum" || tit == "mais nenhum" || tit == "Mais Nenhum" || tit == "mais Nenhum")
+		{
+			return trocatmp;
+		}
+		else if ( posicaoVetor != -1)
+		{
+			trocatmp.push_back(anunciosUser[posicaoVetor]);
+			anunciosUser.erase(anunciosUser.begin() + posicaoVetor);
+		}
+		else
+		{
+			clean_buffer();
+			setcolor(4, 0);
+			cout << ":: ERRO: Opcao invalida! Tente novamente." << endl << endl;
+			setcolor(7, 0);
+			Sleep(1000);
+		}
+	}
+
+	
+}
+
+vector<Anuncio *> OLZ::searchAnuncioVenda(string mailutilizador)
+{
+	vector<Anuncio *> compraTemp;
+
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		if (anuncios[i]->Anunciante->getEmail() == mailutilizador && anuncios[i]->isVenda())
+			compraTemp.push_back(anuncios[i]);
+	}
+
+	return compraTemp;
+}
+
+int OLZ::searchTituloNoVetor(string t, vector<Anuncio *> v)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		if(t == v[i]->getTitulo())
+			return i;
+	}
+
+	return -1;
+}
+
 int OLZ::searchUtilizador(string emailUt)
 {
 	for (int i = 0; i < utilizadores.size(); i++)
@@ -2102,4 +2646,136 @@ int OLZ::searchAnuncio(int AnID)
 			return i;
 	}
 	return -1;
+}
+
+void OLZ::adminMostraUsers()
+{
+	clrscr();
+	impressaoTitulo();
+	for (int i = 0; i < utilizadores.size(); i++)
+	{
+		setcolor(4, 0);
+		cout << "NOME: " << utilizadores[i].getNome() << " EMAIL: " << utilizadores[i].getEmail() << endl;
+		setcolor(7, 0);
+	}
+
+	saveData();
+	cout << endl;
+	system("pause");
+	createMenuGerirUsers();
+}
+
+void OLZ::adminMostraAnuncios()
+{
+	clrscr();
+	impressaoTitulo();
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		setcolor(4, 0);
+		cout << anuncios[i]->getID() << " - " << anuncios[i]->getTitulo() << endl;
+		setcolor(7, 0);
+	}
+
+	cout << endl;
+	system("pause");
+	createMenuGerirAnuncios();
+
+}
+
+void OLZ::MostraAnunciosUser(string mail)
+{
+	clrscr();
+	impressaoTitulo();
+
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		if (anuncios[i]->getAnunciante()->getEmail() == mail)
+		{
+			anuncios[i]->visAnuncio();
+
+			cout << endl;
+		}
+	}
+
+	cout << endl;
+	system("pause");
+	createMenuAnuncios();
+}
+
+vector<Anuncio * > OLZ::ordenaAnCat()
+{
+	vector<Anuncio *> temp = anuncios;
+
+	for (unsigned int p = 1; p < temp.size(); p++)
+	{
+		Anuncio * tmp = temp[p];
+
+		int j;
+
+		for (j = p; j > 0 && tmp->getCategoria() < temp[j - 1]->getCategoria(); j--)
+			temp[j] = temp[j - 1];
+		temp[j] = tmp;
+	}
+
+	return temp;
+}
+
+vector<Anuncio * > OLZ::ordenaAnUt()
+{
+	vector<Anuncio *> temp = anuncios;
+
+	for (unsigned int p = 1; p < temp.size(); p++)
+	{
+		Anuncio * tmp = temp[p];
+
+		int j;
+
+		for (j = p; j > 0 && tmp->getAnunciante()->getNome() < temp[j - 1]->getAnunciante()->getNome(); j--)
+			temp[j] = temp[j - 1];
+		temp[j] = tmp;
+	}
+
+	return temp;
+}
+
+vector<Anuncio * > OLZ::ordenaAnID()
+{
+	vector<Anuncio *> temp = anuncios;
+
+	for (unsigned int p = 1; p < temp.size(); p++)
+	{
+		Anuncio * tmp = temp[p];
+
+		int j;
+
+		for (j = p; j > 0 && tmp->getID() < temp[j - 1]->getID(); j--)
+			temp[j] = temp[j - 1];
+		temp[j] = tmp;
+	}
+
+	return temp;
+}
+
+vector<Anuncio * > OLZ::pesquisaAnCat(string cat)
+{
+	vector<Anuncio * > temp;
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		if (anuncios[i]->getCategoria() == cat)
+			temp.push_back(anuncios[i]);
+	}
+
+	return temp;
+}
+
+vector<Anuncio * > OLZ::pesquisaAnTit(string tit)
+{
+	vector<Anuncio * > temp;
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		if (anuncios[i]->getTitulo() == tit)
+			temp.push_back(anuncios[i]);
+	}
+
+	return temp;
 }

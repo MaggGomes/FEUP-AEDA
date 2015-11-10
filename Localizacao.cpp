@@ -27,3 +27,18 @@ void Localizacao::setConcelho(const string& concelho){
 void Localizacao::setDistrito(const string& distrito){
 	this->distrito = distrito;
 }
+
+bool Localizacao::operator==(const Localizacao l1) const
+{
+	if (l1.freguesia == freguesia)
+	{
+		if (l1.concelho == concelho)
+		{
+			if (l1.distrito == distrito)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}

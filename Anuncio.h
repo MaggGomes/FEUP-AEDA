@@ -9,6 +9,7 @@
 #include "Utilizador.h"
 #include "Data.h"
 #include "Contato.h"
+#include "Functions.h"
 
 using namespace std;
 
@@ -61,6 +62,10 @@ public:
 	* @return Retorna o id do anuncio
 	*/
 	int getID() const;
+	/**
+	* @return Retorna a localizaçao do anuncio
+	*/
+	Localizacao getLocal() const;
 	/**
 	* @return Retorna a data de criaçao do anuncio
 	*/

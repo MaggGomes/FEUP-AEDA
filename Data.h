@@ -63,6 +63,11 @@ public:
 	* @param Recebe um parâmetro do tipo inteiro
 	*/
 	void setAno(int ano);
+
+	/**
+	* @ Retorna true se data for mais recente
+	*/
+	bool operator <(Data &d) const;
 	
 	/**
 	* @brief Overload do operator << para imprimir a data

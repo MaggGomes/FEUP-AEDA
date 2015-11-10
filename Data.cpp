@@ -36,6 +36,21 @@ void Data::setAno(int ano){
 	this->ano = ano;
 }
 
+bool Data::operator <(Data &d) const{
+	if (ano < d.getAno())
+		return true;
+	if (ano == d.getAno()){
+		if (mes < d.getMes())
+			return true;
+		if (mes == d.getMes()){
+			if (dia < d.getDia() || dia == d.getDia())
+				return true;
+		}
+	}
+
+	return false;
+}
+
 ostream& operator<<(ostream& os, const Data& d){
 	os << d.dia << "/" << d.mes << "/" << d.ano;
 

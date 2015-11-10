@@ -61,6 +61,12 @@ public:
 	* @param Recebe um parâmetro do tipo string
 	*/
 	void setDistrito(const string& distrito);
+
+	/**
+	* @brief Ve se duas localizações são iguais
+	*/
+	bool operator==(const Localizacao l1) const;
+
 };
 
 
