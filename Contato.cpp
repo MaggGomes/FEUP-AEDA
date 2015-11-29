@@ -7,9 +7,9 @@ Contato::Contato(Anuncio * anun, string rem, string mens, string cont)
 	id = last_id;
 	last_id++;
 	anuncio = anun;
-	mensagem = rem;
-	contacto = mens;
-	remetente = cont;
+	mensagem = mens;
+	contacto = cont;
+	remetente = rem;
 }
 
 
@@ -50,4 +50,22 @@ void Contato::setContacto(std::string cont){
 void Contato::setID(int tid)
 {
 	id = tid;
+}
+
+void Contato::displayContatoRecebido()
+{
+	cout << ":: Enviado por: " << remetente << endl;
+	cout << "Anuncio: " << anuncio->titulo << endl;
+	cout << mensagem << endl;
+	cout << "Contactar de volta para: " << contacto << endl;
+
+	return;
+}
+
+void Contato::displayContatoEnviado()
+{
+	cout << ":: Enviado por causa do anuncio < " << anuncio->titulo << ">" << endl;
+	cout << mensagem << endl;
+
+	return;
 }

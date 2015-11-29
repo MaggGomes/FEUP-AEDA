@@ -82,6 +82,10 @@ public:
 	* @param Recebe um parâmetro do tipo int
 	*/
 	void setID(int nID);
+
+	void displayContatoRecebido();
+	void displayContatoEnviado();
+
 };
 
 #endif /*CONTATO_H_*/

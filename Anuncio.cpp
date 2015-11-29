@@ -224,6 +224,15 @@ bool AnuncioCompra::isVenda() const
 	return false;
 }
 
+bool Anuncio::searchPalavra(string p)
+{
+
+	if (searchWordInString(p, titulo) || searchWordInString(p, descricao))
+		return true;
+	else
+		return false;
+}
+
 string AnuncioCompra::getEstado() const
 {
 	string temp = {};

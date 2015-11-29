@@ -41,4 +41,9 @@ void clean_buffer();
 */
 string hidePass();
 
+/**
+* @brief Procura a palavra na string
+*/
+bool searchWordInString(string w, string s);
+
 #endif /*FUNCTIONS_H_*/

@@ -167,6 +167,13 @@ public:
 	virtual string getEstado() const = 0;
 
 	virtual vector<Anuncio *> getTroca() const = 0;
+
+	/**
+	* @brief Verifica se a palavra p existe no titulo ou na descricao
+	*
+	* @return True se encontrar, false se não encontrar
+	*/
+	bool searchPalavra(string p);
 };
 
 /**

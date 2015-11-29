@@ -523,6 +523,7 @@ void OLZ::logar(){
 
 	userLogado = true;
 	userOnline = emailTemp;
+	
 	createMenuLogado();
 }
 // FALTA IMPLEMENTAR
@@ -892,7 +893,7 @@ void OLZ::createMenuUser(){
 }
 
 void OLZ::createMenuLogado(){
-	string Menu[6] = { "<<   MENU INICIAR     >>", "<<   CRIAR ANUNCIO    >>", "<<   MEUS ANUNCIOS    >>", "<<   PESQUISA ANUNCIO >>", "<<   VER CONTATOS     >>", "<<   SAIR             >>" };
+	string Menu[6] = { "<<   MENU INICIAR     >>", "<<   CRIAR ANUNCIO    >>", "<<   MEUS ANUNCIOS    >>", "<<   PESQUISA ANUNCIO >>", "<<   CONTATOS         >>", "<<   SAIR             >>" };
 	bool validade = true;
 	int pointer = 0;
 
@@ -967,7 +968,7 @@ void OLZ::createMenuLogado(){
 				case 3:
 					createMenuPesquisaUser();
 				case 4:
-					exiting();// FALTA IMPLEMENTAR
+					createMenuVerContactos();
 				case 5:
 					saveData();
 					exiting();
@@ -1140,6 +1141,92 @@ void OLZ::createMenuAnuncios(){
 					AnuncUserClicks();
 					createMenuAnuncios();
 				case 4:
+					saveData();
+					exiting();
+				}
+			}
+		}
+	}
+}
+void OLZ::createMenuVerContactos()
+{
+	string Menu[4] = { "<<   MENU USER        >>","<<   RECEBIDOS        >>", "<<   ENVIADOS         >>", "<<   SAIR             >>" };
+	bool validade = true;
+	int pointer = 0;
+
+	while (validade)
+	{
+		clrscr();
+		impressaoTitulo();
+		setcolor(11, 0);
+		cout << setw(51) << "<<<<< TIPO CONTACTO >>>>" << endl << endl;
+
+		for (int i = 0; i < 4; ++i)
+		{
+			if (i == pointer)
+			{
+				cout << "                           ";
+				setcolor(3, 1);
+				cout << Menu[i] << endl << endl;
+			}
+			else
+			{
+				setcolor(3, 0);
+				cout << setw(51) << Menu[i] << endl << endl;
+			}
+		}
+		setcolor(7, 0);
+
+		while (validade)
+		{
+			int ch = _getch();
+
+			if (ch == 0 || ch == 224)
+				ch = 256 + _getch();
+
+			if (ch == ARROW_DOWN) {
+				Beep(250, 160);
+				pointer += 1;
+				if (pointer == 4)
+				{
+					pointer = 0;
+				}
+				break;
+			}
+
+			if (ch == ARROW_UP){
+				Beep(250, 160);
+				pointer -= 1;
+				if (pointer == -1)
+				{
+					pointer = 3;
+				}
+				break;
+			}
+
+			if (ch == '\r')
+			{
+				setcolor(7, 0);
+				Beep(200, 160);
+
+				switch (pointer)
+				{
+				case 0:
+					validade = false;
+					userLogado = true;
+					createMenuLogado();
+					break;
+				case 1:
+					validade = false;
+					criaAnuncioVenda();
+					createMenuLogado();
+					break;
+				case 2:
+					validade = false;
+					criaAnuncioCompra();
+					createMenuLogado();
+					break;
+				case 3:
 					saveData();
 					exiting();
 				}
@@ -1681,15 +1768,21 @@ void OLZ::createMenuPesquisaVis(){
 					cout << ">> CATEGORIA DO ANUNCIO: ";
 					getline(cin, cat);
 					pesquisaCat(cat);
+					system("pause");
+					createMenuInicial();
+					exiting();
 				}
 				case 2:
 				{
-					string cat;
+					string p;
 					clrscr();
 					impressaoTitulo();
-					cout << ">> PALAVRA CHAVE: ";
-					getline(cin, cat);
-					pesquisaCat(cat);
+					cout << ">> PALAVRA(s) CHAVE: ";
+					getline(cin, p);
+					pesquisaPalavra(p);
+					system("pause");
+					createMenuInicial();
+					exiting();
 				}
 				case 3:
 					float p;
@@ -1770,7 +1863,8 @@ void OLZ::createMenuPesquisaUser(){
 			{
 				setcolor(7, 0);
 				Beep(200, 160);
-
+				string p, cat;
+				float euros;
 				switch (pointer)
 				{
 				case 0:
@@ -1779,17 +1873,30 @@ void OLZ::createMenuPesquisaUser(){
 					createMenuLogado();
 					break;
 				case 1:
-					exiting(); // FALTA IMPLEMENTAR
+					clrscr();
+					impressaoTitulo();
+					cout << ">> CATEGORIA DO ANUNCIO: ";
+					getline(cin, cat);
+					pesquisaCat(cat);
+					system("pause");
+					createMenuPesquisaUser();
+					exiting();
 				case 2:
-					exiting(); // FALTA IMPLEMENTAR
+					clrscr();
+					impressaoTitulo();
+					cout << "PALAVRA(s) CHAVE: ";
+					getline(cin, p);
+					pesquisaPalavra(p);
+					system("pause");
+					createMenuPesquisaUser();
+					exiting();
 				case 3:
-					float p;
 					clrscr();
 					impressaoTitulo();
 					cout << ">> PRECO: ";
-					cin >> p;
+					cin >> euros;
 					cin.ignore(1000, '\n');
-					pesquisaPreco(p);
+					pesquisaPreco(euros);
 					system("Pause");
 					createMenuPesquisaUser();
 					exiting();
@@ -1914,7 +2021,7 @@ void OLZ::saveData()
 
 	for (unsigned int i = 0; i < contatos.size(); i++)
 	{
-		Contato temp = contatos[i];
+		Contato temp = *contatos[i];
 		
 		ctFile << temp.getID() << ";" << temp.getAnuncio()->getID() << ";" << temp.getMensagem() << ";" << temp.getContacto() << ";";
 
@@ -2795,6 +2902,7 @@ vector<Anuncio * > OLZ::pesquisaAnTit(string tit)
 			temp.push_back(anuncios[i]);
 	}
 
+	sort(temp.begin(), temp.end(), maisLikes); //organiza por likes
 	return temp;
 }
 
@@ -2807,29 +2915,159 @@ vector<Anuncio * > OLZ::pesquisaAnPreco(float p)
 		if (anuncios[i]->getPreco() <= p)
 			temp.push_back(anuncios[i]);
 	}
-
+	sort(temp.begin(), temp.end(), maisLikes); //organiza por likes
 	return temp;
 }
-/*
+
 vector<Anuncio * > OLZ::pesquisaAnPalavra(string p)
 {
 	vector<Anuncio *> temp;
 
 	for (int i = 0; i < anuncios.size(); i++)
 	{
-		if ()
+		if (anuncios[i]->searchPalavra(p))
+			temp.push_back(anuncios[i]);
 	}
 
+	sort(temp.begin(), temp.end(), maisLikes); // Organiza por likes
+	return temp;
+
 }
-*/
+
 
 void OLZ::pesquisaPreco(float p)
 {
 	vector<Anuncio *> temp = pesquisaAnPreco(p);
+	int anuncio;
 	for (int i = 0; i < temp.size(); i++)
 	{
+		cout << (i + 1) << endl;
+		temp[i]->visAnuncio();
+	}
+
+	cout << "Qual o anuncio em que esta interessado?(0 se nao estiver interessado) : " << endl;
+	cin >> anuncio;
+	anuncio--;
+
+	if (anuncio == -1)		//Se nao estiver interessado
+		return;
+	else
+	{
+		if (userLogado)
+		{
+			criaContactoLogado(temp[anuncio]);
+		}
+		else
+		{
+			criaContacto(temp[anuncio]);
+		}
+	}
+	return;
+}
+
+void OLZ::pesquisaPalavra(string p)
+{
+	vector<Anuncio *> temp = pesquisaAnPalavra(p);
+
+	for (int i = 0; i < temp.size(); i++)
+	{
+		cout << (i + 1) << endl;
 		temp[i]->visAnuncio();
 	}
 	return;
 }
 
+bool OLZ::maisLikes(Anuncio * v1, Anuncio * v2)
+{
+	if (v1->num_clicks > v2->num_clicks)
+		return true;
+	else
+		return false;
+}
+
+void OLZ::criaContacto(Anuncio * a)
+{
+	string opcao;
+	cout << "Que contacto prefere inserir? Email/Telefone/Ambos :";
+	if (opcao == "email" || opcao == "Email" || opcao == "EMAIL")
+	{
+		string email = registarEmail();
+		string remetente = registarNome();
+		string mensagem;
+		cout << endl << "Insira a mensagem pretendida: " << endl;
+		getline(cin, mensagem);
+		Contato *c = new Contato(a, remetente, mensagem, email);
+		a->Anunciante->addmsgRec(*c);			//Envia o contacto para o Anunciante
+		contatos.push_back(c);
+	}
+	else if (opcao == "telefone" || opcao == "Telefone" || opcao == "TELEFONE")
+	{
+		stringstream ss;
+		int telefone = registarTelefone();
+		ss << telefone;
+		string tele = ss.str();
+		string remetente = registarNome();
+		string mensagem;
+		cout << endl << "Insira a mensagem pretendida: " << endl;
+		getline(cin, mensagem);
+		Contato *c = new Contato(a, remetente, mensagem, tele);
+		a->Anunciante->addmsgRec(*c);			//Envia o contacto para o Anunciante
+		contatos.push_back(c);
+	}
+	else if (opcao == "Ambos" || opcao == "ambos" || opcao == "AMBOS")
+	{
+		stringstream ss;
+		int telefone = registarTelefone();
+		ss << telefone;
+		string email = registarEmail();
+		ss << " " << email;
+		string cont = ss.str();
+		string remetente = registarNome();
+		string mensagem;
+		cout << endl << "Insira a mensagem pretendida: " << endl;
+		getline(cin, mensagem);
+		Contato *c = new Contato(a, remetente, mensagem, cont);
+		a->Anunciante->addmsgRec(*c);			//Envia o contacto para o Anunciante
+		contatos.push_back(c);
+	}
+	else
+	{
+		clean_buffer();
+		setcolor(4, 0);
+		cout << ":: ERRO: Opcao invalida. Tente novamente." << endl << endl;
+		setcolor(7, 0);
+		Sleep(1000);
+		criaContacto(a);
+	}
+	return;
+}
+
+void OLZ::criaContactoLogado(Anuncio * a)
+{
+	string mensagem;
+	cout << "Insira a mensagem pretendida: " << endl;
+	getline(cin, mensagem);
+	Utilizador * u = &utilizadores[searchUtilizador(userOnline)];
+
+	string nome = "Utilizador Anonimo";
+	if (u->getVisNome())						//Se o utilizador permitir que o seu nome se veja
+		nome = u->getNome();					//mostra o nome na mensagem
+
+	stringstream ss;
+	if (u->getVisEmail())					//Se o utilizador permitir que o seu mail se veja
+		ss << u->getEmail();					//inclui o email na mensagem
+
+	if (u->getVisTelefone())					//Se o utilizador permitir que o seu telefone se veja
+		ss << u->getTelefone();				//inclui o telefone na mensagem
+
+	Contato * c = new Contato(a, nome, mensagem, ss.str());
+
+	contatos.push_back(c);
+
+	a->Anunciante->addmsgRec(*c);			//Envia o contacto para o Anunciante
+	u->addmsgEnv(*c);						//Adiciona a mensagem ás Enviadas do Utilizador
+	
+
+
+	return;
+}

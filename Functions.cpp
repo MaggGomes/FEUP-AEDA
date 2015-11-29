@@ -78,3 +78,26 @@ string hidePass(){
 	return pass;
 }
 
+bool searchWordInString(string w, string s)
+{
+	unsigned int count = 0;
+	if (w.size() > s.size())				//Se a palavra a procurar foi maior que a string
+		return false;							
+	else
+	{
+		for (int i = 0; i < s.size(); i++)
+		{
+			if (tolower(s[i]) == tolower(w[count]))
+				count++;
+			else
+				count = 0;
+
+			if (count == w.size())			//Se tiver verificado que a sequencia existe
+				return true;
+		}
+
+		return false;
+	}
+}
+
+

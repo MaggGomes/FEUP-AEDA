@@ -6,6 +6,7 @@
 
 #include "Utilizador.h"
 #include "Functions.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ class OLZ
 private:
 	vector<Utilizador> utilizadores;
 	vector <Anuncio *> anuncios;
-	vector <Contato> contatos;
+	vector <Contato *> contatos;
 	string userOnline; // Indica qual o e-mail do utilizador que efetuou login
 	bool userLogado;
 public:
@@ -202,6 +203,16 @@ public:
 	void criaAnuncioVenda();
 
 	/**
+	* @brief Envia um contacto do Utilizador para o Anuncio em questão.
+	*/
+	void criaContacto(Anuncio * a);
+
+	/**
+	* @brief Envia um contacto do Utilizador logado para o Anuncio em questão.
+	*/
+	void criaContactoLogado(Anuncio * a);
+
+	/**
 	* @brief Menu Inicial
 	*/
 	void createMenuInicial();
@@ -245,6 +256,11 @@ public:
 	* @brief Menu de pesquisa do Utilizador
 	*/
 	void createMenuPesquisaUser();
+
+	/**
+	* @brief Menu de escolha de visualizacao dos Contactos
+	*/
+	void createMenuVerContactos();
 
 	/**
 	* @brief Guarda todos os dados criados em dois ficheiros .txt
@@ -425,10 +441,28 @@ public:
 	*/
 	void pesquisaCat(const string &cat);
 
+	/**
+	* @brief Pesquisa anuncios por preco
+	*/
+	void pesquisaPreco(float p);
+
+	/**
+	* @brief Pesquisa anuncios por palavra chave
+	*/
+	void pesquisaPalavra(string p);
+
+	/**
+	* @brief Seleciona os anuncios com preco menor ou igual a p
+	* @return vetor com os anuncios
+	*/
 	vector<Anuncio * > pesquisaAnPreco(float p);
 
+	/**
+	* @brief Seleciona os anuncios que contenham p na descricao/titulo
+	* @return vetor com os anuncios
+	*/
 	vector<Anuncio * > pesquisaAnPalavra(string p);
 
-	void pesquisaPreco(float p);
+	static bool maisLikes(Anuncio * v1, Anuncio * v2);
 };
 #endif /*OLZ_H_*/
