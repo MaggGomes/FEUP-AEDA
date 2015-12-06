@@ -67,7 +67,13 @@ public:
 	*/
 	bool operator==(const Localizacao l1) const;
 
+	
 };
-
-
+/*
+Não funciona.... Dá erros com o linker, n sei porque
+ostream & operator<<(ostream & out, const Localizacao & l)
+{
+	out << l.getDistrito() << ", " << l.getConcelho() << ", " << l.getFreguesia();
+	return out;
+}*/
 #endif /*LOCALIZACAO_H_*/

@@ -104,13 +104,16 @@ public:
 	* @param Recebe um parâmetro do tipo Contato
 	*/
 	void addmsgEnv(Contato cont);
-	
-	
+
 	/**
-	* @brief Imprime as mensagens recebidas
+	* @brief Retira a mensagem com o ID/Anuncio do vetor de Recebidas
 	*/
-	//void lerMensagens() const;			//Lê todas as mensagens recebidas através de cada um dos anúncios
-	
+	void deletemsgRec(int id);
+
+	/**
+	* @brief Retira a mensagem com o ID/Anuncio do vetor de Enviadas
+	*/
+	void deletemsgEnv(int id);
 
 	/**
 	* @brief Modifica o email

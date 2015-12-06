@@ -58,18 +58,34 @@ void Utilizador::addmsgEnv(Contato cont){
 	mensagensEnviadas.push_back(cont.getID());
 }
 
-
-
-/*
-void Utilizador::lerMensagens() const{	
-
-	for (unsigned int i = 0; i < mensagensRecebidas.size(); i++){
-		cout << "Nome: " << mensagensRecebidas[i].getRemetente() << endl;
-		cout << "Contato: " << mensagensRecebidas[i].getContacto() << endl << endl;
-		cout << "Mensagem: "<<mensagensRecebidas[i].getMensagem() << endl << endl;
+void Utilizador::deletemsgRec(int id)
+{
+	for (int i = 0; i < mensagensRecebidas.size(); i++)
+	{
+		if (mensagensRecebidas[i] == id)
+		{
+			mensagensRecebidas.erase(mensagensRecebidas.begin() + i);
+			return;
+		}
 	}
+
+	return;
 }
-*/
+
+void Utilizador::deletemsgEnv(int id)
+{
+	for (int i = 0; i < mensagensEnviadas.size(); i++)
+	{
+		if (mensagensEnviadas[i] == id)
+		{
+			mensagensEnviadas.erase(mensagensEnviadas.begin() + i);
+			return;
+		}
+	}
+
+	return;
+}
+
 void Utilizador::setEmail(const string& email){
 	this->email = email;
 }

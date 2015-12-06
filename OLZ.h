@@ -18,7 +18,7 @@ class OLZ
 private:
 	vector<Utilizador> utilizadores;
 	vector <Anuncio *> anuncios;
-	vector <Contato *> contatos;
+	vector <Contato> contatos;
 	string userOnline; // Indica qual o e-mail do utilizador que efetuou login
 	bool userLogado;
 public:
@@ -203,12 +203,12 @@ public:
 	void criaAnuncioVenda();
 
 	/**
-	* @brief Envia um contacto do Utilizador para o Anuncio em questão.
+	* @brief Cria e envia um contacto do Utilizador para o Anuncio em questão.
 	*/
 	void criaContacto(Anuncio * a);
 
 	/**
-	* @brief Envia um contacto do Utilizador logado para o Anuncio em questão.
+	* @brief Cria e envia um contacto do Utilizador logado para o Anuncio em questão.
 	*/
 	void criaContactoLogado(Anuncio * a);
 
@@ -351,6 +351,13 @@ public:
 	vector<Anuncio *> searchAnuncioVenda(string mailutilizador);
 
 	/**
+	* @brief Procura todos os anuncios do utilizador especificado
+	*
+	* @return vetor com os anuncios
+	*/
+	vector<Anuncio *> searchAnuncio(string mail);
+
+	/**
 	* @brief Procura titulo do anuncio no vetor
 	*
 	* @return posicao no vetor
@@ -384,9 +391,36 @@ public:
 	*/
 	void apagarUser();
 	/**
-	* @brief Elimina anuncio e todos os contactos associados
+	* @brief Elimina anuncio e todos os contactos associados. 1º corresponde a modo Admin; 2º corresponde a modo User
 	*/
 	void apagarAnuncio();
+	void apagarAnuncio(vector<Anuncio *> a); 
+
+	/**
+	* @brief Elimina anuncio com o ID correspondente
+	*/
+	void apagarAnuncioUtilizador(int id);
+
+	/**
+	* @brief Elimina todos os contactos relacionados com o Anuncio
+	*/
+	void apagarContactos(Anuncio * a);
+
+	/**
+	* @brief Elimina todos os contactos Enviados relativos a este anuncio
+	*/
+	void apagarContactosEnv(Anuncio * a);
+
+	/**
+	* @brief Elimina todos os contactos que o Utilizador u recebeu relativos ao anuncio a
+	*/
+	void apagarContactosRec(Utilizador * u, Anuncio * a);
+
+	/**
+	* @brief Elimina todos os contactos no OLZ relativos ao anuncio
+	*/
+	void apagarContactosOLZ(Anuncio * a);
+
 	/**
 	* @brief Mostra um resumo dos utilizadores existentes
 	*/
@@ -415,6 +449,11 @@ public:
 	* @return Retorna os anuncios organizados por ID
 	*/
 	vector<Anuncio * > ordenaAnID();
+
+	/**
+	* @return Retorna o contacto com o ID correspondente
+	*/
+	Contato pesquisaContactoID(int id);
 
 	/**
 	* @return Retorna os anuncios pertencentes a cada categoria
@@ -464,5 +503,15 @@ public:
 	vector<Anuncio * > pesquisaAnPalavra(string p);
 
 	static bool maisLikes(Anuncio * v1, Anuncio * v2);
+
+	/**
+	* @brief Imprime as mensagens recebidas pelo User Logado
+	*/
+	void lerMensagensRecebidas();			//Lê todas as mensagens recebidas através de cada um dos anúncios
+
+	/**
+	* @brief Imprime as mensagens enviadas pelo User Logado
+	*/
+	void lerMensagensEnviadas();			//Lê todas as mensagens recebidas através de cada um dos anúncios
 };
 #endif /*OLZ_H_*/

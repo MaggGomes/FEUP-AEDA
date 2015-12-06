@@ -83,7 +83,14 @@ public:
 	*/
 	void setID(int nID);
 
+	/**
+	* @brief Mostra no ecra o contacto, como se o utilizador em causa foi o que recebeu o contacto
+	*/
 	void displayContatoRecebido();
+
+	/**
+	* @brief Mostra no ecra o contacto, como se o utilizador em causa foi o que enviou o contacto
+	*/
 	void displayContatoEnviado();
 
 };

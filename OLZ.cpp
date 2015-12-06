@@ -517,7 +517,7 @@ void OLZ::logar(){
 	clrscr();
 	impressaoTitulo();
 	setcolor(10, 0);
-	cout << endl << endl << setw(40) <<":: BENVINDO "<< nomeTemp<<" !!!" << endl << endl;
+	cout << endl << endl << setw(40) <<":: BEMVINDO "<< nomeTemp<<" !!!" << endl << endl;
 	setcolor(7, 0);
 	Sleep(2000);
 
@@ -1218,12 +1218,22 @@ void OLZ::createMenuVerContactos()
 					break;
 				case 1:
 					validade = false;
-					criaAnuncioVenda();
+					clrscr();
+					impressaoTitulo();
+					clean_buffer();
+					lerMensagensRecebidas();
+					system("Pause");
+					clean_buffer();
 					createMenuLogado();
 					break;
 				case 2:
 					validade = false;
-					criaAnuncioCompra();
+					clrscr();
+					impressaoTitulo();
+					clean_buffer();
+					lerMensagensEnviadas();
+					system("Pause");
+					clean_buffer();
 					createMenuLogado();
 					break;
 				case 3:
@@ -1449,7 +1459,6 @@ void OLZ::apagarAnuncio()
 {
 	int anunTemp;
 	bool validaTemp = false;
-
 	clrscr();
 	impressaoTitulo();
 	for (int i = 0; i < anuncios.size(); i++)
@@ -1458,12 +1467,12 @@ void OLZ::apagarAnuncio()
 		cout << anuncios[i]->getID() << " - " << anuncios[i]->getTitulo() << endl;
 		setcolor(7, 0);
 	}
-		
+
 	cout << endl;
 	cout << ">> ID DO ANUNCIO: ";
 	cin >> anunTemp;
 
-	
+
 	try{
 		if (cin.fail())
 			throw anunTemp;
@@ -1485,6 +1494,129 @@ void OLZ::apagarAnuncio()
 	}
 
 	createMenuGerirAnuncios();
+
+}
+
+void OLZ::apagarAnuncio(vector<Anuncio *> a)
+{
+	if (a.size() == 0)
+		return;
+	char apagar;
+	//Perguntar qual é o anuncio sem destruir o que esta escrito no ecra
+	cout << ":: Deseja apagar algum anuncio? (S/n): " << endl;
+	clean_buffer();
+	cin >> apagar;
+	if (tolower(apagar) == 's')
+	{
+		int indiceAnun;
+		cout << ":: Qual o anuncio que deseja apagar? (introduza o numero correspondente): ";
+		cin >> indiceAnun;
+		if (indiceAnun < 1 || indiceAnun > a.size())			//Numeros fora dos indices
+		{
+			setcolor(4, 0);
+			cout << "Numero invalido" << endl;
+			setcolor(7, 0);
+			apagarAnuncio(a);
+		}
+		else
+		{
+			indiceAnun--; //IndiceAnun é sempre +1 do que o indice correspondente
+			apagarAnuncioUtilizador(a[indiceAnun]->getID());
+		}
+		return;
+	}
+	else if (tolower(apagar) == 'n')
+	{
+		return;
+	}
+	else
+	{
+		setcolor(4, 0);
+		cout << "Input invalido" << endl;
+		setcolor(7, 0);
+		clean_buffer();
+		apagarAnuncio(a);
+	}
+
+	return; 
+}
+void OLZ::apagarAnuncioUtilizador(int id)
+{
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		if (anuncios[i]->id == id)
+		{
+			apagarContactos(anuncios[i]);		//apaga os contactos relativos ao anuncio
+			delete(anuncios[i]);		//Liberta a memoria alocada
+			anuncios.erase(anuncios.begin() + i);	//Apaga o anuncio do vetor	
+			return;
+		}
+	}
+
+	return;
+}
+
+void OLZ::apagarContactos(Anuncio * a)
+{
+	Utilizador * u = a->Anunciante;
+	//Apaga os Recebidos do Utilizador Logado
+	apagarContactosRec(u, a);
+	//Apaga os Enviados de todos os utilizadores
+	apagarContactosEnv(a);
+	//Apaga os Contactos no vetor de Contactos OLZ
+	apagarContactosOLZ(a);
+
+	return;
+}
+
+void OLZ::apagarContactosEnv(Anuncio * a)
+{
+	for (int i = 0; i < utilizadores.size(); i++)			//Percorre todos os utilizadores
+	{
+		vector<int> MensEnvtemp = utilizadores[i].getMensEnv();
+		for (int j = 0; j < MensEnvtemp.size(); j++)			//Percorre o vetor de ID 's de Contactos
+		{
+			int id = MensEnvtemp[j];
+			Contato c = pesquisaContactoID(MensEnvtemp[j]);
+
+			if (a == c.getAnuncio())		//Se o contacto for relativo ao anuncio
+			{
+				utilizadores[i].deletemsgEnv(id);	//Apaga o id do Contacto no Utilizador
+			}
+		}
+	}
+
+	return;
+}
+
+void OLZ::apagarContactosRec(Utilizador * u, Anuncio * a)
+{
+	vector<int> MensRecTemp = u->getMensRec();
+
+	for (int i = 0; i < MensRecTemp.size(); i++)
+	{
+		Contato temp = pesquisaContactoID(MensRecTemp[i]);
+		if (a == temp.getAnuncio())			//Se o anuncio for igual ao Anuncio apontado pelo contacto
+		{
+			u->deletemsgRec(temp.getID());	//Apaga o contacto no vetor de contactos do Utilizador;
+		}
+	}
+
+	return;
+}
+
+void OLZ::apagarContactosOLZ(Anuncio * a)
+{
+	for (int i = 0; i < contatos.size(); i++)
+	{
+		if (contatos[i].getAnuncio() == a)			//Se o contacto for relativo ao Anuncio a
+		{
+			contatos.erase(contatos.begin() + i);	//Apaga o anuncio
+			i--;
+		}
+	}
+
+	return;
 }
 
 void OLZ::createMenuGerirUsers(){
@@ -1686,7 +1818,33 @@ void OLZ::pesquisaCat(const string &cat){
 	for (unsigned int i = 0; i < temp.size() - 1; i++){
 		temp[i]->visAnuncio();
 	}
-	
+	int anuncio;
+	cout << "Qual o anuncio em que esta interessado?(0 se nao estiver interessado) : " << endl;
+	cin >> anuncio;
+	anuncio--;
+
+	if (anuncio == -1)		//Se nao estiver interessado
+		return;
+	else if (anuncio >= temp.size())
+	{
+		setcolor(4, 0);
+		cout << "Numero invalido" << endl;
+		setcolor(7, 0);
+		clean_buffer();
+		cout << "Qual o anuncio em que esta interessado?(0 se nao estiver interessado) : " << endl;
+		cin >> anuncio;
+	}
+	else
+	{
+		if (userLogado)
+		{
+			criaContactoLogado(temp[anuncio]);
+		}
+		else
+		{
+			criaContacto(temp[anuncio]);
+		}
+	}
 	cout << endl;
 	system("pause");
 	createMenuPesquisaVis();
@@ -1765,10 +1923,12 @@ void OLZ::createMenuPesquisaVis(){
 					string cat;
 					clrscr();
 					impressaoTitulo();
+					clean_buffer();
 					cout << ">> CATEGORIA DO ANUNCIO: ";
 					getline(cin, cat);
 					pesquisaCat(cat);
 					system("pause");
+					clean_buffer();
 					createMenuInicial();
 					exiting();
 				}
@@ -1777,10 +1937,12 @@ void OLZ::createMenuPesquisaVis(){
 					string p;
 					clrscr();
 					impressaoTitulo();
+					clean_buffer();
 					cout << ">> PALAVRA(s) CHAVE: ";
 					getline(cin, p);
 					pesquisaPalavra(p);
 					system("pause");
+					clean_buffer();
 					createMenuInicial();
 					exiting();
 				}
@@ -1788,11 +1950,13 @@ void OLZ::createMenuPesquisaVis(){
 					float p;
 					clrscr();
 					impressaoTitulo();
+					clean_buffer();
 					cout << ">> PRECO: ";
 					cin >> p;
 					cin.ignore(1000, '\n');
 					pesquisaPreco(p);
 					system("Pause");
+					clean_buffer();
 					createMenuInicial();
 					exiting();  			
 				case 4:
@@ -1875,29 +2039,35 @@ void OLZ::createMenuPesquisaUser(){
 				case 1:
 					clrscr();
 					impressaoTitulo();
+					clean_buffer();
 					cout << ">> CATEGORIA DO ANUNCIO: ";
 					getline(cin, cat);
 					pesquisaCat(cat);
 					system("pause");
+					clean_buffer();
 					createMenuPesquisaUser();
 					exiting();
 				case 2:
 					clrscr();
 					impressaoTitulo();
-					cout << "PALAVRA(s) CHAVE: ";
+					clean_buffer();
+					cout << ">> PALAVRA(s) CHAVE: ";
 					getline(cin, p);
 					pesquisaPalavra(p);
-					system("pause");
+					system("pause"); 
+					clean_buffer();
 					createMenuPesquisaUser();
 					exiting();
 				case 3:
 					clrscr();
 					impressaoTitulo();
+					clean_buffer();
 					cout << ">> PRECO: ";
 					cin >> euros;
 					cin.ignore(1000, '\n');
 					pesquisaPreco(euros);
 					system("Pause");
+					clean_buffer();
 					createMenuPesquisaUser();
 					exiting();
 				case 4:	
@@ -2021,7 +2191,7 @@ void OLZ::saveData()
 
 	for (unsigned int i = 0; i < contatos.size(); i++)
 	{
-		Contato temp = *contatos[i];
+		Contato temp = contatos[i];
 		
 		ctFile << temp.getID() << ";" << temp.getAnuncio()->getID() << ";" << temp.getMensagem() << ";" << temp.getContacto() << ";";
 
@@ -2742,6 +2912,21 @@ vector<Anuncio *> OLZ::searchAnuncioVenda(string mailutilizador)
 	return compraTemp;
 }
 
+vector<Anuncio *> OLZ::searchAnuncio(string mail)
+{
+	vector<Anuncio *> anunciosTemp;
+
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		if (anuncios[i]->Anunciante->getEmail() == mail)		//Se o email do anunciante corresponder ao mail do utilizador que se esta a verificar
+		{
+			anunciosTemp.push_back(anuncios[i]);
+		}
+	}
+
+	return anunciosTemp;
+}
+
 int OLZ::searchTituloNoVetor(string t, vector<Anuncio *> v)
 {
 	for (int i = 0; i < v.size(); i++)
@@ -2811,18 +2996,17 @@ void OLZ::MostraAnunciosUser(string mail)
 {
 	clrscr();
 	impressaoTitulo();
-
-	for (int i = 0; i < anuncios.size(); i++)
+	vector<Anuncio *> temp = searchAnuncio(mail);
+	for (int i = 0; i < temp.size(); i++)
 	{
-		if (anuncios[i]->getAnunciante()->getEmail() == mail)
-		{
-			anuncios[i]->visAnuncio();
-
+			cout << i + 1 << endl;
+			temp[i]->visAnuncio();
 			cout << endl;
-		}
+	
 	}
 
 	cout << endl;
+	apagarAnuncio(temp);
 	system("pause");
 	createMenuAnuncios();
 }
@@ -2879,6 +3063,17 @@ vector<Anuncio * > OLZ::ordenaAnID()
 	}
 
 	return temp;
+}
+
+Contato OLZ::pesquisaContactoID(int id)
+{
+	for (int i = 0; i < contatos.size(); i++)
+	{
+		if (contatos[i].getID() == id)
+			return contatos[i];
+	}
+
+	throw(Contato(NULL, "", "", ""));
 }
 
 vector<Anuncio * > OLZ::pesquisaAnCat(string cat)
@@ -2951,6 +3146,15 @@ void OLZ::pesquisaPreco(float p)
 
 	if (anuncio == -1)		//Se nao estiver interessado
 		return;
+	else if (anuncio >= temp.size())
+	{
+		setcolor(4, 0);
+		cout << "Numero invalido" << endl;
+		setcolor(7, 0);
+		clean_buffer();
+		cout << "Qual o anuncio em que esta interessado?(0 se nao estiver interessado) : " << endl;
+		cin >> anuncio;
+	}
 	else
 	{
 		if (userLogado)
@@ -2968,11 +3172,37 @@ void OLZ::pesquisaPreco(float p)
 void OLZ::pesquisaPalavra(string p)
 {
 	vector<Anuncio *> temp = pesquisaAnPalavra(p);
-
+	int anuncio;
 	for (int i = 0; i < temp.size(); i++)
 	{
 		cout << (i + 1) << endl;
 		temp[i]->visAnuncio();
+	}
+	cout << "Qual o anuncio em que esta interessado?(0 se nao estiver interessado) : " << endl;
+	cin >> anuncio;
+	anuncio--;
+
+	if (anuncio == -1)		//Se nao estiver interessado
+		return;
+	else if (anuncio >= temp.size())
+	{
+		setcolor(4, 0);
+		cout << "Numero invalido" << endl;
+		setcolor(7, 0);
+		clean_buffer();
+		cout << "Qual o anuncio em que esta interessado?(0 se nao estiver interessado) : " << endl;
+		cin >> anuncio;
+	}
+	else
+	{
+		if (userLogado)
+		{
+			criaContactoLogado(temp[anuncio]);
+		}
+		else
+		{
+			criaContacto(temp[anuncio]);
+		}
 	}
 	return;
 }
@@ -2989,6 +3219,8 @@ void OLZ::criaContacto(Anuncio * a)
 {
 	string opcao;
 	cout << "Que contacto prefere inserir? Email/Telefone/Ambos :";
+	getline(cin, opcao);
+	clean_buffer();
 	if (opcao == "email" || opcao == "Email" || opcao == "EMAIL")
 	{
 		string email = registarEmail();
@@ -2996,8 +3228,8 @@ void OLZ::criaContacto(Anuncio * a)
 		string mensagem;
 		cout << endl << "Insira a mensagem pretendida: " << endl;
 		getline(cin, mensagem);
-		Contato *c = new Contato(a, remetente, mensagem, email);
-		a->Anunciante->addmsgRec(*c);			//Envia o contacto para o Anunciante
+		Contato c(a, remetente, mensagem, email);
+		a->Anunciante->addmsgRec(c);			//Envia o contacto para o Anunciante
 		contatos.push_back(c);
 	}
 	else if (opcao == "telefone" || opcao == "Telefone" || opcao == "TELEFONE")
@@ -3010,8 +3242,8 @@ void OLZ::criaContacto(Anuncio * a)
 		string mensagem;
 		cout << endl << "Insira a mensagem pretendida: " << endl;
 		getline(cin, mensagem);
-		Contato *c = new Contato(a, remetente, mensagem, tele);
-		a->Anunciante->addmsgRec(*c);			//Envia o contacto para o Anunciante
+		Contato c (a, remetente, mensagem, tele);
+		a->Anunciante->addmsgRec(c);			//Envia o contacto para o Anunciante
 		contatos.push_back(c);
 	}
 	else if (opcao == "Ambos" || opcao == "ambos" || opcao == "AMBOS")
@@ -3026,8 +3258,8 @@ void OLZ::criaContacto(Anuncio * a)
 		string mensagem;
 		cout << endl << "Insira a mensagem pretendida: " << endl;
 		getline(cin, mensagem);
-		Contato *c = new Contato(a, remetente, mensagem, cont);
-		a->Anunciante->addmsgRec(*c);			//Envia o contacto para o Anunciante
+		Contato c(a, remetente, mensagem, cont);
+		a->Anunciante->addmsgRec(c);			//Envia o contacto para o Anunciante
 		contatos.push_back(c);
 	}
 	else
@@ -3045,6 +3277,7 @@ void OLZ::criaContacto(Anuncio * a)
 void OLZ::criaContactoLogado(Anuncio * a)
 {
 	string mensagem;
+	clean_buffer();
 	cout << "Insira a mensagem pretendida: " << endl;
 	getline(cin, mensagem);
 	Utilizador * u = &utilizadores[searchUtilizador(userOnline)];
@@ -3060,14 +3293,59 @@ void OLZ::criaContactoLogado(Anuncio * a)
 	if (u->getVisTelefone())					//Se o utilizador permitir que o seu telefone se veja
 		ss << u->getTelefone();				//inclui o telefone na mensagem
 
-	Contato * c = new Contato(a, nome, mensagem, ss.str());
+	Contato c(a, nome, mensagem, ss.str());
 
 	contatos.push_back(c);
 
-	a->Anunciante->addmsgRec(*c);			//Envia o contacto para o Anunciante
-	u->addmsgEnv(*c);						//Adiciona a mensagem ás Enviadas do Utilizador
+	a->Anunciante->addmsgRec(c);			//Envia o contacto para o Anunciante
+	u->addmsgEnv(c);						//Adiciona a mensagem ás Enviadas do Utilizador
 	
 
+
+	return;
+}
+
+void OLZ::lerMensagensRecebidas()
+{
+	Utilizador temp = utilizadores[searchUtilizador(userOnline)]; //Copia o conteudo do Utilizador logado
+	vector<int> MensRecebidastemp = temp.getMensRec();
+	cout << "> MENSAGENS RECEBIDAS: " << endl << endl;
+	for (int i = 0; i < MensRecebidastemp.size(); i++)
+	{
+		try
+		{
+			Contato tempCont = pesquisaContactoID(MensRecebidastemp[i]);
+			tempCont.displayContatoRecebido();
+			cout << endl;
+		}
+		catch (Contato)
+		{
+			continue;
+		}
+	}
+
+	//PODEMOS IMPLEMENTAR UMA MANEIRA DE RESPONDER AS MENSAGENS PELO PROGRAMA
+	return;
+}
+
+void OLZ::lerMensagensEnviadas()
+{
+	Utilizador temp = utilizadores[searchUtilizador(userOnline)]; //Copia o conteudo do Utilizador logado
+	vector<int> MensEnviadastemp = temp.getMensEnv();
+	cout << "> MENSAGENS ENVIADAS: " << endl << endl; 
+	for (int i = 0; i < MensEnviadastemp.size(); i++)
+	{
+		try
+		{
+			Contato tempCont = pesquisaContactoID(MensEnviadastemp[i]);
+			tempCont.displayContatoEnviado();
+			cout << endl;
+		}
+		catch (Contato)
+		{
+			continue;
+		}
+	}
 
 	return;
 }

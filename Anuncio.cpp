@@ -141,6 +141,8 @@ void AnuncioVenda::visAnuncio()
 	cout << "Anuncio de Venda" << endl;	
 	cout << "Titulo: " << titulo << endl;
 	cout << "Categoria: " << categoria << endl;
+	cout << "Localidade: " << Anunciante->getLocalizacao().getFreguesia() << ", " << Anunciante->getLocalizacao().getConcelho() << ", "
+		<< Anunciante->getLocalizacao().getDistrito() << endl;
 	cout << "Descricao: " << descricao << endl;	
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
@@ -192,8 +194,9 @@ void AnuncioCompra::visAnuncio()
 	cout << "Anuncio de Compra" << endl;
 	cout << "Titulo: " << titulo << endl;
 	cout << "Categoria: " << categoria << endl;
+	cout << "Localidade: " << Anunciante->getLocalizacao().getFreguesia() << ", " << Anunciante->getLocalizacao().getConcelho() << ", " 
+		<< Anunciante->getLocalizacao().getDistrito() << endl; 
 	cout << "Descricao: " << descricao << endl;
-	cout << "ID: " << id << endl;
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
 		cout << "Imagem: " << imagens[i] << endl;
