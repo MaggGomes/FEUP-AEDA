@@ -551,9 +551,11 @@ void OLZ::criaAnuncioCompra(){
 
 		bool possivelNegociarTemp = registarPossivelNegociar();
 
-		vector<Anuncio *> trocaTemp;
+		vector<Anuncio *> trocaTemp = registarTroca();
 
 		Anuncio * temp = new AnuncioCompra(userTemp, titTemp, catTemp, descrTemp, possivelNegociarTemp, precoTemp, trocaTemp);
+
+		temp->setImagens(imgTemp);
 
 		anuncios.push_back(temp);
 	}
@@ -624,6 +626,8 @@ void OLZ::criaAnuncioVenda()
 		string estadoTemp = registarEstado();
 
 		Anuncio * temp = new AnuncioVenda(userTemp, titTemp, catTemp, descrTemp, possivelNegociarTemp, precoTemp, estadoTemp);
+
+		temp->setImagens(imgTemp);
 
 		anuncios.push_back(temp);
 	}
@@ -1065,7 +1069,7 @@ void OLZ::createMenuCriaAnuncio(){
 }
 
 void OLZ::createMenuAnuncios(){
-	string Menu[5] = { "<<   MENU USER        >>", "<<   VER TODOS        >>", "<<   MAIS RECENTE     >>", "<<   MAIS CLICKS      >>", "<<   SAIR             >>" };
+	string Menu[6] = { "<<   MENU USER        >>", "<<   VER TODOS        >>", "<<   MAIS RECENTE     >>", "<<   MAIS CLICKS      >>", "<<   REALIZADOS       >>", "<<   SAIR             >>" };
 	bool validade = true;
 	int pointer = 0;
 
@@ -1076,7 +1080,7 @@ void OLZ::createMenuAnuncios(){
 		setcolor(11, 0);
 		cout << setw(51) << "<<<<<   ANUNCIOS   >>>>>" << endl << endl;
 
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < 6; ++i)
 		{
 			if (i == pointer)
 			{
@@ -1102,7 +1106,7 @@ void OLZ::createMenuAnuncios(){
 			if (ch == ARROW_DOWN) {
 				Beep(250, 160);
 				pointer += 1;
-				if (pointer == 5)
+				if (pointer == 6)
 				{
 					pointer = 0;
 				}
@@ -1114,7 +1118,7 @@ void OLZ::createMenuAnuncios(){
 				pointer -= 1;
 				if (pointer == -1)
 				{
-					pointer = 4;
+					pointer = 5;
 				}
 				break;
 			}
@@ -1141,6 +1145,9 @@ void OLZ::createMenuAnuncios(){
 					AnuncUserClicks();
 					createMenuAnuncios();
 				case 4:
+					MostraAnunciosRealizadosUser(userOnline);
+					createMenuAnuncios();
+				case 5:
 					saveData();
 					exiting();
 				}
@@ -1506,6 +1513,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 	cout << ":: Deseja apagar algum anuncio? (S/n): " << endl;
 	clean_buffer();
 	cin >> apagar;
+
 	if (tolower(apagar) == 's')
 	{
 		int indiceAnun;
@@ -1520,8 +1528,65 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 		}
 		else
 		{
-			indiceAnun--; //IndiceAnun é sempre +1 do que o indice correspondente
-			apagarAnuncioUtilizador(a[indiceAnun]->getID());
+			char concretizado = 'p';
+			while (tolower(concretizado) != 's' && tolower(concretizado) != 'n')
+			{
+				cout << ":: O anuncio que pretende apagar ja foi concretizado? (S/n)";
+				cin >> concretizado;
+				if (tolower(concretizado) == 's')
+				{
+					indiceAnun--; //IndiceAnun é sempre +1 do que o indice correspondente
+					//Meto uma copia do Anuncio no vetor de concretizados
+					Utilizador * A = a[indiceAnun]->Anunciante;
+					string t = a[indiceAnun]->titulo;
+					string cat = a[indiceAnun]->categoria;
+					string descr = a[indiceAnun]->descricao;
+					int id = a[indiceAnun]->id;
+					vector <string> imag = a[indiceAnun]->imagens;
+					Data data = a[indiceAnun]->datacriacao;
+					bool possivelNegociar = a[indiceAnun]->possivelNegociar;
+					int num_clicks = a[indiceAnun]->num_clicks;
+					float preco = a[indiceAnun]->preco;
+
+					if (a[indiceAnun]->isVenda())
+					{
+						string estado = a[indiceAnun]->getEstado();
+						Anuncio * Anun = new AnuncioVenda(A, t, cat, descr, possivelNegociar, preco, estado);
+						Anun->setId(id);
+						Anun->setImagens(imag);
+						Anun->setDataCriacao(data);
+						Anun->setNum_clicks(num_clicks);
+						Anun->decLastID();
+						realizados.push_back(Anun);
+					}
+					else
+					{
+						vector<Anuncio *> troca = a[indiceAnun]->getTroca();
+						Anuncio * Anun = new AnuncioCompra(A, t, cat, descr, possivelNegociar, preco, troca);
+						Anun->setId(id);
+						Anun->setImagens(imag);
+						Anun->setDataCriacao(data);
+						Anun->setNum_clicks(num_clicks);
+						Anun->decLastID();
+						realizados.push_back(Anun);
+
+					}
+					//Apago o Anuncio do resto dos dados
+					apagarAnuncioUtilizador(a[indiceAnun]->getID());
+				}
+				else if (tolower(concretizado) == 'n')
+				{
+					indiceAnun--; //IndiceAnun é sempre +1 do que o indice correspondente
+					apagarAnuncioUtilizador(a[indiceAnun]->getID());
+				}
+				else
+				{
+					setcolor(4, 0);
+					cout << "Caracter invalido" << endl;
+					setcolor(7, 0);
+
+				}
+			}
 		}
 		return;
 	}
@@ -2868,13 +2933,14 @@ vector<Anuncio *> OLZ::registarTroca()
 		impressaoTitulo();
 
 		cout << ">> QUAIS ANUNCIOS E QUE QUER COLOCAR PARA TROCA? (escreva o titulo do anuncio): " << endl;
-		cout << " (Mais nenhum)" << endl;
+		cout << " (Nao quero colocar mais nenhum)" << endl;
 		for (int i = 0; i < anunciosUser.size(); i++)
 		{	
 
 			cout << anunciosUser[i]->titulo << endl;
 		}
-		cin >> tit;
+		clean_buffer();
+		getline(cin, tit);
 
 		int posicaoVetor = searchTituloNoVetor(tit, anunciosUser);
 		if (tit == "Nenhum" || tit == "nenhum" || tit == "Mais nenhum" || tit == "mais nenhum" || tit == "Mais Nenhum" || tit == "mais Nenhum")
@@ -2927,6 +2993,21 @@ vector<Anuncio *> OLZ::searchAnuncio(string mail)
 	return anunciosTemp;
 }
 
+vector<Anuncio *> OLZ::searchAnuncioRealizado(string mail)
+{
+	vector<Anuncio *> anunciosTemp;
+
+	for (int i = 0; i < realizados.size(); i++)
+	{
+		if (realizados[i]->Anunciante->getEmail() == mail)		//Se o email do anunciante corresponder ao mail do utilizador que se esta a verificar
+		{
+			anunciosTemp.push_back(realizados[i]);
+		}
+	}
+
+	return anunciosTemp;
+}
+
 int OLZ::searchTituloNoVetor(string t, vector<Anuncio *> v)
 {
 	for (int i = 0; i < v.size(); i++)
@@ -2957,6 +3038,7 @@ int OLZ::searchAnuncio(int AnID)
 	}
 	return -1;
 }
+
 
 void OLZ::adminMostraUsers()
 {
@@ -3011,6 +3093,23 @@ void OLZ::MostraAnunciosUser(string mail)
 	createMenuAnuncios();
 }
 
+void OLZ::MostraAnunciosRealizadosUser(string mail)
+{
+	clrscr();
+	impressaoTitulo();
+	vector<Anuncio *> temp = searchAnuncioRealizado(mail);
+	for (int i = 0; i < temp.size(); i++)
+	{
+		cout << i + 1 << endl;
+		temp[i]->visAnuncio();
+		cout << endl;
+
+	}
+
+	cout << endl;
+	system("pause");
+	createMenuAnuncios();
+}
 vector<Anuncio * > OLZ::ordenaAnCat()
 {
 	vector<Anuncio *> temp = anuncios;

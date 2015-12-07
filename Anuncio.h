@@ -162,10 +162,13 @@ public:
 	virtual bool isVenda() const = 0;
 
 	/**
-	* @return Retorna o estado
+	* @return Retorna o estado de um Anuncio de Venda
 	*/
 	virtual string getEstado() const = 0;
 
+	/**
+	* @return Retorna o vetor de Anuncios para troca
+	*/
 	virtual vector<Anuncio *> getTroca() const = 0;
 
 	/**
@@ -174,6 +177,11 @@ public:
 	* @return True se encontrar, false se não encontrar
 	*/
 	bool searchPalavra(string p);
+
+	/**
+	* @brief Decrementa o last_id
+	*/
+	int decLastID(){ last_id--; return last_id; };
 };
 
 /**

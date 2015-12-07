@@ -19,6 +19,7 @@ private:
 	vector<Utilizador> utilizadores;
 	vector <Anuncio *> anuncios;
 	vector <Contato> contatos;
+	vector <Anuncio *> realizados;
 	string userOnline; // Indica qual o e-mail do utilizador que efetuou login
 	bool userLogado;
 public:
@@ -358,6 +359,13 @@ public:
 	vector<Anuncio *> searchAnuncio(string mail);
 
 	/**
+	* @brief Procura todos os anuncios do utilizador na qual a transação se realizou
+	*
+	* @return vetor com os anuncios
+	*/
+	vector<Anuncio *> searchAnuncioRealizado(string mail);
+
+	/**
 	* @brief Procura titulo do anuncio no vetor
 	*
 	* @return posicao no vetor
@@ -435,6 +443,11 @@ public:
 	*/
 	void MostraAnunciosUser(string mail);
 	
+	/**
+	* @brief Mostra os anuncios existentes cujas transações foram realizadas pelo User
+	*/
+	void MostraAnunciosRealizadosUser(string mail);
+
 	/**
 	* @return Retorna os anuncios organizados por categoria
 	*/

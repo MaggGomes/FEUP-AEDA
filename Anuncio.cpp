@@ -143,6 +143,7 @@ void AnuncioVenda::visAnuncio()
 	cout << "Categoria: " << categoria << endl;
 	cout << "Localidade: " << Anunciante->getLocalizacao().getFreguesia() << ", " << Anunciante->getLocalizacao().getConcelho() << ", "
 		<< Anunciante->getLocalizacao().getDistrito() << endl;
+	cout << "Data de Criacao: " << datacriacao << endl;
 	cout << "Descricao: " << descricao << endl;	
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
@@ -195,7 +196,8 @@ void AnuncioCompra::visAnuncio()
 	cout << "Titulo: " << titulo << endl;
 	cout << "Categoria: " << categoria << endl;
 	cout << "Localidade: " << Anunciante->getLocalizacao().getFreguesia() << ", " << Anunciante->getLocalizacao().getConcelho() << ", " 
-		<< Anunciante->getLocalizacao().getDistrito() << endl; 
+		<< Anunciante->getLocalizacao().getDistrito() << endl;
+	cout << "Data de Criacao: " << datacriacao << endl;
 	cout << "Descricao: " << descricao << endl;
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
@@ -211,7 +213,7 @@ void AnuncioCompra::visAnuncio()
 	
 	if (troca.size()>0)
 	{
-		cout << "Possíveis trocas:" << endl;
+		cout << "Possiveis trocas:" << endl;
 		for (unsigned int i = 0; i < troca.size(); i++)
 		{
 			cout << "- " << troca[i]->getTitulo() << " (ID: " << troca[i]->getID() << ")" << endl;
