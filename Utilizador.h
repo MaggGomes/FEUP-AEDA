@@ -39,7 +39,17 @@ public:
 	/**
 	* @brief Construtor da classe Utilizador
 	*/
+	Utilizador(const string &nome);
+
+	/**
+	* @brief Construtor da classe Utilizador
+	*/
 	Utilizador(const string &nome, const string &email, int telefone, Localizacao loc, const string &password);
+
+	/**
+	* @brief Overloading do operador < para que se possa ordenar os utilizaodr na árvore binária de pesquisa
+	*/
+	bool operator <(const Utilizador &uti) const;
 
 	/**
 	* @return Retorna o nome

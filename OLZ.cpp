@@ -1,11 +1,16 @@
 #include "OLZ.h"
 
-OLZ::OLZ(){
+OLZ::OLZ(): bstutilizadores(Utilizador())
+{
 	vector <Utilizador> usertemp;
 	utilizadores = usertemp;
 	vector <Anuncio * >  anunctemp;
 	anuncios = anunctemp;
 	userLogado = false;
+
+	for (unsigned int i = 0; i < usertemp.size(); i++){
+		bstutilizadores.insert(usertemp[i]);
+	}
 }
 
 OLZ::~OLZ(){
@@ -1468,7 +1473,7 @@ void OLZ::apagarAnuncio()
 	bool validaTemp = false;
 	clrscr();
 	impressaoTitulo();
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		setcolor(4, 0);
 		cout << anuncios[i]->getID() << " - " << anuncios[i]->getTitulo() << endl;
@@ -1607,7 +1612,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 }
 void OLZ::apagarAnuncioUtilizador(int id)
 {
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		if (anuncios[i]->id == id)
 		{
@@ -1623,7 +1628,7 @@ void OLZ::apagarAnuncioUtilizador(int id)
 
 void OLZ::apagarAnuncioTroca(int id, string email)
 {
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		if (!(anuncios[i]->isVenda()) && anuncios[i]->getAnunciante()->getEmail() == email)
 		{
@@ -1648,10 +1653,10 @@ void OLZ::apagarContactos(Anuncio * a)
 
 void OLZ::apagarContactosEnv(Anuncio * a)
 {
-	for (int i = 0; i < utilizadores.size(); i++)			//Percorre todos os utilizadores
+	for (unsigned int i = 0; i < utilizadores.size(); i++)			//Percorre todos os utilizadores
 	{
 		vector<int> MensEnvtemp = utilizadores[i].getMensEnv();
-		for (int j = 0; j < MensEnvtemp.size(); j++)			//Percorre o vetor de ID 's de Contactos
+		for (unsigned int j = 0; j < MensEnvtemp.size(); j++)			//Percorre o vetor de ID 's de Contactos
 		{
 			int id = MensEnvtemp[j];
 			Contato c = pesquisaContactoID(MensEnvtemp[j]);
@@ -1670,7 +1675,7 @@ void OLZ::apagarContactosRec(Utilizador * u, Anuncio * a)
 {
 	vector<int> MensRecTemp = u->getMensRec();
 
-	for (int i = 0; i < MensRecTemp.size(); i++)
+	for (unsigned int i = 0; i < MensRecTemp.size(); i++)
 	{
 		Contato temp = pesquisaContactoID(MensRecTemp[i]);
 		if (a == temp.getAnuncio())			//Se o anuncio for igual ao Anuncio apontado pelo contacto
@@ -1684,7 +1689,7 @@ void OLZ::apagarContactosRec(Utilizador * u, Anuncio * a)
 
 void OLZ::apagarContactosOLZ(Anuncio * a)
 {
-	for (int i = 0; i < contatos.size(); i++)
+	for (unsigned int i = 0; i < contatos.size(); i++)
 	{
 		if (contatos[i].getAnuncio() == a)			//Se o contacto for relativo ao Anuncio a
 		{
@@ -2836,7 +2841,7 @@ vector<Anuncio *> OLZ::registarTroca()
 
 		cout << ">> QUAIS ANUNCIOS E QUE QUER COLOCAR PARA TROCA? (escreva o titulo do anuncio): " << endl;
 		cout << " (Nao quero colocar mais nenhum)" << endl;
-		for (int i = 0; i < anunciosUser.size(); i++)
+		for (unsigned int i = 0; i < anunciosUser.size(); i++)
 		{	
 
 			cout << anunciosUser[i]->titulo << endl;
@@ -2871,7 +2876,7 @@ vector<Anuncio *> OLZ::searchAnuncioVenda(string mailutilizador)
 {
 	vector<Anuncio *> compraTemp;
 
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		if (anuncios[i]->Anunciante->getEmail() == mailutilizador && anuncios[i]->isVenda())
 			compraTemp.push_back(anuncios[i]);
@@ -2884,7 +2889,7 @@ vector<Anuncio *> OLZ::searchAnuncio(string mail)
 {
 	vector<Anuncio *> anunciosTemp;
 
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		if (anuncios[i]->Anunciante->getEmail() == mail)		//Se o email do anunciante corresponder ao mail do utilizador que se esta a verificar
 		{
@@ -2899,7 +2904,7 @@ vector<Anuncio *> OLZ::searchAnuncioRealizado(string mail)
 {
 	vector<Anuncio *> anunciosTemp;
 
-	for (int i = 0; i < realizados.size(); i++)
+	for (unsigned int i = 0; i < realizados.size(); i++)
 	{
 		if (realizados[i]->Anunciante->getEmail() == mail)		//Se o email do anunciante corresponder ao mail do utilizador que se esta a verificar
 		{
@@ -2912,7 +2917,7 @@ vector<Anuncio *> OLZ::searchAnuncioRealizado(string mail)
 
 int OLZ::searchTituloNoVetor(string t, vector<Anuncio *> v)
 {
-	for (int i = 0; i < v.size(); i++)
+	for (unsigned int i = 0; i < v.size(); i++)
 	{
 		if(t == v[i]->getTitulo())
 			return i;
@@ -2923,7 +2928,7 @@ int OLZ::searchTituloNoVetor(string t, vector<Anuncio *> v)
 
 int OLZ::searchUtilizador(string emailUt)
 {
-	for (int i = 0; i < utilizadores.size(); i++)
+	for (unsigned int i = 0; i < utilizadores.size(); i++)
 	{
 		if (utilizadores[i].getEmail() == emailUt)
 			return i;
@@ -2933,7 +2938,7 @@ int OLZ::searchUtilizador(string emailUt)
 
 int OLZ::searchAnuncio(int AnID)
 {
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		if (anuncios[i]->getID() == AnID)
 			return i;
@@ -2946,7 +2951,7 @@ void OLZ::adminMostraUsers()
 {
 	clrscr();
 	impressaoTitulo();
-	for (int i = 0; i < utilizadores.size(); i++)
+	for (unsigned int i = 0; i < utilizadores.size(); i++)
 	{
 		setcolor(4, 0);
 		cout << "NOME: " << utilizadores[i].getNome() << " EMAIL: " << utilizadores[i].getEmail() << endl;
@@ -2963,7 +2968,7 @@ void OLZ::adminMostraAnuncios()
 {
 	clrscr();
 	impressaoTitulo();
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		setcolor(4, 0);
 		cout << anuncios[i]->getID() << " - " << anuncios[i]->getTitulo() << endl;
@@ -2981,7 +2986,7 @@ void OLZ::MostraAnunciosUser(string mail)
 	clrscr();
 	impressaoTitulo();
 	vector<Anuncio *> temp = searchAnuncio(mail);
-	for (int i = 0; i < temp.size(); i++)
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
 			cout << i + 1 << endl;
 			temp[i]->visAnuncio();
@@ -3000,7 +3005,7 @@ void OLZ::MostraAnunciosRealizadosUser(string mail)
 	clrscr();
 	impressaoTitulo();
 	vector<Anuncio *> temp = searchAnuncioRealizado(mail);
-	for (int i = 0; i < temp.size(); i++)
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
 		cout << i + 1 << endl;
 		temp[i]->visAnuncio();
@@ -3068,7 +3073,7 @@ vector<Anuncio * > OLZ::ordenaAnID()
 
 Contato OLZ::pesquisaContactoID(int id)
 {
-	for (int i = 0; i < contatos.size(); i++)
+	for (unsigned int i = 0; i < contatos.size(); i++)
 	{
 		if (contatos[i].getID() == id)
 			return contatos[i];
@@ -3080,7 +3085,7 @@ Contato OLZ::pesquisaContactoID(int id)
 vector<Anuncio * > OLZ::pesquisaAnCat(string cat)
 {
 	vector<Anuncio * > temp;
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		if (anuncios[i]->getCategoria() == cat)
 			temp.push_back(anuncios[i]);
@@ -3092,7 +3097,7 @@ vector<Anuncio * > OLZ::pesquisaAnCat(string cat)
 vector<Anuncio * > OLZ::pesquisaAnTit(string tit)
 {
 	vector<Anuncio * > temp;
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		if (anuncios[i]->getTitulo() == tit)
 			temp.push_back(anuncios[i]);
@@ -3106,7 +3111,7 @@ vector<Anuncio * > OLZ::pesquisaAnPreco(float p)
 {
 	vector<Anuncio * > temp;
 	
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		if (anuncios[i]->getPreco() <= p)
 			temp.push_back(anuncios[i]);
@@ -3119,7 +3124,7 @@ vector<Anuncio * > OLZ::pesquisaAnPalavra(string p)
 {
 	vector<Anuncio *> temp;
 
-	for (int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
 		if (anuncios[i]->searchPalavra(p))
 			temp.push_back(anuncios[i]);
@@ -3135,7 +3140,7 @@ void OLZ::pesquisaPreco(float p)
 {
 	vector<Anuncio *> temp = pesquisaAnPreco(p);
 	int anuncio;
-	for (int i = 0; i < temp.size(); i++)
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
 		cout << (i + 1) << endl;
 		temp[i]->visAnuncio();
@@ -3174,7 +3179,7 @@ void OLZ::pesquisaPalavra(string p)
 {
 	vector<Anuncio *> temp = pesquisaAnPalavra(p);
 	int anuncio;
-	for (int i = 0; i < temp.size(); i++)
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
 		cout << (i + 1) << endl;
 		temp[i]->visAnuncio();
@@ -3311,7 +3316,7 @@ void OLZ::lerMensagensRecebidas()
 	Utilizador temp = utilizadores[searchUtilizador(userOnline)]; //Copia o conteudo do Utilizador logado
 	vector<int> MensRecebidastemp = temp.getMensRec();
 	cout << "> MENSAGENS RECEBIDAS: " << endl << endl;
-	for (int i = 0; i < MensRecebidastemp.size(); i++)
+	for (unsigned int i = 0; i < MensRecebidastemp.size(); i++)
 	{
 		try
 		{
@@ -3334,7 +3339,7 @@ void OLZ::lerMensagensEnviadas()
 	Utilizador temp = utilizadores[searchUtilizador(userOnline)]; //Copia o conteudo do Utilizador logado
 	vector<int> MensEnviadastemp = temp.getMensEnv();
 	cout << "> MENSAGENS ENVIADAS: " << endl << endl; 
-	for (int i = 0; i < MensEnviadastemp.size(); i++)
+	for (unsigned int i = 0; i < MensEnviadastemp.size(); i++)
 	{
 		try
 		{

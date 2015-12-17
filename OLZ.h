@@ -7,6 +7,7 @@
 #include "Utilizador.h"
 #include "Functions.h"
 #include <algorithm>
+#include "BST.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ class OLZ
 {
 private:
 	vector<Utilizador> utilizadores;
+	BST<Utilizador> bstutilizadores;
 	vector <Anuncio *> anuncios;
 	vector <Contato> contatos;
 	vector <Anuncio *> realizados;

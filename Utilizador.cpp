@@ -2,12 +2,20 @@
 
 Utilizador::Utilizador(){};
 
+Utilizador::Utilizador(const string &nome){
+	this->nome = nome;
+}
+
 Utilizador::Utilizador(const string &nome, const string &email, int telefone, Localizacao local, const string &password){
 	this->nome = nome;
 	this->email = email;
 	this-> telefone = telefone;
 	this->local = local;
 	this->password = password;
+}
+
+bool Utilizador::operator <(const Utilizador &uti) const{
+	return nome < uti.getNome();
 }
 
 string Utilizador::getNome() const{
