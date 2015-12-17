@@ -2,10 +2,6 @@
 
 Utilizador::Utilizador(){};
 
-Utilizador::Utilizador(const string &nome){
-	this->nome = nome;
-}
-
 Utilizador::Utilizador(const string &nome, const string &email, int telefone, Localizacao local, const string &password){
 	this->nome = nome;
 	this->email = email;
@@ -16,6 +12,10 @@ Utilizador::Utilizador(const string &nome, const string &email, int telefone, Lo
 
 bool Utilizador::operator <(const Utilizador &uti) const{
 	return nome < uti.getNome();
+}
+
+bool Utilizador::operator==(const Utilizador &uti) const{
+	return email == uti.getEmail();
 }
 
 string Utilizador::getNome() const{

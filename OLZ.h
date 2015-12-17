@@ -17,8 +17,7 @@ using namespace std;
 class OLZ
 {
 private:
-	vector<Utilizador> utilizadores;
-	BST<Utilizador> bstutilizadores;
+	BST<Utilizador> utilizadores;
 	vector <Anuncio *> anuncios;
 	vector <Contato> contatos;
 	vector <Anuncio *> realizados;
@@ -37,9 +36,9 @@ public:
 	~OLZ();
 
 	/**
-	* @return Retorna vetor com os utilizadores registados
+	* @return Retorna arvore binaria de pesquisa com os utilizadores registados
 	*/
-	vector<Utilizador> getUtilizadores() const;
+	BST<Utilizador> getUtilizadores() const;
 
 	/**
 	* @return Retorna vetor com os anuncios
@@ -377,9 +376,9 @@ public:
 	/**
 	* @brief Procura um determinado utilizador através do seu email, baseado em sequential search
 	*
-	* @return Retorna a posiçao do utilizador com o email pretendido, -1 se nao for encontrado 
+	* @return Retorna o utilizador com o email pretendido, NULL se nao for encontrado 
 	*/
-	int searchUtilizador(string emailUt);
+	Utilizador searchUtilizador(string emailUt);
 
 	/**
 	* @brief Procura um determinado anuncio através do seu id, baseado em sequential search

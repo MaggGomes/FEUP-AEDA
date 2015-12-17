@@ -1,16 +1,13 @@
 #include "OLZ.h"
 
-OLZ::OLZ(): bstutilizadores(Utilizador())
+Localizacao LOC_NULL("", "", "");
+Utilizador USER_NULL("", "@.", 0, LOC_NULL, ""); // Utilizador "virtual" que irá servir para inicializar a árvore binária de pesquisa
+
+OLZ::OLZ() : utilizadores(Utilizador(USER_NULL))
 {
-	vector <Utilizador> usertemp;
-	utilizadores = usertemp;
 	vector <Anuncio * >  anunctemp;
 	anuncios = anunctemp;
 	userLogado = false;
-
-	for (unsigned int i = 0; i < usertemp.size(); i++){
-		bstutilizadores.insert(usertemp[i]);
-	}
 }
 
 OLZ::~OLZ(){
@@ -20,7 +17,7 @@ OLZ::~OLZ(){
 	}
 }
 
-vector<Utilizador> OLZ::getUtilizadores() const{
+BST<Utilizador> OLZ::getUtilizadores() const{
 	return utilizadores;
 }
 
@@ -29,7 +26,7 @@ vector<Anuncio *> OLZ::getAnuncios() const{
 }
 
 void OLZ::addUtilizador(Utilizador user){
-	utilizadores.push_back(user);
+	utilizadores.insert(user);
 }
 
 void OLZ::addAnuncio(Anuncio * anunc){
@@ -146,10 +143,14 @@ bool OLZ::validaEmail(string mail)
 
 bool OLZ::existeEmail(string mail)
 {
-	for (unsigned int i = 0; i < utilizadores.size(); i++)
-	{
-		if (mail == utilizadores[i].getEmail())
+	BSTItrIn<Utilizador> it(utilizadores);
+	
+	while (!it.isAtEnd()){
+
+		if (mail == it.retrieve().getEmail()) // Existe já um utilizador com o mesmo email
 			return true;
+
+		it.advance();
 	}
 
 	return false;
@@ -217,10 +218,15 @@ bool OLZ::setVisTelefone(){
 
 bool OLZ::existeTelefone(int tele)
 {
-	for (unsigned int i = 0; i < utilizadores.size(); i++)
-	{
-		if (tele == utilizadores[i].getTelefone())
+
+	BSTItrIn<Utilizador> it(utilizadores);
+
+	while (!it.isAtEnd()){
+
+		if (tele == it.retrieve().getTelefone()) // Existe já um utilizador com o memso email
 			return true;
+
+		it.advance();
 	}
 
 	return false;
@@ -389,7 +395,7 @@ void OLZ::registar() {
 	userTemp.setVisNome(vis_nomeTemp);
 	userTemp.setVisEmail(vis_emailTemp);	
 	userTemp.setVisTelefone(vis_telefoneTemp);
-	utilizadores.push_back(userTemp);
+	utilizadores.insert(userTemp);
 
 	userLogado = true;
 	userOnline = emailTemp;
@@ -416,12 +422,17 @@ void OLZ::logar(){
 		if (cin.fail())
 			throw emailTemp;
 
-		for (unsigned int i = 0; i < utilizadores.size(); i++){
-			if (utilizadores[i].getEmail() == emailTemp){
+		BSTItrIn<Utilizador> it1(utilizadores);
+
+		while (!it1.isAtEnd()){
+
+			if (it1.retrieve().getEmail() == emailTemp){
 				validaEmail = true;
-				nomeTemp = utilizadores[i].getNome();
+				nomeTemp = it1.retrieve().getNome();
 				break;
 			}
+
+			it1.advance();
 		}
 
 		if (!validaEmail)
@@ -489,12 +500,17 @@ void OLZ::logar(){
 			if (passTemp.length() < 6 || passTemp.length() > 12)
 				throw passTemp;
 
-			for (unsigned int i = 0; i < utilizadores.size(); i++){
-				if (utilizadores[i].getEmail() == emailTemp){
-					if (utilizadores[i].getPass() == passTemp)
+
+			BSTItrIn<Utilizador> it2(utilizadores);
+
+			while (!it2.isAtEnd()){
+
+				if (it2.retrieve().getEmail() == emailTemp)
+					if (it2.retrieve().getPass() == passTemp){
 						validaPass = true;
-					break;
-				}
+						break;
+					}
+				it2.advance();
 			}
 
 			if (!validaPass)
@@ -531,7 +547,6 @@ void OLZ::logar(){
 	
 	createMenuLogado();
 }
-// FALTA IMPLEMENTAR
 
 void OLZ::criaAnuncioCompra(){
 
@@ -648,6 +663,7 @@ void OLZ::criaAnuncioVenda()
 
 	return;
 }
+
 void OLZ::setuserLogado(bool &log){
 	userLogado = log;
 }
@@ -1160,6 +1176,7 @@ void OLZ::createMenuAnuncios(){
 		}
 	}
 }
+
 void OLZ::createMenuVerContactos()
 {
 	string Menu[4] = { "<<   MENU USER        >>","<<   RECEBIDOS        >>", "<<   ENVIADOS         >>", "<<   SAIR             >>" };
@@ -1440,13 +1457,12 @@ void OLZ::apagarUser(){
 		if (cin.fail())
 			throw emailTemp;
 
-		int x = searchUtilizador(emailTemp);
-		if (x == -1)
-			throw emailTemp;
+		Utilizador temp = searchUtilizador(emailTemp); // Variavel temp inicializada com o utilizador com o email procurado
 
-		Utilizador dUt = utilizadores[x];
+		if (temp == USER_NULL) // email não encontrado
+			throw emailTemp;
 		
-		utilizadores.erase(utilizadores.begin()+x);
+		utilizadores.remove(temp);
 		
 		for (unsigned int j = 0; j < anuncios.size(); j++){
 			if (anuncios[j]->getAnunciante()->getEmail() == emailTemp){
@@ -1610,6 +1626,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 
 	return; 
 }
+
 void OLZ::apagarAnuncioUtilizador(int id)
 {
 	for (unsigned int i = 0; i < anuncios.size(); i++)
@@ -1638,6 +1655,7 @@ void OLZ::apagarAnuncioTroca(int id, string email)
 
 	return; 
 }
+
 void OLZ::apagarContactos(Anuncio * a)
 {
 	Utilizador * u = a->Anunciante;
@@ -1653,9 +1671,11 @@ void OLZ::apagarContactos(Anuncio * a)
 
 void OLZ::apagarContactosEnv(Anuncio * a)
 {
-	for (unsigned int i = 0; i < utilizadores.size(); i++)			//Percorre todos os utilizadores
-	{
-		vector<int> MensEnvtemp = utilizadores[i].getMensEnv();
+	BSTItrIn<Utilizador> it(utilizadores);
+
+	while (!it.isAtEnd()){ //Percorre todos os utilizadores
+
+		vector<int> MensEnvtemp = it.retrieve().getMensEnv();
 		for (unsigned int j = 0; j < MensEnvtemp.size(); j++)			//Percorre o vetor de ID 's de Contactos
 		{
 			int id = MensEnvtemp[j];
@@ -1663,10 +1683,12 @@ void OLZ::apagarContactosEnv(Anuncio * a)
 
 			if (a == c.getAnuncio())		//Se o contacto for relativo ao anuncio
 			{
-				utilizadores[i].deletemsgEnv(id);	//Apaga o id do Contacto no Utilizador
+				it.retrieve().deletemsgEnv(id);	//Apaga o id do Contacto no Utilizador
 			}
 		}
-	}
+
+		it.advance();
+	}	
 
 	return;
 }
@@ -2167,12 +2189,26 @@ void OLZ::saveData()
 	ofstream anFile; // variavel que vai conter o vector de Anuncios
 	ofstream ctFile; // variavel que vai conter o vector de Contatos
 
+	/* Conversão de BST para vector */
+
+	vector <Utilizador> vecutilizadores;
+	BSTItrIn<Utilizador> it(utilizadores);
+
+	while (!it.isAtEnd()){
+
+		if (!(it.retrieve() == USER_NULL))
+			vecutilizadores.push_back(it.retrieve());		
+
+		it.advance();
+	}
+
+
 	remove("utilizadores.csv");	
 	utFile.open("utilizadores.csv");
 	
-	for (unsigned int i = 0; i < utilizadores.size(); i++)
+	for (unsigned int i = 0; i < vecutilizadores.size(); i++)
 	{
-		Utilizador temp = utilizadores[i];
+		Utilizador temp = vecutilizadores[i];
 		utFile << temp.getNome() << ";" << temp.getEmail() << ";" << temp.getTelefone() << ";" << temp.getLocalizacao().getFreguesia() << ";" << temp.getLocalizacao().getConcelho() << ";" << temp.getLocalizacao().getDistrito() << ";" << temp.getPass() << ";";
 
 		utFile << temp.getMensRec().size() << ";";
@@ -2187,7 +2223,7 @@ void OLZ::saveData()
 			utFile << temp.getMensEnv()[j] << ";";
 		}
 
-		if (i != utilizadores.size() - 1)
+		if (i != vecutilizadores.size() - 1)
 			utFile << temp.getVisNome() << ";" << temp.getVisEmail() << ";" << temp.getVisTelefone() << "\n";
 		else 
 			utFile << temp.getVisNome() << ";" << temp.getVisEmail() << ";" << temp.getVisTelefone();
@@ -2296,6 +2332,7 @@ void OLZ::loadData()
 	utFile.open("utilizadores.csv");
 
 	string line;
+	vector<Utilizador> vecutilizadores;
 
 	while (getline(utFile, line)){
 		istringstream ss(line);
@@ -2382,15 +2419,14 @@ void OLZ::loadData()
 
 			tUti.setVisTelefone(tVisT);
 
-			utilizadores.push_back(tUti);
+			vecutilizadores.push_back(tUti);
 		}
 	}
-
+	
 	utFile.close();
 	anFile.open("anuncios.csv");
 
 	string line2;
-
 
 	while (getline(anFile, line2)){
 		istringstream ss2(line2);
@@ -2401,14 +2437,14 @@ void OLZ::loadData()
 			getline(ss2, tMail, ';');
 
 			int k;
-			for (size_t i = 0; i < utilizadores.size(); i++)
+			for (size_t i = 0; i < vecutilizadores.size(); i++)
 			{
-				if (utilizadores[i].getEmail() == tMail)
+				if (vecutilizadores[i].getEmail() == tMail)
 					k = i;
 			}
 
 
-			Utilizador tUti = utilizadores[k];
+			Utilizador tUti = vecutilizadores[k];
 
 			string tTit;
 			getline(ss2, tTit, ';');
@@ -2436,7 +2472,6 @@ void OLZ::loadData()
 				getline(ss2, stIm, ';');
 				tIm.push_back(stIm);
 			}
-
 
 			int tDia;
 			string stDia;
@@ -2518,6 +2553,10 @@ void OLZ::loadData()
 		}
 	}
 
+	for (unsigned int i = 0; i < vecutilizadores.size(); i++){
+		utilizadores.insert(vecutilizadores[i]);
+	}
+
 	anFile.close();
 
 	ctFile.open("contatos.csv");
@@ -2564,15 +2603,18 @@ void OLZ::loadData()
 	}
 
 	ctFile.close();
-
 }
 
 Utilizador * OLZ::pesquisaEmail(string mail)
 {
-	for (unsigned int i = 0; i < utilizadores.size(); i++)
-	{
-		if (utilizadores[i].getEmail() == mail)
-			return &utilizadores[i];
+	BSTItrIn<Utilizador> it(utilizadores);
+
+	while (!it.isAtEnd()){
+
+		if (it.retrieve().getEmail()==mail)
+			return &it.retrieve();
+
+		it.advance();
 	}
 
 	EmailNaoEncontrado m(mail);
@@ -2622,6 +2664,7 @@ bool OLZ::validarCategoria(string cat)
 	else
 		return true;
 }
+
 string OLZ::registarCategoria()
 {
 	string catTemp;
@@ -2677,6 +2720,7 @@ string OLZ::registarDescricao()
 
 	return descrTemp;
 }
+
 vector<string> OLZ::registarImagens()
 {
 	bool querImagens;
@@ -2798,6 +2842,7 @@ bool OLZ::registarPossivelNegociar()
 	
 	return possivel;
 }
+
 float OLZ::registarPreco()
 {
 	float precoTemp;
@@ -2926,14 +2971,23 @@ int OLZ::searchTituloNoVetor(string t, vector<Anuncio *> v)
 	return -1;
 }
 
-int OLZ::searchUtilizador(string emailUt)
+Utilizador OLZ::searchUtilizador(string emailUt)
 {
-	for (unsigned int i = 0; i < utilizadores.size(); i++)
-	{
-		if (utilizadores[i].getEmail() == emailUt)
-			return i;
+	Utilizador temp = USER_NULL;
+
+	BSTItrIn<Utilizador> it(utilizadores);
+
+	while (!it.isAtEnd()){
+
+		if (it.retrieve().getEmail() == emailUt) {
+			temp = it.retrieve();
+			return temp;
+		}
+
+		it.advance();
 	}
-	return -1;
+
+	return temp;
 }
 
 int OLZ::searchAnuncio(int AnID)
@@ -2946,16 +3000,22 @@ int OLZ::searchAnuncio(int AnID)
 	return -1;
 }
 
-
 void OLZ::adminMostraUsers()
 {
 	clrscr();
 	impressaoTitulo();
-	for (unsigned int i = 0; i < utilizadores.size(); i++)
-	{
-		setcolor(4, 0);
-		cout << "NOME: " << utilizadores[i].getNome() << " EMAIL: " << utilizadores[i].getEmail() << endl;
-		setcolor(7, 0);
+
+	BSTItrIn<Utilizador> it(utilizadores);
+
+	while (!it.isAtEnd()){
+
+		if (!(it.retrieve() == USER_NULL)){
+			setcolor(4, 0);
+			cout << "NOME: " << it.retrieve().getNome() << " EMAIL: " << it.retrieve().getEmail() << endl;
+			setcolor(7, 0);
+		}			
+
+		it.advance();
 	}
 
 	saveData();
@@ -3017,6 +3077,7 @@ void OLZ::MostraAnunciosRealizadosUser(string mail)
 	system("pause");
 	createMenuAnuncios();
 }
+
 vector<Anuncio * > OLZ::ordenaAnCat()
 {
 	vector<Anuncio *> temp = anuncios;
@@ -3134,7 +3195,6 @@ vector<Anuncio * > OLZ::pesquisaAnPalavra(string p)
 	return temp;
 
 }
-
 
 void OLZ::pesquisaPreco(float p)
 {
@@ -3286,34 +3346,32 @@ void OLZ::criaContactoLogado(Anuncio * a)
 	clean_buffer();
 	cout << "Insira a mensagem pretendida: " << endl;
 	getline(cin, mensagem);
-	Utilizador * u = &utilizadores[searchUtilizador(userOnline)];
+	Utilizador u = searchUtilizador(userOnline);
 
 	string nome = "Utilizador Anonimo";
-	if (u->getVisNome())						//Se o utilizador permitir que o seu nome se veja
-		nome = u->getNome();					//mostra o nome na mensagem
+	if (u.getVisNome())						//Se o utilizador permitir que o seu nome se veja
+		nome = u.getNome();					//mostra o nome na mensagem
 
 	stringstream ss;
-	if (u->getVisEmail())					//Se o utilizador permitir que o seu mail se veja
-		ss << u->getEmail();					//inclui o email na mensagem
+	if (u.getVisEmail())					//Se o utilizador permitir que o seu mail se veja
+		ss << u.getEmail();					//inclui o email na mensagem
 
-	if (u->getVisTelefone())					//Se o utilizador permitir que o seu telefone se veja
-		ss << u->getTelefone();				//inclui o telefone na mensagem
+	if (u.getVisTelefone())					//Se o utilizador permitir que o seu telefone se veja
+		ss << u.getTelefone();				//inclui o telefone na mensagem
 
 	Contato c(a, nome, mensagem, ss.str());
 
 	contatos.push_back(c);
 
 	a->Anunciante->addmsgRec(c);			//Envia o contacto para o Anunciante
-	u->addmsgEnv(c);						//Adiciona a mensagem ás Enviadas do Utilizador
-	
-
+	u.addmsgEnv(c);						//Adiciona a mensagem ás Enviadas do Utilizador
 
 	return;
 }
 
 void OLZ::lerMensagensRecebidas()
 {
-	Utilizador temp = utilizadores[searchUtilizador(userOnline)]; //Copia o conteudo do Utilizador logado
+	Utilizador temp = searchUtilizador(userOnline); //Copia o conteudo do Utilizador logado
 	vector<int> MensRecebidastemp = temp.getMensRec();
 	cout << "> MENSAGENS RECEBIDAS: " << endl << endl;
 	for (unsigned int i = 0; i < MensRecebidastemp.size(); i++)
@@ -3336,7 +3394,7 @@ void OLZ::lerMensagensRecebidas()
 
 void OLZ::lerMensagensEnviadas()
 {
-	Utilizador temp = utilizadores[searchUtilizador(userOnline)]; //Copia o conteudo do Utilizador logado
+	Utilizador temp = searchUtilizador(userOnline); //Copia o conteudo do Utilizador logado
 	vector<int> MensEnviadastemp = temp.getMensEnv();
 	cout << "> MENSAGENS ENVIADAS: " << endl << endl; 
 	for (unsigned int i = 0; i < MensEnviadastemp.size(); i++)
