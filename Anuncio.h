@@ -182,6 +182,12 @@ public:
 	* @brief Decrementa o last_id
 	*/
 	int decLastID(){ last_id--; return last_id; };
+
+	/**
+	/* @brief Retira o anuncio com ID do vetor de trocas
+	*/
+	virtual void apagarTroca(int id);
+
 };
 
 /**
@@ -216,6 +222,11 @@ public:
 	* @return Retorna um vetor vazio
 	*/
 	vector<Anuncio *> getTroca() const;
+
+	/**
+	/* @brief Retira o anuncio com ID do vetor de trocas
+	*/
+	void apagarTroca(int id);
 };
 
 /**
@@ -253,6 +264,10 @@ public:
 
 	string getEstado() const;
 
+	/**
+	/* @brief Retira o anuncio com ID do vetor de trocas
+	*/
+	void apagarTroca(int id);
 };
 
 #endif /*ANUNCIO_H_*/

@@ -410,6 +410,11 @@ public:
 	void apagarAnuncioUtilizador(int id);
 
 	/**
+	* @brief Apaga o Anuncio com o id em todos os Anuncios de Compra com este anuncio como troca
+	*/
+	void apagarAnuncioTroca(int id, string email);
+
+	/**
 	* @brief Elimina todos os contactos relacionados com o Anuncio
 	*/
 	void apagarContactos(Anuncio * a);

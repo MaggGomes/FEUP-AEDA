@@ -248,3 +248,26 @@ void Anuncio::setImagens(vector<string> tIma)
 {
 	imagens = tIma;
 }
+
+void AnuncioCompra::apagarTroca(int id)
+{
+	for (int i = 0; i < troca.size(); i++)
+	{
+		if (troca[i]->getID() == id)
+		{
+			troca.erase(troca.begin() + i);
+		}
+	}
+
+	return;
+}
+
+void AnuncioVenda::apagarTroca(int id)
+{
+	return;
+}
+
+void Anuncio::apagarTroca(int id)
+{
+	return;
+}

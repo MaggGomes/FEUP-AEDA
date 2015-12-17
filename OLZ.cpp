@@ -1621,6 +1621,18 @@ void OLZ::apagarAnuncioUtilizador(int id)
 	return;
 }
 
+void OLZ::apagarAnuncioTroca(int id, string email)
+{
+	for (int i = 0; i < anuncios.size(); i++)
+	{
+		if (!(anuncios[i]->isVenda()) && anuncios[i]->getAnunciante()->getEmail() == email)
+		{
+			anuncios[i]->apagarTroca(id);
+		}
+	}
+
+	return; 
+}
 void OLZ::apagarContactos(Anuncio * a)
 {
 	Utilizador * u = a->Anunciante;
