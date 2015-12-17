@@ -1446,7 +1446,9 @@ void OLZ::apagarUser(){
 	string emailTemp;
 	bool validaEmail = false;
 
-	adminMostraUsers();
+	clrscr();
+	impressaoTitulo();
+
 	cout << endl;
 	cout << ">> E-MAIL DE UTILIZADOR: ";
 	getline(cin, emailTemp);
