@@ -2283,393 +2283,283 @@ void OLZ::saveData()
 
 void OLZ::loadData()
 {
-	
+
 	ifstream utFile; // variavel que vai conter o ficheiro de Utilizadores
 	ifstream anFile; // variavel que vai conter o ficheiro de Anuncios
 	ifstream ctFile; // variavel que vai conter o ficheiro de Contatos
-		
+
 	utFile.open("utilizadores.csv");
 
 	string line;
-	
+
 	while (getline(utFile, line)){
 		istringstream ss(line);
 
 		while (ss.good()) {
 
-	int i = 0;
-	string tNome;
-	getline(ss, tNome, ';');	
-	string tEmail;
-	getline(ss, tEmail, ';');
-
-
-	string stNr;
-	getline(ss, stNr, ';');
-	int tNr = atoi(stNr.c_str());
-
-	string tFreg;
-	getline(ss, tFreg, ';');
-
-	string tConc;
-	getline(ss, tConc, ';');
-
-	string tDist;
-	getline(ss, tDist, ';');
-
-	Localizacao tLoc(tFreg, tConc, tDist);
-
-	string tPass;
-	getline(ss, tPass, ';');
-
-	Utilizador tUti(tNome, tEmail, tNr, tLoc, tPass);
-
-	string siMR;
-	getline(ss, siMR, ';');
-	int iMR = atoi(siMR.c_str());
-
-	vector<int> tMR;
-	for (int i = 0; i < iMR; i++)
-	{
-		string abc;
-		getline(ss, abc, ';');
-		int x = atoi(abc.c_str());
-		tMR.push_back(x);
-	}
-
-	tUti.setMR(tMR);
-
-	string siME;
-	getline(ss, siME, ';');
-	int iME = atoi(siME.c_str());
-
-	vector<int> tME;
-	for (int i = 0; i < iME; i++)
-	{
-		string abc;
-		getline(ss, abc, ';');
-		int x = atoi(abc.c_str());
-		tME.push_back(x);
-	}
-
-
-	tUti.setME(tME);
-
-	string stVisN;
-	getline(ss, stVisN, ';');
-	int itVisN = atoi(stVisN.c_str());
-	bool tVisN = itVisN;
-
-	tUti.setVisNome(tVisN);
-
-	string stVisE;
-	getline(ss, stVisE, ';');
-	int itVisE = atoi(stVisE.c_str());
-	bool tVisE = itVisE;
-
-
-	tUti.setVisEmail(tVisE);
-
-	string stVisT;
-	getline(ss, stVisT, ';');
-	int itVisT = atoi(stVisT.c_str());
-	bool tVisT = itVisT;
-
-	tUti.setVisTelefone(tVisT);
-
-	utilizadores.push_back(tUti);	
-		}
-	}	
-		
-	utFile.close();
-	
-	anFile.open("anuncios.csv");
-	/*
-	while (getline(anFile, line)){
-		istringstream ss(line);
-		
-		while (ss.good()) {
+			int i = 0;
+			string tNome;
+			getline(ss, tNome, ';');
 			string tEmail;
 			getline(ss, tEmail, ';');
 
-			cout << tEmail << endl;
 
-			int iAn = searchUtilizador(tEmail);
+			string stNr;
+			getline(ss, stNr, ';');
+			int tNr = atoi(stNr.c_str());
 
-			Utilizador tAn = utilizadores[iAn];
-			
-			string tTit;
-			getline(ss, tTit, ';');
+			string tFreg;
+			getline(ss, tFreg, ';');
 
-			string tCat;
-			getline(ss, tCat, ';');
+			string tConc;
+			getline(ss, tConc, ';');
 
-			string tDes;
-			getline(ss, tDes, ';');
+			string tDist;
+			getline(ss, tDist, ';');
 
-			string stID;
-			getline(ss, stID, ';');
-			int tID = atoi(stID.c_str());
+			Localizacao tLoc(tFreg, tConc, tDist);
 
-			string stIma;
-			getline(ss, stIma, ';');
-			int tIma = atoi(stIma.c_str());
+			string tPass;
+			getline(ss, tPass, ';');
 
-			vector<string> viIma;
+			Utilizador tUti(tNome, tEmail, tNr, tLoc, tPass);
 
-			for (int i = 0; i < tIma; i++)
+			string siMR;
+			getline(ss, siMR, ';');
+			int iMR = atoi(siMR.c_str());
+
+			vector<int> tMR;
+			for (int i = 0; i < iMR; i++)
 			{
-				string tABC;
-				getline(ss, tABC, ';');
-				viIma.push_back(tABC);
+				string abc;
+				getline(ss, abc, ';');
+				int x = atoi(abc.c_str());
+				tMR.push_back(x);
 			}
 
-			string stDia;
-			getline(ss, stDia, ';');
-			int tDia = atoi(stDia.c_str());
+			tUti.setMR(tMR);
 
-			string stMes;
-			getline(ss, stMes, ';');
-			int tMes = atoi(stMes.c_str());
+			string siME;
+			getline(ss, siME, ';');
+			int iME = atoi(siME.c_str());
 
-			string stAno;
-			getline(ss, stAno, ';');
-			int tAno = atoi(stAno.c_str());
-
-			Data tData(tDia, tMes, tAno);
-
-			string stNeg;
-			getline(ss, stNeg, ';');
-			int itNeg = atoi(stNeg.c_str());
-			bool tNeg = itNeg;
-
-			cout << tNeg << endl;
-
-			string stCl;
-			getline(ss, stCl, ';');
-			int tCl = atoi(stCl.c_str());
-
-			string stPr;
-			getline(ss, stPr, ';');
-			int tPr = atof(stPr.c_str());
-
-			string stVen;
-			getline(ss, stVen, ';');
-			int itVen = atoi(stVen.c_str());
-			bool tVen = itVen;
+			vector<int> tME;
+			for (int i = 0; i < iME; i++)
+			{
+				string abc;
+				getline(ss, abc, ';');
+				int x = atoi(abc.c_str());
+				tME.push_back(x);
+			}
 
 
+			tUti.setME(tME);
+
+			string stVisN;
+			getline(ss, stVisN, ';');
+			int itVisN = atoi(stVisN.c_str());
+			bool tVisN = itVisN;
+
+			tUti.setVisNome(tVisN);
+
+			string stVisE;
+			getline(ss, stVisE, ';');
+			int itVisE = atoi(stVisE.c_str());
+			bool tVisE = itVisE;
 
 
-	tUti.setVisEmail(tVisE);
+			tUti.setVisEmail(tVisE);
 
-	string stVisT;
-	getline(ss, stVisT, ';');
-	int itVisT = atoi(stVisT.c_str());
-	bool tVisT = itVisT;
+			string stVisT;
+			getline(ss, stVisT, ';');
+			int itVisT = atoi(stVisT.c_str());
+			bool tVisT = itVisT;
 
-	tUti.setVisTelefone(tVisT);
+			tUti.setVisTelefone(tVisT);
 
-	utilizadores.push_back(tUti);	
+			utilizadores.push_back(tUti);
 		}
-	}	
-		
+	}
+
 	utFile.close();
-	
 	anFile.open("anuncios.csv");
 
-	while (getline(anFile, line)){
-		istringstream ss(line);
-		
-		while (ss.good()) {
-			string tEmail;
-			getline(ss, tEmail, ';');
+	string line2;
 
-			cout << tEmail << endl;
 
-			int iAn = searchUtilizador(tEmail);
+	while (getline(anFile, line2)){
+		istringstream ss2(line2);
 
-			Utilizador tAn = utilizadores[iAn];
-			
-			string tTit;
-			getline(ss, tTit, ';');
+		while (ss2.good()) {
 
-			string tCat;
-			getline(ss, tCat, ';');
+			string tMail;
+			getline(ss2, tMail, ';');
 
-			string tDes;
-			getline(ss, tDes, ';');
-
-			string stID;
-			getline(ss, stID, ';');
-			int tID = atoi(stID.c_str());
-
-			string stIma;
-			getline(ss, stIma, ';');
-			int tIma = atoi(stIma.c_str());
-
-			vector<string> viIma;
-
-			for (int i = 0; i < tIma; i++)
+			int k;
+			for (size_t i = 0; i < utilizadores.size(); i++)
 			{
-				string tABC;
-				getline(ss, tABC, ';');
-				viIma.push_back(tABC);
+				if (utilizadores[i].getEmail() == tMail)
+					k = i;
 			}
 
+
+			Utilizador tUti = utilizadores[k];
+
+			string tTit;
+			getline(ss2, tTit, ';');
+
+			string tCat;
+			getline(ss2, tCat, ';');
+
+			string tDes;
+			getline(ss2, tDes, ';');
+
+			int tId;
+			string stId;
+			getline(ss2, stId, ';');
+			tId = atoi(stId.c_str());
+
+			int tNumIm;
+			string stNumIm;
+			getline(ss2, stNumIm, ';');
+			tNumIm = atoi(stNumIm.c_str());
+
+			vector<string> tIm;
+			for (int i = 0; i < tNumIm; i++)
+			{
+				string stIm;
+				getline(ss2, stIm, ';');
+				tIm.push_back(stIm);
+			}
+
+
+			int tDia;
 			string stDia;
-			getline(ss, stDia, ';');
-			int tDia = atoi(stDia.c_str());
+			getline(ss2, stDia, ';');
+			tDia = atoi(stDia.c_str());
 
+			int tMes;
 			string stMes;
-			getline(ss, stMes, ';');
-			int tMes = atoi(stMes.c_str());
+			getline(ss2, stMes, ';');
+			tMes = atoi(stMes.c_str());
 
+			int tAno;
 			string stAno;
-			getline(ss, stAno, ';');
-			int tAno = atoi(stAno.c_str());
+			getline(ss2, stAno, ';');
+			tAno = atoi(stAno.c_str());
 
-			Data tData(tDia, tMes, tAno);
+			Data tDt(tDia, tMes, tAno);
 
+			bool tNeg;
 			string stNeg;
-			getline(ss, stNeg, ';');
-			int itNeg = atoi(stNeg.c_str());
-			bool tNeg = itNeg;
+			getline(ss2, stNeg, ';');
+			tNeg = (stNeg != "0");
 
-			cout << tNeg << endl;
+			int tClicks;
+			string stCli;
+			getline(ss2, stCli, ';');
+			tClicks = atoi(stCli.c_str());
 
-			string stCl;
-			getline(ss, stCl, ';');
-			int tCl = atoi(stCl.c_str());
+			float tPre;
+			string stPre;
+			getline(ss2, stPre, ';');
+			tPre = atof(stPre.c_str());
 
-			string stPr;
-			getline(ss, stPr, ';');
-			int tPr = atof(stPr.c_str());
-
+			bool tVen;
 			string stVen;
-			getline(ss, stVen, ';');
-			int itVen = atoi(stVen.c_str());
-			bool tVen = itVen;
-
-
+			getline(ss2, stVen, ';');
+			tVen = (stVen != "0");
 
 			if (tVen)
 			{
 				string tEst;
-				getline(ss, tEst, ';');
-				Anuncio * anun = new AnuncioVenda(&tAn, tTit, tCat, tDes, tNeg, tPr, tEst);
-				anun->setDataCriacao(tData);
-
-				anun->setNum_clicks(tCl);
-
-				anun->setImagens(viIma);
-
-
-				anun->setId(tID);
-
-
-				anun->setId(tID);
-
+				getline(ss2, tEst, ';');
+				Anuncio * anun = new AnuncioVenda(&tUti, tTit, tCat, tDes, tNeg, tPre, tEst);
+				anun->setDataCriacao(tDt);
+				anun->setNum_clicks(tClicks);
+				anun->setImagens(tIm);
+				anun->setId(tId);
 				anuncios.push_back(anun);
 			}
 			else
 			{
-				vector<Anuncio *> tTroca;
+				int tNumTr;
+				string stNumTr;
+				getline(ss2, stNumTr, ';');
+				tNumTr = atoi(stNumTr.c_str());
 
-				string stTr;
-				getline(ss, stTr, ';');
-				int tTr = atof(stTr.c_str());
-
-				for (int i = 0; i < tTr; i++)
+				vector<Anuncio *> tTr;
+				for (int i = 0; i < tNumTr; i++)
 				{
-					string stAnI;
-					getline(ss, stAnI, ';');
-					int tAnI = atof(stAnI.c_str());
-					int x = searchAnuncio(tAnI);
-					tTroca.push_back(anuncios[x]);
+					int tId;
+					string stId;
+					getline(ss2, stId, ';');
+					tId = atoi(stId.c_str());
+
+					for (size_t i = 0; i < anuncios.size(); i++)
+					{
+						if (anuncios[i]->getID() == tId)
+							tTr.push_back(anuncios[i]);
+					}
 				}
-				Anuncio * anun = new AnuncioCompra(&tAn, tTit, tCat, tDes, tNeg, tPr, tTroca);
-
-				anun->setDataCriacao(tData);
-
-				anun->setNum_clicks(tCl);
-
-				anun->setId(tID);
-				
-				anun->setImagens(viIma);
-
-=======
-
-				string stTr;
-				getline(ss, stTr, ';');
-				int tTr = atof(stTr.c_str());
-
-				for (int i = 0; i < tTr; i++)
-				{
-					string stAnI;
-					getline(ss, stAnI, ';');
-					int tAnI = atof(stAnI.c_str());
-					int x = searchAnuncio(tAnI);
-					tTroca.push_back(anuncios[x]);
-				}
-				Anuncio * anun = new AnuncioCompra(&tAn, tTit, tCat, tDes, tNeg, tPr, tTroca);
-
-				anun->setDataCriacao(tData);
-
-				anun->setNum_clicks(tCl);
-				anun->setId(tID);
-				anun->setImagens(viIma);
-
-
+				Anuncio * anun = new AnuncioCompra(&tUti, tTit, tCat, tDes, tNeg, tPre, tTr);
+				anun->setDataCriacao(tDt);
+				anun->setNum_clicks(tClicks);
+				anun->setImagens(tIm);
+				anun->setId(tId);
 				anuncios.push_back(anun);
 			}
+
 		}
 	}
 
-	
-	
 	anFile.close();
 
-
-	cout << "finis" << endl;
-
-	anFile.close();
-	cout << "finis2" << endl;
-
-	for (unsigned int i = 0; i < anuncios.size(); i++){
-		anuncios[i]->visAnuncio();
-	}
-
-
-	/*
 	ctFile.open("contatos.csv");
-	while (!ctFile.eof())
-	{
-		string stID;
-		getline(anFile, stID, ';');
-		int tID = atof(stID.c_str());
 
-		string stAnID;
-		getline(anFile, stAnID, ';');
-		int tAnID = atof(stAnID.c_str());
+	string line3;
 
-		int x = searchAnuncio(tAnID);
+	while (getline(ctFile, line3)){
+		istringstream ss3(line3);
 
-		string tMens;
-		getline(anFile, tMens, ';');
-		
-		string tCont;
-		getline(anFile, tCont, ';');
+		while (ss3.good()) {
+			int tId;
+			string stId;
+			getline(ss3, stId, ';');
+			tId = atoi(stId.c_str());
 
-		string tRem;
-		getline(anFile, tRem, ';');
+			int tIdA;
+			string stIdA;
+			getline(ss3, stIdA, ';');
+			tIdA = atoi(stIdA.c_str());
 
-		Contato tCt(anuncios[x], tRem, tMens, tCont);
+			int k;
+			for (size_t i = 0; i < anuncios.size(); i++)
+			{
+				if (anuncios[i]->getID() == tIdA)
+					k = i;
+			}
 
-		contatos.push_back(tCt);
+			Anuncio * anun = anuncios[k];
+
+			string tMens;
+			getline(ss3, tMens, ';');
+
+			string tCont;
+			getline(ss3, tCont, ';');
+
+			string tRem;
+			getline(ss3, tRem, ';');
+
+			Contato cont(anun, tRem, tMens, tCont);
+			cont.setID(tId);
+
+			contatos.push_back(cont);
+		}
 	}
+
 	ctFile.close();
-	*/
+
 }
 
 Utilizador * OLZ::pesquisaEmail(string mail)
