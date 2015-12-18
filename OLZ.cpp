@@ -1581,7 +1581,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 						Anun->setNum_clicks(num_clicks);
 						Anun->decLastID();
 						//realizados.push_back(Anun);
-						realizados1.insert(Anun);
+						realizados.insert(Anun);
 					}
 					else
 					{
@@ -1593,7 +1593,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 						Anun->setNum_clicks(num_clicks);
 						Anun->decLastID();
 						//realizados.push_back(Anun);
-						realizados1.insert(Anun);
+						realizados.insert(Anun);
 					}
 					//Apago o Anuncio do resto dos dados
 					apagarAnuncioUtilizador(a[indiceAnun]->getID());
@@ -2951,12 +2951,14 @@ vector<Anuncio *> OLZ::searchAnuncio(string mail)
 vector<Anuncio *> OLZ::searchAnuncioRealizado(string mail)
 {
 	vector<Anuncio *> anunciosTemp;
+	unordered_set<Anuncio*, hstr, hstr>::iterator it = realizados.begin();
 
-	for (unsigned int i = 0; i < realizados.size(); i++)
+
+	for (it; it != realizados.end(); advance(it, 1))
 	{
-		if (realizados[i]->Anunciante->getEmail() == mail)		//Se o email do anunciante corresponder ao mail do utilizador que se esta a verificar
+		if ((*it)->Anunciante->getEmail() == mail)		//Se o email do anunciante corresponder ao mail do utilizador que se esta a verificar
 		{
-			anunciosTemp.push_back(realizados[i]);
+			anunciosTemp.push_back((*it));
 		}
 	}
 
@@ -3068,9 +3070,9 @@ void OLZ::MostraAnunciosRealizadosUser(string mail)
 	clrscr();
 	impressaoTitulo();
 	//vector<Anuncio *> temp = searchAnuncioRealizado(mail);
-	unordered_set<Anuncio*, hstr, hstr>::iterator it = realizados1.begin();
+	unordered_set<Anuncio*, hstr, hstr>::iterator it = realizados.begin();
 	int i = 0;
-	for (it; it != realizados1.end(); it++)
+	for (it; it != realizados.end(); it++, i++)
 	{
 		cout << i + 1 << endl;
 		(*it)->visAnuncio();
@@ -3082,7 +3084,6 @@ void OLZ::MostraAnunciosRealizadosUser(string mail)
 	system("pause");
 	createMenuAnuncios();
 }
-
 vector<Anuncio * > OLZ::ordenaAnCat()
 {
 	vector<Anuncio *> temp = anuncios;
