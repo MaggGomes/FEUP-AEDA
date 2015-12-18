@@ -2638,7 +2638,7 @@ string OLZ::registarTitulo()
 
 	clrscr();
 	impressaoTitulo();
-
+	clean_buffer();
 	cout << ">> TITULO DO ANUNCIO (menos de 30 caracteres): ";
 	getline(cin, titTemp);
 
