@@ -1564,7 +1564,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 					string t = a[indiceAnun]->titulo;
 					string cat = a[indiceAnun]->categoria;
 					string descr = a[indiceAnun]->descricao;
-					int id = a[indiceAnun]->id;
+					int id = a[indiceAnun]->getID();
 					vector <string> imag = a[indiceAnun]->imagens;
 					Data data = a[indiceAnun]->datacriacao;
 					bool possivelNegociar = a[indiceAnun]->possivelNegociar;
@@ -1580,7 +1580,8 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 						Anun->setDataCriacao(data);
 						Anun->setNum_clicks(num_clicks);
 						Anun->decLastID();
-						realizados.push_back(Anun);
+						//realizados.push_back(Anun);
+						realizados1.insert(Anun);
 					}
 					else
 					{
@@ -1591,8 +1592,8 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 						Anun->setDataCriacao(data);
 						Anun->setNum_clicks(num_clicks);
 						Anun->decLastID();
-						realizados.push_back(Anun);
-
+						//realizados.push_back(Anun);
+						realizados1.insert(Anun);
 					}
 					//Apago o Anuncio do resto dos dados
 					apagarAnuncioUtilizador(a[indiceAnun]->getID());
@@ -1626,7 +1627,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 		apagarAnuncio(a);
 	}
 
-	return; 
+	return;
 }
 
 void OLZ::apagarAnuncioUtilizador(int id)
@@ -3066,11 +3067,13 @@ void OLZ::MostraAnunciosRealizadosUser(string mail)
 {
 	clrscr();
 	impressaoTitulo();
-	vector<Anuncio *> temp = searchAnuncioRealizado(mail);
-	for (unsigned int i = 0; i < temp.size(); i++)
+	//vector<Anuncio *> temp = searchAnuncioRealizado(mail);
+	unordered_set<Anuncio*, hstr, hstr>::iterator it = realizados1.begin();
+	int i = 0;
+	for (it; it != realizados1.end(); it++)
 	{
 		cout << i + 1 << endl;
-		temp[i]->visAnuncio();
+		(*it)->visAnuncio();
 		cout << endl;
 
 	}

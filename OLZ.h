@@ -7,10 +7,19 @@
 #include "Utilizador.h"
 #include "Functions.h"
 #include <algorithm>
+#include <unordered_set>
 #include "BST.h"
 
 using namespace std;
 
+struct hstr {
+	bool operator() (const Anuncio *a1, const Anuncio *a2) const {		//Funçao de igualdade
+		return (a1->getID() == a2->getID());
+	}
+	int operator() (const Anuncio* a) const {		//Função Hash
+		return 37 * (a->getID()) + a->getPreco();
+	}
+};
 /**
 * @brief Classe OLZ que armazena todos utilizadores e anúncios da aplicação
 */
@@ -20,7 +29,7 @@ private:
 	BST<Utilizador> utilizadores;
 	vector <Anuncio *> anuncios;
 	vector <Contato> contatos;
-	vector <Anuncio *> realizados;
+	unordered_set<Anuncio*, hstr, hstr> realizados;
 	string userOnline; // Indica qual o e-mail do utilizador que efetuou login
 	bool userLogado;
 public:
