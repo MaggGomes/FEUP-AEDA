@@ -23,6 +23,7 @@ Anuncio::Anuncio(Utilizador * ut, string tit, string cat, string des, bool pNeg,
 	
 	imagens = {};
 	datacriacao = temp;
+	datarealizacao = Data(0, 0, 0);
 	possivelNegociar = pNeg;
 	num_clicks = 0;
 	preco = pr;
@@ -57,6 +58,11 @@ Data Anuncio::getDataCriacao()  const{
 	return datacriacao;
 }
 
+Data Anuncio::getDataRealizacao() const
+{
+	return datarealizacao;
+}
+
 bool Anuncio::getNegociar() const{
 	return possivelNegociar;
 }
@@ -89,6 +95,10 @@ void Anuncio::setDataCriacao(Data dt){
 	datacriacao = dt;
 }
 
+void Anuncio::setDataRealizacao(Data dt)
+{
+	datarealizacao = dt;
+}
 void Anuncio::addImagem(string im)
 {
 	imagens.push_back(im);

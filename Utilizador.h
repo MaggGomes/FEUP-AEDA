@@ -3,11 +3,12 @@
 
 #include <vector>
 #include <iostream>
+#include <unordered_set>
 
 #include "Localizacao.h"
 #include "Anuncio.h"
 #include "Contato.h"
-
+#include "Data.h"
 
 using namespace std;
 
@@ -28,6 +29,8 @@ class Utilizador {
 	bool vis_nome;
 	bool vis_email;
 	bool vis_telefone;
+	int negocios;
+	Data ultimonegocio;
 
 public:
 
@@ -52,6 +55,16 @@ public:
 	bool operator==(const Utilizador &uti) const;
 
 	/**
+	* @brief Incrementa em 1 o numero de negocios de um utilizador
+	*/
+	void incNegocios();
+
+	/**
+	* @brief Retorna o numerosde negocios feitos de um determinado user
+	*/
+	int getNegocios() const;
+
+	/**
 	* @return Retorna o nome
 	*/
 	string getNome() const;
@@ -71,10 +84,15 @@ public:
 	*/
 	Localizacao getLocalizacao() const;
 
-	/**	
+	/**
 	* @return Recebe um parâmetro do tipo string que corresponde à password
 	*/
 	string getPass() const;
+
+	/**
+	* @return Retorna a data em que ultimo negocio do utilizador foi fechado
+	*/
+	Data getUltimoNegocio() const;
 
 	/**
 	* @return Retorna as mensagens recebidas
@@ -196,6 +214,12 @@ public:
 	*/
 	void setMR(vector<int> vMR);
 
+	/**
+	* @brief Modifica a data do ultimo negocio feito
+	*
+	* @param Recebe um parâmetro do Data
+	*/
+	void Utilizador::setUltimoNegocio(Data dt);
 	/**
 	* @brief Overload do operator << para os dados visíveis do utilizador
 	*

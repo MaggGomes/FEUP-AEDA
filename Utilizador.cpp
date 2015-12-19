@@ -5,17 +5,42 @@ Utilizador::Utilizador(){};
 Utilizador::Utilizador(const string &nome, const string &email, int telefone, Localizacao local, const string &password){
 	this->nome = nome;
 	this->email = email;
-	this-> telefone = telefone;
+	this->telefone = telefone;
 	this->local = local;
 	this->password = password;
+	this->negocios = 0;
 }
 
-bool Utilizador::operator <(const Utilizador &uti) const{
-	return nome < uti.getNome();
+bool Utilizador::operator<(const Utilizador &uti) const
+{
+	if (negocios < uti.getNegocios())
+		return true;
+	else if (negocios == uti.getNegocios())
+	{
+		if (ultimonegocio < uti.getUltimoNegocio())
+			return true;
+		else if (ultimonegocio == uti.getUltimoNegocio())
+		{
+			if (nome < uti.getNome())
+				return true;
+			else
+				return false; //Mesmo se for igual, o que é improvavel, retorna falso
+		}
+	}
+
+	return false;
 }
 
 bool Utilizador::operator==(const Utilizador &uti) const{
 	return email == uti.getEmail();
+}
+
+void Utilizador::incNegocios(){
+	negocios++;
+}
+
+int Utilizador::getNegocios() const{
+	return negocios;
 }
 
 string Utilizador::getNome() const{
@@ -44,6 +69,11 @@ vector<int> Utilizador::getMensEnv() const {
 
 string Utilizador::getPass() const{
 	return password;
+}
+
+Data Utilizador::getUltimoNegocio() const
+{
+	return ultimonegocio;
 }
 
 bool Utilizador::getVisNome() const{
@@ -135,8 +165,13 @@ void Utilizador::setMR(vector<int> vMR)
 {
 	mensagensRecebidas = vMR;
 }
+
+void Utilizador::setUltimoNegocio(Data dt)
+{
+	ultimonegocio = dt;
+}
 ostream& operator<<(ostream& os, const Utilizador& user){
-	
+
 	if (user.vis_nome)
 		os << "Nome: " << user.nome << endl;
 	if (user.vis_email)

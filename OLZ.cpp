@@ -1558,9 +1558,23 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 				cin >> concretizado;
 				if (tolower(concretizado) == 's')
 				{
+					//Data de Realizacao
+					time_t tempo = time(NULL);
+					struct tm* timePtr = localtime(&tempo);
+
+					int dia = timePtr->tm_mday;
+					int mes = timePtr->tm_mon + 1;
+					int ano = timePtr->tm_year + 1900;
+
 					indiceAnun--; //IndiceAnun é sempre +1 do que o indice correspondente
+
+					a[indiceAnun]->setDataRealizacao(Data(dia, mes, ano));
+					a[indiceAnun]->Anunciante->setUltimoNegocio(Data(dia, mes, ano));
+					a[indiceAnun]->Anunciante->incNegocios();
+
 					//Meto uma copia do Anuncio no vetor de concretizados
 					Utilizador * A = a[indiceAnun]->Anunciante;
+					A->incNegocios();
 					string t = a[indiceAnun]->titulo;
 					string cat = a[indiceAnun]->categoria;
 					string descr = a[indiceAnun]->descricao;
@@ -1580,6 +1594,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 						Anun->setDataCriacao(data);
 						Anun->setNum_clicks(num_clicks);
 						Anun->decLastID();
+						Anun->setDataRealizacao(Data(dia, mes, ano));
 						//realizados.push_back(Anun);
 						realizados.insert(Anun);
 					}
@@ -1592,6 +1607,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 						Anun->setDataCriacao(data);
 						Anun->setNum_clicks(num_clicks);
 						Anun->decLastID();
+						Anun->setDataRealizacao(Data(dia, mes, ano));
 						//realizados.push_back(Anun);
 						realizados.insert(Anun);
 					}
@@ -3015,10 +3031,19 @@ void OLZ::adminMostraUsers()
 	while (!it.isAtEnd()){
 
 		if (!(it.retrieve() == USER_NULL)){
-			setcolor(4, 0);
-			cout << "NOME: " << it.retrieve().getNome() << " EMAIL: " << it.retrieve().getEmail() << endl;
+			setcolor(3, 0);
+			cout << " >NOME: ";
 			setcolor(7, 0);
-		}			
+			cout << setw(10) << it.retrieve().getNome();
+			setcolor(3, 0);
+			cout << " >EMAIL: ";
+			setcolor(7, 0);
+			cout << setw(20) << it.retrieve().getEmail();
+			setcolor(3, 0);
+			cout << " >NEGOCIOS EFETUADOS: ";
+			setcolor(7, 0);
+			cout << it.retrieve().getNegocios() << endl;
+		}
 
 		it.advance();
 	}
@@ -3077,6 +3102,7 @@ void OLZ::MostraAnunciosRealizadosUser(string mail)
 		cout << i + 1 << endl;
 		(*it)->visAnuncio();
 		cout << endl;
+		cout << (*it)->getDataRealizacao() << endl;
 
 	}
 

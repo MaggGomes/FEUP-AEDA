@@ -27,6 +27,7 @@ public:
 	int id;
 	vector <string> imagens;
 	Data datacriacao;
+	Data datarealizacao;
 	bool possivelNegociar;
 	int num_clicks;
 	float preco;
@@ -71,6 +72,10 @@ public:
 	*/
 	Data getDataCriacao()  const;
 	/**
+	* @return Retorna a data em que o negocio foi fechado
+	*/
+	Data getDataRealizacao() const;
+	/**
 	* @return Retorna se o preço é negociavel
 	*/
 	bool getNegociar() const;
@@ -114,6 +119,13 @@ public:
 	*/
 	void setDataCriacao(Data dt);
 	
+	/**
+	* @brief Modifica a data de criação do anuncio
+	*
+	* @param Recebe um parâmetro do tipo Data
+	*/
+	void setDataRealizacao(Data dt);
+
 	/**
 	* @brief adiciona uma imagem
 	*

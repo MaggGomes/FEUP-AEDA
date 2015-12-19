@@ -65,10 +65,15 @@ public:
 	void setAno(int ano);
 
 	/**
-	* @ Retorna true se data for mais recente
+	* @brief Retorna true se data for mais recente
 	*/
 	bool operator <(Data &d) const;
 	
+	/**
+	* @brief Verifica se as datas sao iguais
+	*/
+	bool operator==(Data &d) const;
+
 	/**
 	* @brief Overload do operator << para imprimir a data
 	*

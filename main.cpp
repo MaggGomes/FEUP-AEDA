@@ -6,9 +6,9 @@ using namespace std;
 int main(){
 
 	OLZ OLZ;
-	OLZ.loadData();
+	//OLZ.loadData();
 
-	/*Localizacao local1("Ramalde", "Porto", "Porto");
+	Localizacao local1("Ramalde", "Porto", "Porto");
 	Utilizador ut3("Max", "j@gmail.com", 999999999, local1, "password");
 	OLZ.addUtilizador(ut3);
 		
@@ -35,7 +35,7 @@ int main(){
 	OLZ.addUtilizador(ut2);
 
 	OLZ.addAnuncio(anun2);
-	OLZ.addAnuncio(anun);*/
+	OLZ.addAnuncio(anun);
 	OLZ.createMenuInicial();
 
 	OLZ.saveData();

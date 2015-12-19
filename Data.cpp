@@ -51,6 +51,13 @@ bool Data::operator <(Data &d) const{
 	return false;
 }
 
+bool Data::operator==(Data &d) const
+{
+	if (dia == d.getDia() && mes == d.getMes() && ano == d.getAno())
+		return true;
+	else
+		return false;
+}
 ostream& operator<<(ostream& os, const Data& d){
 	os << d.dia << "/" << d.mes << "/" << d.ano;
 
