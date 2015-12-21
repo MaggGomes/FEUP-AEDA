@@ -27,9 +27,10 @@ class OLZ
 {
 private:
 	BST<Utilizador> utilizadores;
-	vector <Anuncio *> anuncios;
+	//vector <Anuncio *> anuncios;
 	vector <Contato> contatos;
 	unordered_set<Anuncio*, hstr, hstr> realizados;
+	priority_queue <Anuncio *> anuncios;
 	string userOnline; // Indica qual o e-mail do utilizador que efetuou login
 	bool userLogado;
 public:
@@ -52,7 +53,7 @@ public:
 	/**
 	* @return Retorna vetor com os anuncios
 	*/
-	vector<Anuncio *> getAnuncios() const;
+	priority_queue<Anuncio *> getAnuncios() const;
 
 	/**
 	* @brief Adiciona um utilizador
@@ -394,7 +395,7 @@ public:
 	*
 	* @return Retorna a posiçao do anuncio com o email pretendido, -1 se nao for encontrado
 	*/
-	int searchAnuncio(int AnID);
+	//int searchAnuncio(int AnID);
 
 	/**
 	* @brief Cria menu para gerir os users

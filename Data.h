@@ -75,6 +75,16 @@ public:
 	bool operator==(Data &d) const;
 
 	/**
+	* @brief Verifica a relação de inferioridade entre datas
+	*/
+	bool operator < (const Data & d) const;
+
+	/**
+	* @brief Verifica a relação de superioridade entre datas
+	*/
+	bool operator > (const Data & d) const;
+
+	/**
 	* @brief Overload do operator << para imprimir a data
 	*
 	* @param Recebe um parâmetro do tipo Data e do tipo ostream para permitir imprimir a Data

@@ -27,6 +27,7 @@ Anuncio::Anuncio(Utilizador * ut, string tit, string cat, string des, bool pNeg,
 	possivelNegociar = pNeg;
 	num_clicks = 0;
 	preco = pr;
+	prioridade = 0;
 }
 
 Utilizador * Anuncio::getAnunciante() const
@@ -75,6 +76,10 @@ float Anuncio::getPreco() const{
 	return preco;
 }
 
+float Anuncio::getPrioridade() const{
+	return prioridade;
+}
+
 void Anuncio::setTitulo(string tit){
 	titulo = tit;
 }
@@ -120,7 +125,19 @@ void Anuncio::setPreco(float pr){
 	preco = pr;
 }
 
+void Anuncio::setPrioridade(float pr){
+	prioridade = pr;
+}
 
+bool Anuncio::operator<(const Anuncio & t) const
+{
+	if (prioridade < t.prioridade)
+		return true;
+	else if (prioridade == t.prioridade)
+		return (datacriacao > t.datacriacao);
+
+	return false;
+}
 
 //------------------------------
 

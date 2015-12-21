@@ -30,6 +30,7 @@ public:
 	Data datarealizacao;
 	bool possivelNegociar;
 	int num_clicks;
+	float prioridade;
 	float preco;
 	static int last_id;
  
@@ -87,6 +88,12 @@ public:
 	* @return Retorna o preço de venda/compra
 	*/
 	float getPreco() const;
+	
+	/**
+	* @return Retorna o montante investido para o anuncio aparecer no topo 
+	*/
+	float getPrioridade() const;
+
 	/**
 	* @brief Modifica o título do anuncio
 	*
@@ -164,6 +171,14 @@ public:
 	* @param Recebe um parâmetro do tipo float
 	*/
 	void setPreco(float pr);
+	
+	/**
+	* @brief Modifica a prioridade do anuncio
+	*
+	* @param Recebe um parâmetro do tipo float
+	*/
+	void setPrioridade(float pr);
+	
 	/**
 	* @brief Função virtual pura que será implementada nas classes derivadas e que irá permitir visualizar o anúncio
 	*/
@@ -199,6 +214,10 @@ public:
 	/* @brief Retira o anuncio com ID do vetor de trocas
 	*/
 	virtual void apagarTroca(int id);
+	/**
+	/* @brief Retorna se o Anuncio é menos prioritario que t
+	*/
+	bool operator< (const Anuncio & t) const;
 
 };
 

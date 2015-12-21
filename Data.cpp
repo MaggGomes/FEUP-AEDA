@@ -58,6 +58,45 @@ bool Data::operator==(Data &d) const
 	else
 		return false;
 }
+
+bool Data::operator<(const Data & d) const
+{
+	if (ano > d.ano)
+		return true;
+	else if (ano == d.ano)
+	{
+		if (mes > d.mes)
+			return true;
+		else if (mes == d.mes)
+		{
+			if (dia > d.dia)
+				return true;
+		}
+	}
+	
+	return false;
+}
+
+
+bool Data::operator>(const Data & d) const
+{
+	if (ano < d.ano)
+		return true;
+	else if (ano == d.ano)
+	{
+		if (mes < d.mes)
+			return true;
+		else if (mes == d.mes)
+		{
+			if (dia < d.dia)
+				return true;
+		}
+	}
+
+	return false;
+}
+
+
 ostream& operator<<(ostream& os, const Data& d){
 	os << d.dia << "/" << d.mes << "/" << d.ano;
 

@@ -5,15 +5,16 @@ Utilizador USER_NULL("", "@.", 0, LOC_NULL, ""); // Utilizador "virtual" que ir√
 
 OLZ::OLZ() : utilizadores(Utilizador(USER_NULL))
 {
-	vector <Anuncio * >  anunctemp;
+	priority_queue<Anuncio * >  anunctemp;
 	anuncios = anunctemp;
 	userLogado = false;
 }
 
 OLZ::~OLZ(){
 	
-	for (unsigned int i = 0; i < anuncios.size(); i++){
-		delete anuncios[i];
+	while (!anuncios.empty())
+	{
+		anuncios.pop();
 	}
 }
 
@@ -21,7 +22,7 @@ BST<Utilizador> OLZ::getUtilizadores() const{
 	return utilizadores;
 }
 
-vector<Anuncio *> OLZ::getAnuncios() const{
+priority_queue<Anuncio *> OLZ::getAnuncios() const{
 	return anuncios;
 }
 
@@ -30,7 +31,7 @@ void OLZ::addUtilizador(Utilizador user){
 }
 
 void OLZ::addAnuncio(Anuncio * anunc){
-	anuncios.push_back(anunc);
+	anuncios.push(anunc);
 }
 
 string OLZ::registarNome() {
@@ -577,7 +578,7 @@ void OLZ::criaAnuncioCompra(){
 
 		temp->setImagens(imgTemp);
 
-		anuncios.push_back(temp);
+		anuncios.push(temp);
 	}
 	catch (EmailNaoEncontrado)					//Caso haja um problema na base de dados
 	{
@@ -649,7 +650,7 @@ void OLZ::criaAnuncioVenda()
 
 		temp->setImagens(imgTemp);
 
-		anuncios.push_back(temp);
+		anuncios.push(temp);
 	}
 	catch (EmailNaoEncontrado)					//Caso haja um problema na base de dados
 	{
@@ -1279,10 +1280,13 @@ void OLZ::AnuncUserClicks(){
 	clrscr();
 	impressaoTitulo();
 	vector <Anuncio * > temp;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
 
-	for (unsigned int i = 0; i < anuncios.size(); i++){
-		if (anuncios[i]->getAnunciante()->getEmail() == userOnline)
-			temp.push_back(anuncios[i]);
+	while(!temp2.empty()){
+		if (temp2.top()->getAnunciante()->getEmail() == userOnline)
+			temp.push_back(temp2.top());
+		temp2.pop();
 	}
 
 	if (temp.size() == 0){
@@ -1321,10 +1325,13 @@ void OLZ::AnuncUserRec(){
 	clrscr();
 	impressaoTitulo();
 	vector <Anuncio * > temp;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
 
-	for (unsigned int i = 0; i < anuncios.size(); i++){
-		if (anuncios[i]->getAnunciante()->getEmail() == userOnline)
-			temp.push_back(anuncios[i]);
+	while (!temp2.empty()){
+		if (temp2.top()->getAnunciante()->getEmail() == userOnline)
+			temp.push_back(temp2.top());
+		temp2.pop();
 	}
 
 	if (temp.size() == 0){
@@ -1466,12 +1473,28 @@ void OLZ::apagarUser(){
 		
 		utilizadores.remove(temp);
 		
-		for (unsigned int j = 0; j < anuncios.size(); j++){
-			if (anuncios[j]->getAnunciante()->getEmail() == emailTemp){
-				anuncios.erase(anuncios.begin() + j);
+
+		vector <Anuncio * > temp3;
+		priority_queue<Anuncio *> temp2;
+		temp2 = anuncios;
+
+		while (!temp2.empty()){
+			temp3.push_back(temp2.top());
+			temp2.pop();
+		}
+
+		for (unsigned int j = 0; j < temp3.size(); j++){
+			if (temp3[j]->getAnunciante()->getEmail() == emailTemp){
+				temp3.erase(temp3.begin() + j);
 				j--;	
 			}
 		}	
+
+		for (unsigned int j = 0; j < temp3.size(); j++){
+			temp2.push(temp3[j]);
+		}
+
+		anuncios = temp2;
 
 	}catch (...){
 		clean_buffer();
@@ -1491,10 +1514,20 @@ void OLZ::apagarAnuncio()
 	bool validaTemp = false;
 	clrscr();
 	impressaoTitulo();
-	for (unsigned int i = 0; i < anuncios.size(); i++)
+	vector<Anuncio *> temp;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
+
+	while (!temp2.empty()){
+		temp.push_back(temp2.top());
+		temp2.pop();
+	}
+
+
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
 		setcolor(4, 0);
-		cout << anuncios[i]->getID() << " - " << anuncios[i]->getTitulo() << endl;
+		cout << temp[i]->getID() << " - " << temp[i]->getTitulo() << endl;
 		setcolor(7, 0);
 	}
 
@@ -1507,12 +1540,24 @@ void OLZ::apagarAnuncio()
 		if (cin.fail())
 			throw anunTemp;
 
-		int x = searchAnuncio(anunTemp);
+		int x = -1;
+		for (unsigned int i = 0; i < anuncios.size(); i++)
+		{
+			if (temp[i]->getID() == anunTemp)
+				x = i;
+		}
+
 		if (x == -1)
 			throw anunTemp;
 
-		anuncios.erase(anuncios.begin() + x);
+		temp.erase(temp.begin() + x);
 
+		for (size_t i = 0; i < temp.size(); i++)
+		{
+			temp2.push(temp[i]);
+		}
+
+		anuncios = temp2;
 	}
 	catch (...){
 		clean_buffer();
@@ -1648,29 +1693,63 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 
 void OLZ::apagarAnuncioUtilizador(int id)
 {
-	for (unsigned int i = 0; i < anuncios.size(); i++)
+	vector<Anuncio *> temp;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
+
+	while (!temp2.empty())
 	{
-		if (anuncios[i]->id == id)
+		temp.push_back(temp2.top());
+		temp2.pop();
+	}
+
+	for (unsigned int i = 0; i < temp.size(); i++)
+	{
+		if (temp[i]->id == id)
 		{
-			apagarContactos(anuncios[i]);		//apaga os contactos relativos ao anuncio
-			delete(anuncios[i]);		//Liberta a memoria alocada
-			anuncios.erase(anuncios.begin() + i);	//Apaga o anuncio do vetor	
+			apagarContactos(temp[i]);		//apaga os contactos relativos ao anuncio
+			delete(temp[i]);		//Liberta a memoria alocada
+			temp.erase(temp.begin() + i);	//Apaga o anuncio do vetor	
 			return;
 		}
 	}
+
+	for (unsigned int i = 0; i < temp.size(); i++)
+	{
+		temp2.push(temp[i]);
+	}
+
+	anuncios = temp2;
 
 	return;
 }
 
 void OLZ::apagarAnuncioTroca(int id, string email)
 {
+	vector<Anuncio *> temp;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
+
+	while (!temp2.empty())
+	{
+		temp.push_back(temp2.top());
+		temp2.pop();
+	}
+	
 	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
-		if (!(anuncios[i]->isVenda()) && anuncios[i]->getAnunciante()->getEmail() == email)
+		if (!(temp[i]->isVenda()) && temp[i]->getAnunciante()->getEmail() == email)
 		{
-			anuncios[i]->apagarTroca(id);
+			temp[i]->apagarTroca(id);
 		}
 	}
+
+	for (unsigned int i = 0; i < temp.size(); i++)
+	{
+		temp2.push(temp[i]);
+	}
+
+	anuncios = temp2;
 
 	return; 
 }
@@ -1914,11 +1993,19 @@ void OLZ::pesquisaCat(const string &cat){
 	clrscr();
 	impressaoTitulo();
 	vector <Anuncio * > temp;
+	vector<Anuncio *> temp3;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
+
+	while (!temp2.empty()){
+		temp3.push_back(temp2.top());
+		temp2.pop();
+	}
 
 	for (unsigned int i = 0; i < anuncios.size(); i++){
-		if (anuncios[i]->getAnunciante()->getEmail() != userOnline){
-			if (anuncios[i]->getCategoria() ==cat)
-				temp.push_back(anuncios[i]);
+		if (temp3[i]->getAnunciante()->getEmail() != userOnline){
+			if (temp3[i]->getCategoria() ==cat)
+				temp.push_back(temp3[i]);
 		}			
 	}
 
@@ -2203,13 +2290,13 @@ void OLZ::createMenuPesquisaUser(){
 }
 
 void OLZ::saveData()
-{
+{/*
 	ofstream utFile; // variavel que vai conter o vector de Utilizadores
 	ofstream anFile; // variavel que vai conter o vector de Anuncios
 	ofstream ctFile; // variavel que vai conter o vector de Contatos
 
 	/* Convers√£o de BST para vector */
-
+	/*
 	vector <Utilizador> vecutilizadores;
 	BSTItrIn<Utilizador> it(utilizadores);
 
@@ -2338,12 +2425,12 @@ void OLZ::saveData()
 			ctFile << temp.getRemetente() << "\n";
 	}
 
-	ctFile.close();
+	ctFile.close();*/
 }
 
 void OLZ::loadData()
 {
-
+	/*
 	ifstream utFile; // variavel que vai conter o ficheiro de Utilizadores
 	ifstream anFile; // variavel que vai conter o ficheiro de Anuncios
 	ifstream ctFile; // variavel que vai conter o ficheiro de Contatos
@@ -2621,7 +2708,7 @@ void OLZ::loadData()
 		}
 	}
 
-	ctFile.close();
+	ctFile.close();*/
 }
 
 Utilizador * OLZ::pesquisaEmail(string mail)
@@ -2939,11 +3026,18 @@ vector<Anuncio *> OLZ::registarTroca()
 vector<Anuncio *> OLZ::searchAnuncioVenda(string mailutilizador)
 {
 	vector<Anuncio *> compraTemp;
+	vector<Anuncio *> temp;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
 
-	for (unsigned int i = 0; i < anuncios.size(); i++)
+	while (!temp2.empty()){
+		temp.push_back(temp2.top());
+		temp2.pop();
+	}
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
-		if (anuncios[i]->Anunciante->getEmail() == mailutilizador && anuncios[i]->isVenda())
-			compraTemp.push_back(anuncios[i]);
+		if (temp[i]->Anunciante->getEmail() == mailutilizador && temp[i]->isVenda())
+			compraTemp.push_back(temp[i]);
 	}
 
 	return compraTemp;
@@ -2952,12 +3046,19 @@ vector<Anuncio *> OLZ::searchAnuncioVenda(string mailutilizador)
 vector<Anuncio *> OLZ::searchAnuncio(string mail)
 {
 	vector<Anuncio *> anunciosTemp;
+	vector<Anuncio *> temp;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
 
+	while (!temp2.empty()){
+		temp.push_back(temp2.top());
+		temp2.pop();
+	}
 	for (unsigned int i = 0; i < anuncios.size(); i++)
 	{
-		if (anuncios[i]->Anunciante->getEmail() == mail)		//Se o email do anunciante corresponder ao mail do utilizador que se esta a verificar
+		if (temp[i]->Anunciante->getEmail() == mail)		//Se o email do anunciante corresponder ao mail do utilizador que se esta a verificar
 		{
-			anunciosTemp.push_back(anuncios[i]);
+			anunciosTemp.push_back(temp[i]);
 		}
 	}
 
@@ -3010,7 +3111,7 @@ Utilizador OLZ::searchUtilizador(string emailUt)
 
 	return temp;
 }
-
+/*
 int OLZ::searchAnuncio(int AnID)
 {
 	for (unsigned int i = 0; i < anuncios.size(); i++)
@@ -3019,7 +3120,7 @@ int OLZ::searchAnuncio(int AnID)
 			return i;
 	}
 	return -1;
-}
+}*/
 
 void OLZ::adminMostraUsers()
 {
@@ -3056,12 +3157,20 @@ void OLZ::adminMostraUsers()
 
 void OLZ::adminMostraAnuncios()
 {
+	vector<Anuncio *> temp;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
+
+	while (!temp2.empty()){
+		temp.push_back(temp2.top());
+		temp2.pop();
+	}
 	clrscr();
 	impressaoTitulo();
-	for (unsigned int i = 0; i < anuncios.size(); i++)
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
 		setcolor(4, 0);
-		cout << anuncios[i]->getID() << " - " << anuncios[i]->getTitulo() << endl;
+		cout << temp[i]->getID() << " - " << temp[i]->getTitulo() << endl;
 		setcolor(7, 0);
 	}
 
@@ -3112,8 +3221,14 @@ void OLZ::MostraAnunciosRealizadosUser(string mail)
 }
 vector<Anuncio * > OLZ::ordenaAnCat()
 {
-	vector<Anuncio *> temp = anuncios;
+	vector<Anuncio *> temp;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
 
+	while (!temp2.empty()){
+		temp.push_back(temp2.top());
+		temp2.pop();
+	}
 	for (unsigned int p = 1; p < temp.size(); p++)
 	{
 		Anuncio * tmp = temp[p];
@@ -3130,8 +3245,14 @@ vector<Anuncio * > OLZ::ordenaAnCat()
 
 vector<Anuncio * > OLZ::ordenaAnUt()
 {
-	vector<Anuncio *> temp = anuncios;
+	vector<Anuncio *> temp;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
 
+	while (!temp2.empty()){
+		temp.push_back(temp2.top());
+		temp2.pop();
+	}
 	for (unsigned int p = 1; p < temp.size(); p++)
 	{
 		Anuncio * tmp = temp[p];
@@ -3148,8 +3269,14 @@ vector<Anuncio * > OLZ::ordenaAnUt()
 
 vector<Anuncio * > OLZ::ordenaAnID()
 {
-	vector<Anuncio *> temp = anuncios;
+	vector<Anuncio *> temp;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
 
+	while (!temp2.empty()){
+		temp.push_back(temp2.top());
+		temp2.pop();
+	}
 	for (unsigned int p = 1; p < temp.size(); p++)
 	{
 		Anuncio * tmp = temp[p];
@@ -3178,10 +3305,18 @@ Contato OLZ::pesquisaContactoID(int id)
 vector<Anuncio * > OLZ::pesquisaAnCat(string cat)
 {
 	vector<Anuncio * > temp;
-	for (unsigned int i = 0; i < anuncios.size(); i++)
+	vector<Anuncio *> temp3;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
+
+	while (!temp2.empty()){
+		temp3.push_back(temp2.top());
+		temp2.pop();
+	}
+	for (unsigned int i = 0; i < temp3.size(); i++)
 	{
-		if (anuncios[i]->getCategoria() == cat)
-			temp.push_back(anuncios[i]);
+		if (temp3[i]->getCategoria() == cat)
+			temp.push_back(temp3[i]);
 	}
 
 	return temp;
@@ -3190,10 +3325,18 @@ vector<Anuncio * > OLZ::pesquisaAnCat(string cat)
 vector<Anuncio * > OLZ::pesquisaAnTit(string tit)
 {
 	vector<Anuncio * > temp;
-	for (unsigned int i = 0; i < anuncios.size(); i++)
+	vector<Anuncio *> temp3;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
+
+	while (!temp2.empty()){
+		temp3.push_back(temp2.top());
+		temp2.pop();
+	}
+	for (unsigned int i = 0; i < temp3.size(); i++)
 	{
-		if (anuncios[i]->getTitulo() == tit)
-			temp.push_back(anuncios[i]);
+		if (temp3[i]->getTitulo() == tit)
+			temp.push_back(temp3[i]);
 	}
 
 	sort(temp.begin(), temp.end(), maisLikes); //organiza por likes
@@ -3203,11 +3346,19 @@ vector<Anuncio * > OLZ::pesquisaAnTit(string tit)
 vector<Anuncio * > OLZ::pesquisaAnPreco(float p)
 {
 	vector<Anuncio * > temp;
-	
-	for (unsigned int i = 0; i < anuncios.size(); i++)
+	vector<Anuncio *> temp3;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
+
+	while (!temp2.empty()){
+		temp3.push_back(temp2.top());
+		temp2.pop();
+	}
+
+	for (unsigned int i = 0; i < temp3.size(); i++)
 	{
-		if (anuncios[i]->getPreco() <= p)
-			temp.push_back(anuncios[i]);
+		if (temp3[i]->getPreco() <= p)
+			temp.push_back(temp3[i]);
 	}
 	sort(temp.begin(), temp.end(), maisLikes); //organiza por likes
 	return temp;
@@ -3216,11 +3367,18 @@ vector<Anuncio * > OLZ::pesquisaAnPreco(float p)
 vector<Anuncio * > OLZ::pesquisaAnPalavra(string p)
 {
 	vector<Anuncio *> temp;
+	vector<Anuncio *> temp3;
+	priority_queue<Anuncio *> temp2;
+	temp2 = anuncios;
 
-	for (unsigned int i = 0; i < anuncios.size(); i++)
+	while (!temp2.empty()){
+		temp3.push_back(temp2.top());
+		temp2.pop();
+	}
+	for (unsigned int i = 0; i < temp3.size(); i++)
 	{
-		if (anuncios[i]->searchPalavra(p))
-			temp.push_back(anuncios[i]);
+		if (temp3[i]->searchPalavra(p))
+			temp.push_back(temp3[i]);
 	}
 
 	sort(temp.begin(), temp.end(), maisLikes); // Organiza por likes
