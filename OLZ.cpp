@@ -3603,3 +3603,44 @@ void OLZ::lerMensagensEnviadas()
 
 	return;
 }
+
+
+bool operator<(const AnuncioCompra l, const AnuncioCompra r)
+{
+	if (l.getPrioridade() < r.getPrioridade())
+		return true;
+	else if (l.getPrioridade() == r.getPrioridade())
+		return (l.getDataCriacao() > r.getDataCriacao());
+
+	return false;
+}
+
+bool operator<(const AnuncioCompra l, const AnuncioVenda r)
+{
+	if (l.getPrioridade() < r.getPrioridade())
+		return true;
+	else if (l.getPrioridade() == r.getPrioridade())
+		return (l.getDataCriacao() > r.getDataCriacao());
+
+	return false;
+}
+
+bool operator<(const AnuncioVenda l, const AnuncioCompra r)
+{
+	if (l.getPrioridade() < r.getPrioridade())
+		return true;
+	else if (l.getPrioridade() == r.getPrioridade())
+		return (l.getDataCriacao() > r.getDataCriacao());
+
+	return false;
+}
+
+bool operator<(const AnuncioVenda l, const AnuncioVenda r)
+{
+	if (l.getPrioridade() < r.getPrioridade())
+		return true;
+	else if (l.getPrioridade() == r.getPrioridade())
+		return (l.getDataCriacao() > r.getDataCriacao());
+
+	return false;
+}
