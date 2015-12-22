@@ -17,6 +17,9 @@ class Utilizador; // Diz ao compilador que a classe Utilizador se encontra defin
 /**
 * @brief Classe base Anuncio
 */
+class AnuncioCompra;
+class AnuncioVenda;
+
 class Anuncio
 {
 public:
@@ -214,11 +217,11 @@ public:
 	/* @brief Retira o anuncio com ID do vetor de trocas
 	*/
 	virtual void apagarTroca(int id);
+
 	/**
 	/* @brief Retorna se o Anuncio é menos prioritario que t
 	*/
 	bool operator< (const Anuncio & t) const;
-
 };
 
 /**
@@ -258,6 +261,16 @@ public:
 	/* @brief Retira o anuncio com ID do vetor de trocas
 	*/
 	void apagarTroca(int id);
+
+	/**
+	* @brief Verifica qual o Anuncio "menor"
+	*/
+	bool operator<(const AnuncioCompra r);
+
+	/**
+	* @brief Verifica qual o Anuncio "menor"
+	*/
+	bool operator<(const AnuncioVenda r);
 };
 
 /**
@@ -299,6 +312,16 @@ public:
 	/* @brief Retira o anuncio com ID do vetor de trocas
 	*/
 	void apagarTroca(int id);
+
+	/**
+	* @brief Verifica qual o Anuncio "menor"
+	*/
+	bool operator<(const AnuncioCompra r);
+
+	/**
+	* @brief Verifica qual o Anuncio "menor"
+	*/
+	bool operator<(const AnuncioVenda r);
 };
 
 #endif /*ANUNCIO_H_*/

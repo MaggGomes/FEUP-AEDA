@@ -20,6 +20,30 @@ struct hstr {
 		return 37 * (a->getID()) + a->getPreco();
 	}
 };
+
+struct cmpAnun
+{
+	bool operator() (const Anuncio * a1, const Anuncio * a2)
+	{
+		if (a1->getPrioridade() < a2->getPrioridade())
+			return true;
+		else if (a1->getPrioridade() == a2->getPrioridade())
+		{
+			if (a1->getClicks() < a2->getClicks())
+				return true;
+			else if (a1->getClicks() == a2->getClicks())
+			{
+				if (a1->getDataCriacao() < a2->getDataCriacao())
+					return true;
+				else
+					return false;
+			}
+		}
+
+		return false;
+	}
+};
+
 /**
 * @brief Classe OLZ que armazena todos utilizadores e anúncios da aplicação
 */
@@ -56,9 +80,34 @@ public:
 	priority_queue<Anuncio *> getAnuncios() const;
 
 	/**
+	* @return Retorna vector com os anuncios
+	*/
+	vector<Anuncio *> getAnunciosVector() const;
+
+	/**
+	* @return Vetor com os elementos da Priority Queue
+	*/
+	vector<Anuncio *> emptyPQtoVector();
+
+	/**
+	* @brief Preenche a Priority Queue com os valores do vetor v.
+	*/
+	void fillPQfromVector(vector<Anuncio *> v);
+
+	/**
 	* @brief Adiciona um utilizador
 	*/
 	void addUtilizador(Utilizador user);
+
+	/**
+	* @brief Cria Menu para visualização dos utilizadores
+	*/
+	void createMenuVerUsers();
+
+	/**
+	* @brief Mostra os utilizadores ordenados alfabeticamente
+	*/
+	void adminMostraUsersAZ();
 
 	/**
 	* @brief Adiciona um anuncio
@@ -446,6 +495,11 @@ public:
 	void apagarContactosOLZ(Anuncio * a);
 
 	/**
+	* @brief Permite definir um anuncio como premium
+	*/
+	void premiumAnuncio(vector<Anuncio *> a);
+
+	/**
 	* @brief Mostra um resumo dos utilizadores existentes
 	*/
 	void adminMostraUsers();
@@ -463,6 +517,11 @@ public:
 	* @brief Mostra os anuncios existentes cujas transações foram realizadas pelo User
 	*/
 	void MostraAnunciosRealizadosUser(string mail);
+
+	/**
+	* @brief Mostra os anuncios do utilizador que são premium e que não são.
+	*/
+	void MostraAnunciosPremiumUser(string mail);
 
 	/**
 	* @return Retorna os anuncios organizados por categoria
@@ -542,5 +601,25 @@ public:
 	* @brief Imprime as mensagens enviadas pelo User Logado
 	*/
 	void lerMensagensEnviadas();			//Lê todas as mensagens recebidas através de cada um dos anúncios
+
+	/**
+	* @brief Armazena os dados dos utilizadores
+	*/
+	void saveUsers();
+
+	/**
+	* @brief Armazena os dados dos anuncios
+	*/
+	void saveAnuncios();
+
+	/**
+	* @brief Armazena os dados dos contatos
+	*/
+	void saveContatos();
+
+	/**
+	* @brief Armazena os dados dos negocios concretizados
+	*/
+	void saveConcretizados();
 };
 #endif /*OLZ_H_*/

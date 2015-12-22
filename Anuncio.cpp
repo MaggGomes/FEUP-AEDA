@@ -163,30 +163,116 @@ vector<Anuncio *> AnuncioVenda::getTroca() const
 
 void AnuncioVenda::visAnuncio()
 {
-	setcolor(9, 0);	
+	setcolor(9, 0);
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << " --- PREMIUM --------------------" << endl;
+		cout << "#";
+		setcolor(9, 0);
+	}
 	cout << "ID: " << id << endl;
-	cout << "Anuncio de Venda" << endl;	
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(9, 0);
+	}
+	cout << "Anuncio de Venda" << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(9, 0);
+	}
 	cout << "Titulo: " << titulo << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(9, 0);
+	}
 	cout << "Categoria: " << categoria << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(9, 0);
+	}
 	cout << "Localidade: " << Anunciante->getLocalizacao().getFreguesia() << ", " << Anunciante->getLocalizacao().getConcelho() << ", "
 		<< Anunciante->getLocalizacao().getDistrito() << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(9, 0);
+	}
 	cout << "Data de Criacao: " << datacriacao << endl;
-	cout << "Descricao: " << descricao << endl;	
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(9, 0);
+	}
+	cout << "Descricao: " << descricao << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(9, 0);
+	}
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
 		cout << "Imagem: " << imagens[i] << endl;
+		if (prioridade != 0)
+		{
+			setcolor(14, 6);
+			cout << "#";
+			setcolor(9, 0);
+		}
 	}
 
 	cout << "Estado: " << estado << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(9, 0);
+	}
 
 	cout << "Preco: " << preco << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(9, 0);
+	}
 	num_clicks++;
-	cout << "Visualizacoes: " << num_clicks<<endl;
+	cout << "Visualizacoes: " << num_clicks << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(9, 0);
+	}
 
 	if (possivelNegociar)
-		cout << "Negociavel."<<endl;
-
-	setcolor(7, 0);	
+	{
+		cout << "Negociavel." << endl;
+		if (prioridade != 0)
+		{
+			setcolor(14, 6);
+			cout << "#";
+			setcolor(9, 0);
+		}
+	}
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << " --------------------------------";
+		setcolor(9, 0);
+	}
+	setcolor(7, 0);
 	cout << endl;
 }
 
@@ -218,39 +304,130 @@ void AnuncioCompra::setTroca(vector<Anuncio *> tr)
 void AnuncioCompra::visAnuncio()
 {
 	setcolor(10, 0);
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << " --- PREMIUM --------------------" << endl;
+		cout << "#";
+		setcolor(10, 0);
+	}
 	cout << "ID: " << id << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(10, 0);
+	}
 	cout << "Anuncio de Compra" << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(10, 0);
+	}
 	cout << "Titulo: " << titulo << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(10, 0);
+	}
 	cout << "Categoria: " << categoria << endl;
-	cout << "Localidade: " << Anunciante->getLocalizacao().getFreguesia() << ", " << Anunciante->getLocalizacao().getConcelho() << ", " 
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(10, 0);
+	}
+	cout << "Localidade: " << Anunciante->getLocalizacao().getFreguesia() << ", " << Anunciante->getLocalizacao().getConcelho() << ", "
 		<< Anunciante->getLocalizacao().getDistrito() << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(10, 0);
+	}
 	cout << "Data de Criacao: " << datacriacao << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(10, 0);
+	}
 	cout << "Descricao: " << descricao << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(10, 0);
+	}
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
 		cout << "Imagem: " << imagens[i] << endl;
+		if (prioridade != 0)
+		{
+			setcolor(14, 6);
+			cout << "#";
+			setcolor(10, 0);
+		}
 	}
 
 	cout << "Preco: " << preco << endl;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(10, 0);
+	}
 	num_clicks++;
 	cout << "Visualizacoes: " << num_clicks;
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << "#";
+		setcolor(10, 0);
+	}
 
 	if (possivelNegociar)
+	{
 		cout << "Negociavel.";
-	
+		if (prioridade != 0)
+		{
+			setcolor(14, 6);
+			cout << "#";
+			setcolor(10, 0);
+		}
+	}
+
 	if (troca.size()>0)
 	{
 		cout << "Possiveis trocas:" << endl;
+		if (prioridade != 0)
+		{
+			setcolor(14, 6);
+			cout << "#";
+			setcolor(10, 0);
+		}
 		for (unsigned int i = 0; i < troca.size(); i++)
 		{
 			cout << "- " << troca[i]->getTitulo() << " (ID: " << troca[i]->getID() << ")" << endl;
+			if (prioridade != 0)
+			{
+				setcolor(14, 6);
+				cout << "#";
+				setcolor(10, 0);
+			}
 		}
 	}
-	
+	if (prioridade != 0)
+	{
+		setcolor(14, 6);
+		cout << " --------------------------------";
+		setcolor(10, 0);
+	}
 	setcolor(7, 0);
 	cout << endl;
 }
-
 bool AnuncioCompra::isVenda() const
 {
 	return false;
@@ -297,4 +474,65 @@ void AnuncioVenda::apagarTroca(int id)
 void Anuncio::apagarTroca(int id)
 {
 	return;
+}
+
+bool AnuncioCompra::operator<(const AnuncioCompra r)
+{
+	if (this->getPrioridade() < r.getPrioridade())
+		return true;
+	else if (this->getPrioridade() == r.getPrioridade())
+	{
+		if (this->getClicks() > r.getClicks())
+			return true;
+		else if (this->getClicks() == r.getClicks())
+			return (this->getDataCriacao() > r.getDataCriacao());
+	}
+
+	return false;
+}
+
+bool AnuncioCompra::operator<(const AnuncioVenda r)
+{
+	if (this->getPrioridade() < r.getPrioridade())
+		return true;
+	else if (this->getPrioridade() == r.getPrioridade())
+	{
+		if (this->getClicks() > r.getClicks())
+			return true;
+		else if (this->getClicks() == r.getClicks())
+			return (this->getDataCriacao() > r.getDataCriacao());
+	}
+
+	return false;
+}
+
+
+bool AnuncioVenda::operator<(const AnuncioVenda r)
+{
+	if (this->getPrioridade() < r.getPrioridade())
+		return true;
+	else if (this->getPrioridade() == r.getPrioridade())
+	{
+		if (this->getClicks() > r.getClicks())
+			return true;
+		else if (this->getClicks() == r.getClicks())
+			return (this->getDataCriacao() > r.getDataCriacao());
+	}
+
+	return false;
+}
+
+bool AnuncioVenda::operator<(const AnuncioCompra r)
+{
+	if (this->getPrioridade() < r.getPrioridade())
+		return true;
+	else if (this->getPrioridade() == r.getPrioridade())
+	{
+		if (this->getClicks() > r.getClicks())
+			return true;
+		else if (this->getClicks() == r.getClicks())
+			return (this->getDataCriacao() > r.getDataCriacao());
+	}
+
+	return false;
 }

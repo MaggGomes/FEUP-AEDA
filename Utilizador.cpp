@@ -170,18 +170,22 @@ void Utilizador::setUltimoNegocio(Data dt)
 {
 	ultimonegocio = dt;
 }
+
 ostream& operator<<(ostream& os, const Utilizador& user){
 
-	if (user.vis_nome)
-		os << "Nome: " << user.nome << endl;
-	if (user.vis_email)
-		os << "Email: " << user.email << endl;
-	if (user.vis_telefone)
-		os << "Telefone: " << user.telefone << endl;
-
-	if (!user.vis_nome && !user.vis_email && !user.vis_telefone)
-		os << "O Utilizador nao pertende mostrar as suas informações. " << endl;
-
+	setcolor(3, 0);
+	os << " >NOME: ";
+	setcolor(7, 0);
+	os << setw(10) << user.nome;
+	setcolor(3, 0);
+	os << "   >EMAIL: ";
+	setcolor(7, 0);
+	os << setw(20) << user.email;
+	setcolor(3, 0);
+	os << "   >NEGOCIOS EFETUADOS: ";
+	setcolor(7, 0);
+	os << user.negocios;
+	
 	os << endl;
 
 	return os;

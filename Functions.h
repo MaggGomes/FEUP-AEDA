@@ -46,4 +46,9 @@ string hidePass();
 */
 bool searchWordInString(string w, string s);
 
+/**
+* @brief Função que aguarda que seja colocado algum input para continuar
+*/
+void PressKeyToContinue();
+
 #endif /*FUNCTIONS_H_*/

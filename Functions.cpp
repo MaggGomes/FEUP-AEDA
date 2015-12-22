@@ -100,4 +100,10 @@ bool searchWordInString(string w, string s)
 	}
 }
 
-
+void PressKeyToContinue()
+{
+	setcolor(11, 0);
+	cout << " >Pressione qualquer tecla para voltar ao MENU anterior. " << flush;
+	setcolor(7, 0);
+	_getch();
+}
