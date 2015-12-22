@@ -60,6 +60,16 @@ public:
 	void incNegocios();
 
 	/**
+	* @brief Altera o número de negócios para o valor do argumento
+	*/
+	void setNegocios(int num);
+
+	/**
+	* @brief Altera a Data do último de negócio realizado para o valor do argumento
+	*/
+	void setDataNegocios(Data data);
+
+	/**
 	* @brief Retorna o numerosde negocios feitos de um determinado user
 	*/
 	int getNegocios() const;

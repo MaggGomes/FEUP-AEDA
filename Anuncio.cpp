@@ -17,8 +17,6 @@ Anuncio::Anuncio(Utilizador * ut, string tit, string cat, string des, bool pNeg,
 	int dia = timePtr->tm_mday;
 	int mes = timePtr->tm_mon + 1;
 	int ano = timePtr->tm_year + 1900 ;
-	
-
 	Data temp(dia,mes,ano);
 	
 	imagens = {};
@@ -104,6 +102,7 @@ void Anuncio::setDataRealizacao(Data dt)
 {
 	datarealizacao = dt;
 }
+
 void Anuncio::addImagem(string im)
 {
 	imagens.push_back(im);
@@ -127,16 +126,6 @@ void Anuncio::setPreco(float pr){
 
 void Anuncio::setPrioridade(float pr){
 	prioridade = pr;
-}
-
-bool Anuncio::operator<(const Anuncio & t) const
-{
-	if (prioridade < t.prioridade)
-		return true;
-	else if (prioridade == t.prioridade)
-		return (datacriacao > t.datacriacao);
-
-	return false;
 }
 
 //------------------------------
@@ -428,6 +417,7 @@ void AnuncioCompra::visAnuncio()
 	setcolor(7, 0);
 	cout << endl;
 }
+
 bool AnuncioCompra::isVenda() const
 {
 	return false;
@@ -476,63 +466,23 @@ void Anuncio::apagarTroca(int id)
 	return;
 }
 
-bool AnuncioCompra::operator<(const AnuncioCompra r)
+PtrToAnuncio::PtrToAnuncio(Anuncio* ptr)
 {
-	if (this->getPrioridade() < r.getPrioridade())
-		return true;
-	else if (this->getPrioridade() == r.getPrioridade())
-	{
-		if (this->getClicks() > r.getClicks())
-			return true;
-		else if (this->getClicks() == r.getClicks())
-			return (this->getDataCriacao() > r.getDataCriacao());
-	}
-
-	return false;
+	a_ptr = ptr;
 }
 
-bool AnuncioCompra::operator<(const AnuncioVenda r)
+Anuncio* PtrToAnuncio::getPtr() const
 {
-	if (this->getPrioridade() < r.getPrioridade())
-		return true;
-	else if (this->getPrioridade() == r.getPrioridade())
-	{
-		if (this->getClicks() > r.getClicks())
-			return true;
-		else if (this->getClicks() == r.getClicks())
-			return (this->getDataCriacao() > r.getDataCriacao());
-	}
-
-	return false;
+	return a_ptr;
 }
 
 
-bool AnuncioVenda::operator<(const AnuncioVenda r)
+bool operator<(const PtrToAnuncio &l, const PtrToAnuncio &r)
 {
-	if (this->getPrioridade() < r.getPrioridade())
+	if (l.getPtr()->getPrioridade() < r.getPtr()->getPrioridade())
 		return true;
-	else if (this->getPrioridade() == r.getPrioridade())
-	{
-		if (this->getClicks() > r.getClicks())
-			return true;
-		else if (this->getClicks() == r.getClicks())
-			return (this->getDataCriacao() > r.getDataCriacao());
-	}
-
-	return false;
-}
-
-bool AnuncioVenda::operator<(const AnuncioCompra r)
-{
-	if (this->getPrioridade() < r.getPrioridade())
-		return true;
-	else if (this->getPrioridade() == r.getPrioridade())
-	{
-		if (this->getClicks() > r.getClicks())
-			return true;
-		else if (this->getClicks() == r.getClicks())
-			return (this->getDataCriacao() > r.getDataCriacao());
-	}
+	else if (l.getPtr()->getPrioridade() == r.getPtr()->getPrioridade())
+		return (l.getPtr()->getDataCriacao() > r.getPtr()->getDataCriacao());
 
 	return false;
 }

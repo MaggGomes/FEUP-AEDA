@@ -21,29 +21,6 @@ struct hstr {
 	}
 };
 
-struct cmpAnun
-{
-	bool operator() (const Anuncio * a1, const Anuncio * a2)
-	{
-		if (a1->getPrioridade() < a2->getPrioridade())
-			return true;
-		else if (a1->getPrioridade() == a2->getPrioridade())
-		{
-			if (a1->getClicks() < a2->getClicks())
-				return true;
-			else if (a1->getClicks() == a2->getClicks())
-			{
-				if (a1->getDataCriacao() < a2->getDataCriacao())
-					return true;
-				else
-					return false;
-			}
-		}
-
-		return false;
-	}
-};
-
 /**
 * @brief Classe OLZ que armazena todos utilizadores e anúncios da aplicação
 */
@@ -51,10 +28,10 @@ class OLZ
 {
 private:
 	BST<Utilizador> utilizadores;
-	//vector <Anuncio *> anuncios;
+	vector<Utilizador>vecutilizadores;
 	vector <Contato> contatos;
 	unordered_set<Anuncio*, hstr, hstr> realizados;
-	priority_queue <Anuncio *> anuncios;
+	priority_queue <PtrToAnuncio> anuncios;
 	string userOnline; // Indica qual o e-mail do utilizador que efetuou login
 	bool userLogado;
 public:
@@ -77,7 +54,7 @@ public:
 	/**
 	* @return Retorna vetor com os anuncios
 	*/
-	priority_queue<Anuncio *> getAnuncios() const;
+	priority_queue<PtrToAnuncio> getAnuncios() const;
 
 	/**
 	* @return Retorna vector com os anuncios
@@ -237,6 +214,11 @@ public:
 	* @brief cria e regista um utilizador
 	*/
 	void registar();
+
+	/**
+	* @brief regista se o User quer subscrever o Premium ou nao
+	*/
+	float registarPremium();
 
 	/**
 	* @brief Especifica se o utilizador está ou não logado
@@ -621,5 +603,25 @@ public:
 	* @brief Armazena os dados dos negocios concretizados
 	*/
 	void saveConcretizados();
+
+	/**
+	* @brief Carrega os dados dos utilizadores
+	*/
+	void loadUsers();
+
+	/**
+	* @brief Carrega os dados dos anuncios
+	*/
+	void OLZ::loadAnuncios();
+
+	/**
+	* @brief Carrega os dados dos Contatos
+	*/
+	void OLZ::loadContatos();
+
+	/**
+	* @brief Carrega os dados dos negocios concretizados
+	*/
+	void OLZ::loadConcretizados();
 };
 #endif /*OLZ_H_*/

@@ -36,7 +36,7 @@ public:
 	float prioridade;
 	float preco;
 	static int last_id;
- 
+	 
 	/**
 	* @brief Construtor da classe Anuncio
 	*/
@@ -217,13 +217,19 @@ public:
 	/* @brief Retira o anuncio com ID do vetor de trocas
 	*/
 	virtual void apagarTroca(int id);
-
-	/**
-	/* @brief Retorna se o Anuncio é menos prioritario que t
-	*/
-	bool operator< (const Anuncio & t) const;
 };
 
+class PtrToAnuncio
+{
+public:
+	PtrToAnuncio(Anuncio* ptr);
+	
+	Anuncio* getPtr() const;
+	
+	friend bool operator<(const PtrToAnuncio &l, const PtrToAnuncio &r);
+protected:
+	Anuncio* a_ptr;
+};
 /**
 * @brief Classe derivada AnuncioVenda
 */
@@ -261,16 +267,6 @@ public:
 	/* @brief Retira o anuncio com ID do vetor de trocas
 	*/
 	void apagarTroca(int id);
-
-	/**
-	* @brief Verifica qual o Anuncio "menor"
-	*/
-	bool operator<(const AnuncioCompra r);
-
-	/**
-	* @brief Verifica qual o Anuncio "menor"
-	*/
-	bool operator<(const AnuncioVenda r);
 };
 
 /**
@@ -312,16 +308,6 @@ public:
 	/* @brief Retira o anuncio com ID do vetor de trocas
 	*/
 	void apagarTroca(int id);
-
-	/**
-	* @brief Verifica qual o Anuncio "menor"
-	*/
-	bool operator<(const AnuncioCompra r);
-
-	/**
-	* @brief Verifica qual o Anuncio "menor"
-	*/
-	bool operator<(const AnuncioVenda r);
 };
 
 #endif /*ANUNCIO_H_*/

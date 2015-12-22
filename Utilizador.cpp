@@ -67,6 +67,15 @@ vector<int> Utilizador::getMensEnv() const {
 	return mensagensEnviadas;
 }
 
+void Utilizador::setNegocios(int num){
+	negocios = num;
+}
+
+void Utilizador::setDataNegocios(Data data){
+	ultimonegocio = data;
+}
+
+
 string Utilizador::getPass() const{
 	return password;
 }
