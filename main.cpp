@@ -45,14 +45,6 @@ int main(){
 	OLZ.addAnuncio(anun3);
 	priority_queue<PtrToAnuncio> t = OLZ.getAnuncios();
 	
-	
-	
-	while (!t.empty())
-	{
-		cout << t.top().getPtr()->getID() << " - " << t.top().getPtr()->getPrioridade() << endl;
-		t.pop();
-	}
-
 	OLZ.createMenuInicial();
 	OLZ.saveData();
 

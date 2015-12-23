@@ -2531,10 +2531,10 @@ void OLZ::saveUsers(){
 		for (unsigned int j = 0; j < temp.getMensEnv().size(); j++)
 		{
 			File << temp.getMensEnv()[j] << ";";
-		}
+		}		
 
 		// Armazena o numero de negocios e a data do ultimo negocio
-		File << temp.getNegocios() << ";" << temp.getUltimoNegocio().getDia() << " " << temp.getUltimoNegocio().getMes() << " " << temp.getUltimoNegocio().getAno() << ";";
+		File << temp.getNegocios() << ";" << temp.getUltimoNegocio().getDia() << ";" << temp.getUltimoNegocio().getMes() << ";" << temp.getUltimoNegocio().getAno() << ";";
 
 		// Armazena as visibilidades dos nomes, email e telefone
 		if (i != vecutilizadores.size() - 1)
@@ -2554,10 +2554,10 @@ void OLZ::saveAnuncios(){
 	File.open("anuncios.csv");
 
 	vector<Anuncio *> anunciosTemp;
-	priority_queue<Anuncio*> temp = anuncios;
+	priority_queue<PtrToAnuncio> temp = anuncios;
 
 	while (!temp.empty()){
-		anunciosTemp.push_back(temp.top());
+		anunciosTemp.push_back(temp.top().getPtr());
 		temp.pop();
 	}
 
@@ -2599,7 +2599,6 @@ void OLZ::saveAnuncios(){
 			else
 			{
 				File << false << ";";
-
 
 				File << temp->getTroca().size();
 				if (temp->getTroca().size() == 0)
@@ -2644,7 +2643,7 @@ void OLZ::saveAnuncios(){
 		}
 	}
 
-	File.close();*/
+	File.close();
 }
 
 void OLZ::saveContatos(){
@@ -2705,7 +2704,7 @@ void OLZ::saveConcretizados(){
 		// Armazena data de criação do anúncio
 		File << temp->getDataCriacao().getDia() << ";" << temp->getDataCriacao().getMes() << ";" << temp->getDataCriacao().getAno() << ";";
 
-		// Armazena data de concretiação do negócio do anúncio
+		// Armazena data de concretização do negócio do anúncio
 		File << temp->getDataRealizacao().getDia() << ";" << temp->getDataRealizacao().getMes() << ";" << temp->getDataRealizacao().getAno() << ";";
 
 		// Armazena prioridade do anúncio
@@ -2853,16 +2852,24 @@ void OLZ::loadUsers(){
 			getline(ss, stNumNegocios, ';');
 			int intNumNegocios = atoi(stNumNegocios.c_str());
 			usertemp.setNegocios(intNumNegocios); // Carrega o número de negócios
+						
+			int tDia;
+			string stDia;
+			getline(ss, stDia, ';');
+			tDia = atoi(stDia.c_str());
 
-			string stDataNegocio;
-			int tdia, tmes, tano;
-			getline(ss, stDataNegocio, ';');
-			stringstream sstemp(stDataNegocio);
-			sstemp >> tdia;
-			sstemp >> tmes;
-			sstemp >> tano;
-			Data datatemp(tdia, tmes, tano);
-			usertemp.setDataNegocios(datatemp); // Carrega a data do último negócio
+			int tMes;
+			string stMes;
+			getline(ss, stMes, ';');
+			tMes = atoi(stMes.c_str());
+
+			int tAno;
+			string stAno;
+			getline(ss, stAno, ';');
+			tAno = atoi(stAno.c_str());
+
+			Data datatemp(tDia, tMes, tAno);
+			usertemp.setDataNegocios(datatemp); // Carrega data do último negócio
 
 			string stVisNome;
 			getline(ss, stVisNome, ';'); 
@@ -2895,7 +2902,7 @@ void OLZ::loadUsers(){
 
 void OLZ::loadAnuncios(){
 
-	/*ifstream File;
+	ifstream File;
 
 	File.open("anuncios.csv");
 
@@ -2961,6 +2968,28 @@ void OLZ::loadAnuncios(){
 			tAno = atoi(stAno.c_str());
 
 			Data tDt(tDia, tMes, tAno);
+			
+			int tcDia;
+			string stcDia;
+			getline(ss2, stcDia, ';');
+			tcDia = atoi(stcDia.c_str());
+
+			int tcMes;
+			string stcMes;
+			getline(ss2, stcMes, ';');
+			tcMes = atoi(stcMes.c_str());
+
+			int tcAno;
+			string stcAno;
+			getline(ss2, stcAno, ';');
+			tAno = atoi(stcAno.c_str());
+
+			Data tcDt(tcDia, tcMes, tcAno);
+
+			float tPrior;
+			string stPrior;
+			getline(ss2, stPrior, ';');
+			tPrior = atof(stPrior.c_str());
 
 			bool tNeg;
 			string stNeg;
@@ -2991,6 +3020,8 @@ void OLZ::loadAnuncios(){
 				anun->setNum_clicks(tClicks);
 				anun->setImagens(tIm);
 				anun->setId(tId);
+				anun->setPrioridade(tPrior);
+				anun->setDataRealizacao(tcDt);
 				anuncios.push(anun);
 			}
 			else
@@ -3019,6 +3050,8 @@ void OLZ::loadAnuncios(){
 				anun->setNum_clicks(tClicks);
 				anun->setImagens(tIm);
 				anun->setId(tId);
+				anun->setPrioridade(tPrior);
+				anun->setDataRealizacao(tcDt);
 				anuncios.push(anun);
 			}
 
@@ -3029,21 +3062,68 @@ void OLZ::loadAnuncios(){
 		utilizadores.insert(vecutilizadores[i]);
 	}
 
-	File.close();*/
+	File.close();
 }
 
 void OLZ::loadContatos(){
+	ifstream File; // variavel que vai conter o ficheiro de Contatos
 
+	File.open("contatos.csv");
+
+	string line;
+
+	while (getline(File, line)){
+		istringstream ss(line);
+
+		while (ss.good()) {
+			int tId;
+			string stId;
+			getline(ss, stId, ';');
+			tId = atoi(stId.c_str());
+
+			int tIdA;
+			string stIdA;
+			getline(ss, stIdA, ';');
+			tIdA = atoi(stIdA.c_str());
+
+			int k;
+			for (size_t i = 0; i < anuncios.size(); i++)
+			{
+				if (anuncios[i]->getID() == tIdA)
+					k = i;
+			}
+
+			Anuncio * anun = anuncios[k];
+
+			string tMens;
+			getline(ss, tMens, ';');
+
+			string tCont;
+			getline(ss, tCont, ';');
+
+			string tRem;
+			getline(ss, tRem, ';');
+
+			Contato cont(anun, tRem, tMens, tCont);
+			cont.setID(tId);
+
+			contatos.push_back(cont);
+		}
+	}
+
+	File.close();
 }
+
 void OLZ::loadConcretizados(){
 
+	
 }
 void OLZ::loadData()
 {
 
 	loadUsers();
 	//loadAnuncios();
-	//loadContatos();
+	loadContatos();
 	//loadConcretizados();
 
 
@@ -3051,7 +3131,6 @@ void OLZ::loadData()
 	/*
 	ifstream utFile; // variavel que vai conter o ficheiro de Utilizadores
 	ifstream anFile; // variavel que vai conter o ficheiro de Anuncios
-	ifstream ctFile; // variavel que vai conter o ficheiro de Contatos
 
 	utFile.open("utilizadores.csv");
 
@@ -3282,51 +3361,7 @@ void OLZ::loadData()
 	}
 
 	anFile.close();
-
-	ctFile.open("contatos.csv");
-
-	string line3;
-
-	while (getline(ctFile, line3)){
-		istringstream ss3(line3);
-
-		while (ss3.good()) {
-			int tId;
-			string stId;
-			getline(ss3, stId, ';');
-			tId = atoi(stId.c_str());
-
-			int tIdA;
-			string stIdA;
-			getline(ss3, stIdA, ';');
-			tIdA = atoi(stIdA.c_str());
-
-			int k;
-			for (size_t i = 0; i < anuncios.size(); i++)
-			{
-				if (anuncios[i]->getID() == tIdA)
-					k = i;
-			}
-
-			Anuncio * anun = anuncios[k];
-
-			string tMens;
-			getline(ss3, tMens, ';');
-
-			string tCont;
-			getline(ss3, tCont, ';');
-
-			string tRem;
-			getline(ss3, tRem, ';');
-
-			Contato cont(anun, tRem, tMens, tCont);
-			cont.setID(tId);
-
-			contatos.push_back(cont);
-		}
-	}
-
-	ctFile.close();*/
+*/
 }
 
 Utilizador * OLZ::pesquisaEmail(string mail)
