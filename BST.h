@@ -149,7 +149,7 @@ template <class Comparable>
 void BST<Comparable>::printTree() const
 {
 	if (isEmpty())
-		cout <<"" ;
+		cout <<"";
 	else
 		printTree(root);
 }

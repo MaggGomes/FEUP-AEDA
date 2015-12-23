@@ -36,7 +36,7 @@ bool Utilizador::operator==(const Utilizador &uti) const{
 }
 
 void Utilizador::incNegocios(){
-	negocios++;
+	negocios = negocios + 1;
 }
 
 int Utilizador::getNegocios() const{
@@ -74,7 +74,6 @@ void Utilizador::setNegocios(int num){
 void Utilizador::setDataNegocios(Data data){
 	ultimonegocio = data;
 }
-
 
 string Utilizador::getPass() const{
 	return password;

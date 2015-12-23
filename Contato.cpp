@@ -12,11 +12,9 @@ Contato::Contato(Anuncio * anun, string rem, string mens, string cont)
 	remetente = rem;
 }
 
-
 std::string Contato::getRemetente() const {
 	return remetente;
 }
-
 
 std::string Contato::getMensagem() const {
 	return mensagem;

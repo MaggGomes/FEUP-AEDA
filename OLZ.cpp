@@ -447,7 +447,7 @@ float OLZ::registarPremium()
 	clean_buffer();
 	char premium;
 	float quantia;
-	cout << ">> DESEJA SUBSCREVER AO PREMIUM PARA ESTE ANUNCIO? (S/n)" << endl << "O Premium permite o seu anuncio ter mais visibilidade, apenas por " <<
+	cout << ">> DESEJA SUBSCREVER AO PREMIUM PARA ESTE ANUNCIO? (S/N)" << endl << "O Premium permite o seu anuncio ter mais visibilidade, apenas por " <<
 		VALOR_MIN_PREMIUM <<  "euros" << endl << "Quanto mais contribuir, mais visibilidade pode ter. " << endl;
 	clean_buffer();
 	cin >> premium;
@@ -1341,7 +1341,7 @@ void OLZ::createMenuVerContactos()
 					clean_buffer();
 					lerMensagensRecebidas();
 					clean_buffer();
-					createMenuLogado();
+					createMenuVerContactos();
 					break;
 				case 2:
 					validade = false;
@@ -1350,7 +1350,7 @@ void OLZ::createMenuVerContactos()
 					clean_buffer();
 					lerMensagensEnviadas();
 					clean_buffer();
-					createMenuLogado();
+					createMenuVerContactos();
 					break;
 				case 3:
 					saveData();
@@ -1440,6 +1440,12 @@ void OLZ::AnuncUserRec(){
 	for (unsigned int i = 0; i < temp.size()-1; i++){
 		if (temp[i]->getDataCriacao() < temp[i + 1]->getDataCriacao())
 			id = i;
+		if (temp[i]->getDataCriacao() == temp[i + 1]->getDataCriacao()){
+			if (temp[i]->getID() > temp[i + 1]->getID())
+				id = i;
+			else
+				id = i + 1;
+		}
 		else
 			id = i + 1;
 		}
@@ -1655,7 +1661,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 		return;
 	char apagar;
 	//Perguntar qual é o anuncio sem destruir o que esta escrito no ecra
-	cout << ":: Deseja apagar algum anuncio? (S/n): " << endl;
+	cout << ":: Deseja apagar algum anuncio? (S/N): " << endl;
 	clean_buffer();
 	cin >> apagar;
 
@@ -1676,7 +1682,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 			char concretizado = 'p';
 			while (tolower(concretizado) != 's' && tolower(concretizado) != 'n')
 			{
-				cout << ":: O anuncio que pretende apagar ja foi concretizado? (S/n)";
+				cout << ":: O anuncio que pretende apagar ja foi concretizado? (S/N)";
 				cin >> concretizado;
 				if (tolower(concretizado) == 's')		//Caso tenha sido concretizado
 				{
@@ -1696,7 +1702,6 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 
 					//Meto uma copia do Anuncio no vetor de concretizados
 					Utilizador * A = a[indiceAnun]->Anunciante;
-					A->incNegocios();
 					string t = a[indiceAnun]->titulo;
 					string cat = a[indiceAnun]->categoria;
 					string descr = a[indiceAnun]->descricao;
@@ -1902,7 +1907,7 @@ void OLZ::premiumAnuncio(vector<Anuncio *> a)
 	if (a.size() == 0)
 		return;
 	char resposta;
-	cout << "Pretende tornar algum anuncio PREMIUM? (S/n): ";
+	cout << "Pretende tornar algum anuncio PREMIUM? (S/N): ";
 	clean_buffer();
 	cin >> resposta;
 	if (tolower(resposta) == 'n')
@@ -2507,8 +2512,7 @@ void OLZ::saveUsers(){
 
 	while (!it.isAtEnd()){
 
-		if (!(it.retrieve() == USER_NULL))
-			vecutilizadores.push_back(it.retrieve());
+		vecutilizadores.push_back(it.retrieve());
 
 		it.advance();
 	}	
@@ -2676,21 +2680,111 @@ void OLZ::saveConcretizados(){
 
 	vector<Anuncio *> anunciosTemp;
 	unordered_set<Anuncio*, hstr, hstr>::iterator it = realizados.begin();
+	unordered_set<Anuncio*, hstr, hstr>::iterator itr = realizados.begin();
 
-
-	for (it; it != realizados.end(); advance(it, 1))
-	{
+	for (itr; itr != realizados.end(); advance(itr, 1)){
 		anunciosTemp.push_back(*it);
 	}
 
-	for (unsigned int i = 0; i < anunciosTemp.size(); i++)
+	int l = 0;
+
+	for (it; it != realizados.end(); advance(it, 1))
+	{
+		// Armazena email do anunciante, titulo, categoria, descricao e ID do anuncio
+
+		File << (*it)->Anunciante->getEmail() << ";" << (*it)->getTitulo() << ";" << (*it)->getCategoria() << ";" << (*it)->getDescricao() << ";" << (*it)->getID() << ";";
+
+		// Armazena número de imagens
+		File << (*it)->getImagens().size() << ";";
+
+		// Armazena cada uma das imagens do anúncio caso existam
+		for (unsigned int j = 0; j < (*it)->getImagens().size(); j++)
+		{
+			File << (*it)->getImagens()[j] << ";";
+		}
+
+		// Armazena data de criação do anúncio
+		File << (*it)->getDataCriacao().getDia() << ";" << (*it)->getDataCriacao().getMes() << ";" << (*it)->getDataCriacao().getAno() << ";";
+
+		// Armazena data de concretização do negócio do anúncio
+		File << (*it)->getDataRealizacao().getDia() << ";" << (*it)->getDataRealizacao().getMes() << ";" << (*it)->getDataRealizacao().getAno() << ";";
+
+		// Armazena prioridade do anúncio
+		File << (*it)->getPrioridade() << ";";
+
+		// Aramazena possibilidade de negociar, número de clicks e preço
+		File << (*it)->getNegociar() << ";" << (*it)->getClicks() << ";" << (*it)->getPreco() << ";";
+
+
+
+
+
+
+		if (l != anunciosTemp.size() - 1)
+		{
+			if ((*it)->isVenda())
+			{
+				File << true << ";";
+				File << (*it)->getEstado() << "\n";
+			}
+			else
+			{
+				File << false << ";";
+
+
+				File << (*it)->getTroca().size();
+				if ((*it)->getTroca().size() == 0)
+					File << "\n";
+				else
+					for (size_t i = 0; i < (*it)->getTroca().size(); i++)
+					{
+					if (i == (*it)->getTroca().size() - 1)
+						File << (*it)->getTroca()[i]->getID() << "\n";
+					else
+						File << (*it)->getTroca()[i]->getID() << ";";
+					}
+
+				for (size_t i = 0; i < (*it)->getTroca().size(); i++)
+				{
+					if (i == (*it)->getTroca().size() - 1)
+						File << (*it)->getTroca()[i]->getID() << "\n";
+					else
+						File << (*it)->getTroca()[i]->getID() << ";";
+				}
+
+			}
+		}
+		else
+		{
+			if ((*it)->isVenda())
+			{
+				File << true << ";";
+				File << (*it)->getEstado();
+			}
+			else
+			{
+				File << false << ";";
+				for (size_t i = 0; i < (*it)->getTroca().size(); i++)
+				{
+					if (i == (*it)->getTroca().size() - 1)
+						File << (*it)->getTroca()[i]->getID();
+					else
+						File << (*it)->getTroca()[i]->getID() << ";";
+				}
+			}
+		}
+
+		l++;
+	}
+
+	/*for (unsigned int i = 0; i < anunciosTemp.size(); i++)
 	{
 		Anuncio * temp = anunciosTemp[i];
 
-		// Armazena email do anunciante, titulo, categora, descricao e ID do anuncio
+		// Armazena email do anunciante, titulo, categoria, descricao e ID do anuncio
 		File << temp->getAnunciante()->getEmail() << ";" << temp->getTitulo() << ";" << temp->getCategoria() << ";" << temp->getDescricao() << ";" << temp->getID() << ";";
 
-		// Armazena nmero de imagens
+		// Armazena número de imagens
 		File << temp->getImagens().size() << ";";
 
 		// Armazena cada uma das imagens do anúncio caso existam
@@ -2764,7 +2858,7 @@ void OLZ::saveConcretizados(){
 				}
 			}
 		}
-	}
+	}*/
 
 	File.close();
 }
@@ -2790,7 +2884,6 @@ void OLZ::loadUsers(){
 
 		while (ss.good()) {
 
-			int i = 0;
 			string tNome;
 			getline(ss, tNome, ';'); // Carrega nome
 			string tEmail;
@@ -2887,12 +2980,9 @@ void OLZ::loadUsers(){
 			bool tVisTelefone = itVisTelefone;
 			usertemp.setVisTelefone(tVisTelefone); // Carrega visibilidade do telefone
 
-			vecutilizadores.push_back(usertemp); // Carrega utilizador
+			vecutilizadores.push_back(usertemp);
+			utilizadores.insert(usertemp); // Carrega utilizador
 		}
-	}
-
-	for (unsigned int i = 0; i < vecutilizadores.size(); i++){
-		utilizadores.insert(vecutilizadores[i]);
 	}
 
 	File.close();
@@ -2930,7 +3020,7 @@ void OLZ::loadAnuncios(){
 
 			int k;
 			for (size_t i = 0; i < vecutilizadores.size(); i++)	//Procura o email no vetor de Utilizadores e atribui o indice a "k"
-			{
+			{				
 				if (vecutilizadores[i].getEmail() == tMail)
 					k = i;
 			}
@@ -3035,7 +3125,6 @@ void OLZ::loadAnuncios(){
 				anun->setPrioridade(tPrior);
 				anun->setDataRealizacao(tcDt);
 				addAnuncio(anun);
-				cout << "ola";
 			}
 			else
 			{
@@ -3066,7 +3155,6 @@ void OLZ::loadAnuncios(){
 				anun->setPrioridade(tPrior);
 				anun->setDataRealizacao(tcDt);
 				addAnuncio(anun);
-				cout << "ola";
 			}
 
 		}
@@ -3109,7 +3197,7 @@ void OLZ::loadContatos(){
 			getline(ss3, stIdA, ';');
 			tIdA = atoi(stIdA.c_str());
 			
-			int k;
+			int k = 0;
 			
 			for (size_t i = 0; i < temps.size(); i++)
 			{
@@ -3734,6 +3822,7 @@ Utilizador * OLZ::searchUtilizadorPtr(string emailUt)
 
 	return temp;
 }
+
 void OLZ::adminMostraUsers()
 {
 	clrscr();
@@ -3763,7 +3852,9 @@ void OLZ::adminMostraUsersAZ()
 
 	while (!it.isAtEnd()){
 
-		users.push_back(it.retrieve());
+		if (!(it.retrieve() == USER_NULL)){
+			users.push_back(it.retrieve());
+		}		
 
 		it.advance();
 	}
@@ -3783,6 +3874,7 @@ void OLZ::adminMostraUsersAZ()
 	}
 
 	for (unsigned int i = 0; i < users.size(); i++){
+
 		setcolor(3, 0);
 		cout<< " >NOME: ";
 		setcolor(7, 0);
@@ -3819,6 +3911,10 @@ void OLZ::adminMostraAnuncios()
 		cout << " >ID: ";
 		setcolor(7, 0);
 		cout << temp[i]->getID();
+		setcolor(3, 0);
+		cout << "   > USER: ";
+		setcolor(7, 0);
+		cout << setw(20) << temp[i]->getAnunciante()->getEmail();
 		setcolor(3, 0);
 		cout << "   > TITULO: ";
 		setcolor(7, 0);
@@ -4254,7 +4350,7 @@ void OLZ::criaContactoLogado(Anuncio * a)
 	contatos.push_back(c);
 
 	a->Anunciante->addmsgRec(c);			//Envia o contacto para o Anunciante
-	u->addmsgEnv(c);						//Adiciona a mensagem ás Enviadas do Utilizador
+	u->addmsgEnv(c);						//Adiciona a mensagem às Enviadas do Utilizador
 
 	return;
 }
