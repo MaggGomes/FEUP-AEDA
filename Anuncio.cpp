@@ -152,41 +152,41 @@ vector<Anuncio *> AnuncioVenda::getTroca() const
 
 void AnuncioVenda::visAnuncio()
 {
-	setcolor(9, 0);
+	setcolor(3, 0);
 	if (prioridade != 0)
 	{
 		setcolor(14, 6);
 		cout << " --- PREMIUM --------------------" << endl;
 		cout << "#";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 	cout << "ID: " << id << endl;
 	if (prioridade != 0)
 	{
 		setcolor(14, 6);
 		cout << "#";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 	cout << "Anuncio de Venda" << endl;
 	if (prioridade != 0)
 	{
 		setcolor(14, 6);
 		cout << "#";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 	cout << "Titulo: " << titulo << endl;
 	if (prioridade != 0)
 	{
 		setcolor(14, 6);
 		cout << "#";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 	cout << "Categoria: " << categoria << endl;
 	if (prioridade != 0)
 	{
 		setcolor(14, 6);
 		cout << "#";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 	cout << "Localidade: " << Anunciante->getLocalizacao().getFreguesia() << ", " << Anunciante->getLocalizacao().getConcelho() << ", "
 		<< Anunciante->getLocalizacao().getDistrito() << endl;
@@ -194,21 +194,21 @@ void AnuncioVenda::visAnuncio()
 	{
 		setcolor(14, 6);
 		cout << "#";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 	cout << "Data de Criacao: " << datacriacao << endl;
 	if (prioridade != 0)
 	{
 		setcolor(14, 6);
 		cout << "#";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 	cout << "Descricao: " << descricao << endl;
 	if (prioridade != 0)
 	{
 		setcolor(14, 6);
 		cout << "#";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 
 	for (unsigned int i = 0; i < imagens.size(); i++){
@@ -217,7 +217,7 @@ void AnuncioVenda::visAnuncio()
 		{
 			setcolor(14, 6);
 			cout << "#";
-			setcolor(9, 0);
+			setcolor(3, 0);
 		}
 	}
 
@@ -226,7 +226,7 @@ void AnuncioVenda::visAnuncio()
 	{
 		setcolor(14, 6);
 		cout << "#";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 
 	cout << "Preco: " << preco << endl;
@@ -234,7 +234,7 @@ void AnuncioVenda::visAnuncio()
 	{
 		setcolor(14, 6);
 		cout << "#";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 	num_clicks++;
 	cout << "Visualizacoes: " << num_clicks << endl;
@@ -242,7 +242,7 @@ void AnuncioVenda::visAnuncio()
 	{
 		setcolor(14, 6);
 		cout << "#";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 
 	if (possivelNegociar)
@@ -252,14 +252,14 @@ void AnuncioVenda::visAnuncio()
 		{
 			setcolor(14, 6);
 			cout << "#";
-			setcolor(9, 0);
+			setcolor(3, 0);
 		}
 	}
 	if (prioridade != 0)
 	{
 		setcolor(14, 6);
 		cout << " --------------------------------";
-		setcolor(9, 0);
+		setcolor(3, 0);
 	}
 	setcolor(7, 0);
 	cout << endl;

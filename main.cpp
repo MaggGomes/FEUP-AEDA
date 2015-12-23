@@ -6,8 +6,8 @@ using namespace std;
 int main(){
 
 	OLZ OLZ;
-	//OLZ.loadData();
-
+	OLZ.loadData();
+	/*
 	Localizacao local1("Ramalde", "Porto", "Porto");
 	Utilizador ut3("Max", "j@gmail.com", 999999999, local1, "password");
 	OLZ.addUtilizador(ut3);
@@ -45,6 +45,12 @@ int main(){
 	OLZ.addAnuncio(anun3);
 	priority_queue<PtrToAnuncio> t = OLZ.getAnuncios();
 	
+	while (!t.empty())
+	{
+		cout << t.top().getPtr()->getID() << " - " << t.top().getPtr()->getPrioridade() << endl;
+		t.pop();
+	}
+	/*/
 	OLZ.createMenuInicial();
 	OLZ.saveData();
 

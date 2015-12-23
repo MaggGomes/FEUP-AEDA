@@ -1678,7 +1678,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 			{
 				cout << ":: O anuncio que pretende apagar ja foi concretizado? (S/n)";
 				cin >> concretizado;
-				if (tolower(concretizado) == 's')
+				if (tolower(concretizado) == 's')		//Caso tenha sido concretizado
 				{
 					//Data de Realizacao
 					time_t tempo = time(NULL);
@@ -1734,7 +1734,7 @@ void OLZ::apagarAnuncio(vector<Anuncio *> a)
 					//Apago o Anuncio do resto dos dados
 					apagarAnuncioUtilizador(a[indiceAnun]->getID());
 				}
-				else if (tolower(concretizado) == 'n')
+				else if (tolower(concretizado) == 'n')			//Caso nao tenha sido concretizado
 				{
 					indiceAnun--; //IndiceAnun é sempre +1 do que o indice correspondente
 					apagarAnuncioUtilizador(a[indiceAnun]->getID());
@@ -1785,16 +1785,17 @@ void OLZ::apagarAnuncioUtilizador(int id)
 			apagarContactos(temp[i]);		//apaga os contactos relativos ao anuncio
 			delete(temp[i]);		//Liberta a memoria alocada
 			temp.erase(temp.begin() + i);	//Apaga o anuncio do vetor	
+			for (unsigned int i = 0; i < temp.size(); i++)	//Enche a PQ temporaria com os valores do temp
+			{
+				temp2.push(temp[i]);
+			}
+
+			anuncios = temp2;			//Copia a PQ temporaria para a PQ efetiva
 			return;
 		}
 	}
 
-	for (unsigned int i = 0; i < temp.size(); i++)
-	{
-		temp2.push(temp[i]);
-	}
-
-	anuncios = temp2;
+	
 
 	return;
 }
@@ -2232,14 +2233,11 @@ void OLZ::pesquisaCat(const string &cat){
 		createMenuPesquisaVis();
 	}
 
-	if (temp.size() == 1){
-		temp[0]->visAnuncio();
-		cout << endl;
-		return;
-	}
 
 
-	for (unsigned int i = 0; i < temp.size() - 1; i++){
+	for (unsigned int i = 0; i < temp.size(); i++)
+	{
+		cout << i + 1 << endl;
 		temp[i]->visAnuncio();
 	}
 	int anuncio;
@@ -2908,6 +2906,254 @@ void OLZ::loadAnuncios(){
 
 	string line;
 
+	//Vetor anuncios temporário
+	vector<Anuncio*> tAnuns;
+
+	//Priority Queue temporária
+	priority_queue<PtrToAnuncio> tPQ = anuncios;
+
+	//Enquanto a Priority Queue não estiver vazia, 
+	while (!tPQ.empty())
+	{
+		tAnuns.push_back(tPQ.top().getPtr());		//Insere no vetor
+		tPQ.pop();									//Retira da PQ
+	}
+
+	//Enquanto tiver linhas para ler
+	while (getline(File, line)){
+		istringstream ss2(line); 
+
+		while (ss2.good()) {
+
+			string tMail;
+			getline(ss2, tMail, ';'); // Carrega email
+
+			int k;
+			for (size_t i = 0; i < vecutilizadores.size(); i++)	//Procura o email no vetor de Utilizadores e atribui o indice a "k"
+			{
+				if (vecutilizadores[i].getEmail() == tMail)
+					k = i;
+			}
+
+			Utilizador * tUti = &(vecutilizadores[k]);
+
+			string tTit;
+			getline(ss2, tTit, ';'); // Carrega titulo
+
+			string tCat;
+			getline(ss2, tCat, ';'); // Carrega categoria
+
+			string tDes;
+			getline(ss2, tDes, ';'); // Carrega descrição
+
+			int tId;
+			string stId;
+			getline(ss2, stId, ';'); // Carrega ID
+			tId = atoi(stId.c_str());
+
+			int tNumIm;
+			string stNumIm;
+			getline(ss2, stNumIm, ';'); // Carrega número de imagens
+			tNumIm = atoi(stNumIm.c_str());
+
+			vector<string> tIm;
+			for (int i = 0; i < tNumIm; i++)
+			{
+				string stIm;
+				getline(ss2, stIm, ';');
+				tIm.push_back(stIm);
+			}
+
+			int tDia;
+			string stDia;
+			getline(ss2, stDia, ';');
+			tDia = atoi(stDia.c_str());
+
+			int tMes;
+			string stMes;
+			getline(ss2, stMes, ';');
+			tMes = atoi(stMes.c_str());
+
+			int tAno;
+			string stAno;
+			getline(ss2, stAno, ';');
+			tAno = atoi(stAno.c_str());
+
+			Data tDt(tDia, tMes, tAno);
+			
+			int tcDia;
+			string stcDia;
+			getline(ss2, stcDia, ';');
+			tcDia = atoi(stcDia.c_str());
+
+			int tcMes;
+			string stcMes;
+			getline(ss2, stcMes, ';');
+			tcMes = atoi(stcMes.c_str());
+
+			int tcAno;
+			string stcAno;
+			getline(ss2, stcAno, ';');
+			tcAno = atoi(stcAno.c_str());
+
+			Data tcDt(tcDia, tcMes, tcAno);
+
+			float tPrior;
+			string stPrior;
+			getline(ss2, stPrior, ';');
+			tPrior = atof(stPrior.c_str());
+
+			bool tNeg;
+			string stNeg;
+			getline(ss2, stNeg, ';');
+			tNeg = (stNeg != "0");
+
+			int tClicks;
+			string stCli;
+			getline(ss2, stCli, ';');
+			tClicks = atoi(stCli.c_str());
+
+			float tPre;
+			string stPre;
+			getline(ss2, stPre, ';');
+			tPre = atof(stPre.c_str());
+
+			bool tVen;
+			string stVen;
+			getline(ss2, stVen, ';');
+			tVen = (stVen != "0");
+
+			if (tVen)
+			{
+				string tEst;
+				getline(ss2, tEst, ';');
+				Anuncio * anun = new AnuncioVenda(tUti, tTit, tCat, tDes, tNeg, tPre, tEst);
+				anun->setDataCriacao(tDt);
+				anun->setNum_clicks(tClicks);
+				anun->setImagens(tIm);
+				anun->setId(tId);
+				anun->setPrioridade(tPrior);
+				anun->setDataRealizacao(tcDt);
+				addAnuncio(anun);
+				cout << "ola";
+			}
+			else
+			{
+				int tNumTr;
+				string stNumTr;
+				getline(ss2, stNumTr, ';');
+				tNumTr = atoi(stNumTr.c_str());
+
+				vector<Anuncio *> tTr;
+				for (int i = 0; i < tNumTr; i++)
+				{
+					int tId;
+					string stId;
+					getline(ss2, stId, ';');
+					tId = atoi(stId.c_str());
+
+					for (size_t i = 0; i < tAnuns.size(); i++)
+					{
+						if (tAnuns[i]->getID() == tId)
+							tTr.push_back(tAnuns[i]);
+					}
+				}
+				Anuncio * anun = new AnuncioCompra(tUti, tTit, tCat, tDes, tNeg, tPre, tTr);
+				anun->setDataCriacao(tDt);
+				anun->setNum_clicks(tClicks);
+				anun->setImagens(tIm);
+				anun->setId(tId);
+				anun->setPrioridade(tPrior);
+				anun->setDataRealizacao(tcDt);
+				addAnuncio(anun);
+				cout << "ola";
+			}
+
+		}
+	}
+
+	File.close();
+}
+
+void OLZ::loadContatos(){
+	ifstream ctFile; // variavel que vai conter o ficheiro de Contatos
+
+	priority_queue <PtrToAnuncio> anunc = anuncios;
+	unordered_set<Anuncio*, hstr, hstr>::iterator it;
+	vector <Anuncio *> anunciostemp,temps;
+
+	while (!anunc.empty()){
+		temps.push_back(anunc.top().getPtr());
+		anunc.pop();
+	}
+	
+	for (it = realizados.begin(); it != realizados.end(); it++){
+		anunciostemp.push_back(*it);
+	}
+
+	string line;
+
+	ctFile.open("contatos.csv");
+	string line3;
+	
+	while (getline(ctFile, line3)){
+		istringstream ss3(line3);
+		while (ss3.good()) {
+			int tId;
+			string stId;
+			getline(ss3, stId, ';');
+			tId = atoi(stId.c_str());
+			
+			int tIdA;
+			string stIdA;
+			getline(ss3, stIdA, ';');
+			tIdA = atoi(stIdA.c_str());
+			
+			int k;
+			
+			for (size_t i = 0; i < temps.size(); i++)
+			{
+				if (temps[i]->getID() == tIdA)
+					k = i;
+			}
+			Anuncio * anun = temps[k];
+			
+			string tMens;
+			getline(ss3, tMens, ';');
+			
+			string tCont;
+			getline(ss3, tCont, ';');
+			
+			string tRem;
+			getline(ss3, tRem, ';');
+			
+			Contato cont(anun, tRem, tMens, tCont);
+			cont.setID(tId);
+			contatos.push_back(cont);
+		}
+	}
+
+	ctFile.close();
+}
+
+void OLZ::loadConcretizados(){
+
+	ifstream File;
+
+	File.open("concretizados.csv");
+
+	string line;
+
+	vector<Anuncio*> tAnuns;
+
+	priority_queue<PtrToAnuncio> tPQ = anuncios;
+
+	while (!tPQ.empty())
+	{
+		tAnuns.push_back(tPQ.top().getPtr());
+		tPQ.pop();
+	}
+
 	while (getline(File, line)){
 		istringstream ss2(line);
 
@@ -2968,7 +3214,7 @@ void OLZ::loadAnuncios(){
 			tAno = atoi(stAno.c_str());
 
 			Data tDt(tDia, tMes, tAno);
-			
+
 			int tcDia;
 			string stcDia;
 			getline(ss2, stcDia, ';');
@@ -2982,7 +3228,7 @@ void OLZ::loadAnuncios(){
 			int tcAno;
 			string stcAno;
 			getline(ss2, stcAno, ';');
-			tAno = atoi(stcAno.c_str());
+			tcAno = atoi(stcAno.c_str());
 
 			Data tcDt(tcDia, tcMes, tcAno);
 
@@ -3022,7 +3268,7 @@ void OLZ::loadAnuncios(){
 				anun->setId(tId);
 				anun->setPrioridade(tPrior);
 				anun->setDataRealizacao(tcDt);
-				anuncios.push(anun);
+				realizados.insert(anun);
 			}
 			else
 			{
@@ -3039,10 +3285,10 @@ void OLZ::loadAnuncios(){
 					getline(ss2, stId, ';');
 					tId = atoi(stId.c_str());
 
-					for (size_t i = 0; i < anuncios.size(); i++)
+					for (size_t i = 0; i < tAnuns.size(); i++)
 					{
-						if (anuncios[i]->getID() == tId)
-							tTr.push_back(anuncios[i]);
+						if (tAnuns[i]->getID() == tId)
+							tTr.push_back(tAnuns[i]);
 					}
 				}
 				Anuncio * anun = new AnuncioCompra(&tUti, tTit, tCat, tDes, tNeg, tPre, tTr);
@@ -3052,316 +3298,21 @@ void OLZ::loadAnuncios(){
 				anun->setId(tId);
 				anun->setPrioridade(tPrior);
 				anun->setDataRealizacao(tcDt);
-				anuncios.push(anun);
+				realizados.insert(anun);
 			}
-
-		}
-	}
-
-	for (unsigned int i = 0; i < vecutilizadores.size(); i++){
-		utilizadores.insert(vecutilizadores[i]);
-	}
-
-	File.close();
-}
-
-void OLZ::loadContatos(){
-	ifstream File; // variavel que vai conter o ficheiro de Contatos
-
-	File.open("contatos.csv");
-
-	string line;
-
-	while (getline(File, line)){
-		istringstream ss(line);
-
-		while (ss.good()) {
-			int tId;
-			string stId;
-			getline(ss, stId, ';');
-			tId = atoi(stId.c_str());
-
-			int tIdA;
-			string stIdA;
-			getline(ss, stIdA, ';');
-			tIdA = atoi(stIdA.c_str());
-
-			int k;
-			for (size_t i = 0; i < anuncios.size(); i++)
-			{
-				if (anuncios[i]->getID() == tIdA)
-					k = i;
-			}
-
-			Anuncio * anun = anuncios[k];
-
-			string tMens;
-			getline(ss, tMens, ';');
-
-			string tCont;
-			getline(ss, tCont, ';');
-
-			string tRem;
-			getline(ss, tRem, ';');
-
-			Contato cont(anun, tRem, tMens, tCont);
-			cont.setID(tId);
-
-			contatos.push_back(cont);
 		}
 	}
 
 	File.close();
+		
 }
 
-void OLZ::loadConcretizados(){
-
-	
-}
 void OLZ::loadData()
 {
-
 	loadUsers();
-	//loadAnuncios();
+	loadAnuncios();
+	loadConcretizados();
 	loadContatos();
-	//loadConcretizados();
-
-
-
-	/*
-	ifstream utFile; // variavel que vai conter o ficheiro de Utilizadores
-	ifstream anFile; // variavel que vai conter o ficheiro de Anuncios
-
-	utFile.open("utilizadores.csv");
-
-	string line;
-	vector<Utilizador> vecutilizadores;
-
-	while (getline(utFile, line)){
-		istringstream ss(line);
-
-		while (ss.good()) {
-
-			int i = 0;
-			string tNome;
-			getline(ss, tNome, ';');
-			string tEmail;
-			getline(ss, tEmail, ';');
-
-
-			string stNr;
-			getline(ss, stNr, ';');
-			int tNr = atoi(stNr.c_str());
-
-			string tFreg;
-			getline(ss, tFreg, ';');
-
-			string tConc;
-			getline(ss, tConc, ';');
-
-			string tDist;
-			getline(ss, tDist, ';');
-
-			Localizacao tLoc(tFreg, tConc, tDist);
-
-			string tPass;
-			getline(ss, tPass, ';');
-
-			Utilizador tUti(tNome, tEmail, tNr, tLoc, tPass);
-
-			string siMR;
-			getline(ss, siMR, ';');
-			int iMR = atoi(siMR.c_str());
-
-			vector<int> tMR;
-			for (int i = 0; i < iMR; i++)
-			{
-				string abc;
-				getline(ss, abc, ';');
-				int x = atoi(abc.c_str());
-				tMR.push_back(x);
-			}
-
-			tUti.setMR(tMR);
-
-			string siME;
-			getline(ss, siME, ';');
-			int iME = atoi(siME.c_str());
-
-			vector<int> tME;
-			for (int i = 0; i < iME; i++)
-			{
-				string abc;
-				getline(ss, abc, ';');
-				int x = atoi(abc.c_str());
-				tME.push_back(x);
-			}
-
-
-			tUti.setME(tME);
-
-			string stVisN;
-			getline(ss, stVisN, ';');
-			int itVisN = atoi(stVisN.c_str());
-			bool tVisN = itVisN;
-
-			tUti.setVisNome(tVisN);
-
-			string stVisE;
-			getline(ss, stVisE, ';');
-			int itVisE = atoi(stVisE.c_str());
-			bool tVisE = itVisE;
-
-
-			tUti.setVisEmail(tVisE);
-
-			string stVisT;
-			getline(ss, stVisT, ';');
-			int itVisT = atoi(stVisT.c_str());
-			bool tVisT = itVisT;
-
-			tUti.setVisTelefone(tVisT);
-
-			vecutilizadores.push_back(tUti);
-		}
-	}
-	
-	utFile.close();
-	anFile.open("anuncios.csv");
-
-	string line2;
-
-	while (getline(anFile, line2)){
-		istringstream ss2(line2);
-
-		while (ss2.good()) {
-
-			string tMail;
-			getline(ss2, tMail, ';');
-
-			int k;
-			for (size_t i = 0; i < vecutilizadores.size(); i++)
-			{
-				if (vecutilizadores[i].getEmail() == tMail)
-					k = i;
-			}
-
-
-			Utilizador tUti = vecutilizadores[k];
-
-			string tTit;
-			getline(ss2, tTit, ';');
-
-			string tCat;
-			getline(ss2, tCat, ';');
-
-			string tDes;
-			getline(ss2, tDes, ';');
-
-			int tId;
-			string stId;
-			getline(ss2, stId, ';');
-			tId = atoi(stId.c_str());
-
-			int tNumIm;
-			string stNumIm;
-			getline(ss2, stNumIm, ';');
-			tNumIm = atoi(stNumIm.c_str());
-
-			vector<string> tIm;
-			for (int i = 0; i < tNumIm; i++)
-			{
-				string stIm;
-				getline(ss2, stIm, ';');
-				tIm.push_back(stIm);
-			}
-
-			int tDia;
-			string stDia;
-			getline(ss2, stDia, ';');
-			tDia = atoi(stDia.c_str());
-
-			int tMes;
-			string stMes;
-			getline(ss2, stMes, ';');
-			tMes = atoi(stMes.c_str());
-
-			int tAno;
-			string stAno;
-			getline(ss2, stAno, ';');
-			tAno = atoi(stAno.c_str());
-
-			Data tDt(tDia, tMes, tAno);
-
-			bool tNeg;
-			string stNeg;
-			getline(ss2, stNeg, ';');
-			tNeg = (stNeg != "0");
-
-			int tClicks;
-			string stCli;
-			getline(ss2, stCli, ';');
-			tClicks = atoi(stCli.c_str());
-
-			float tPre;
-			string stPre;
-			getline(ss2, stPre, ';');
-			tPre = atof(stPre.c_str());
-
-			bool tVen;
-			string stVen;
-			getline(ss2, stVen, ';');
-			tVen = (stVen != "0");
-
-			if (tVen)
-			{
-				string tEst;
-				getline(ss2, tEst, ';');
-				Anuncio * anun = new AnuncioVenda(&tUti, tTit, tCat, tDes, tNeg, tPre, tEst);
-				anun->setDataCriacao(tDt);
-				anun->setNum_clicks(tClicks);
-				anun->setImagens(tIm);
-				anun->setId(tId);
-				anuncios.push_back(anun);
-			}
-			else
-			{
-				int tNumTr;
-				string stNumTr;
-				getline(ss2, stNumTr, ';');
-				tNumTr = atoi(stNumTr.c_str());
-
-				vector<Anuncio *> tTr;
-				for (int i = 0; i < tNumTr; i++)
-				{
-					int tId;
-					string stId;
-					getline(ss2, stId, ';');
-					tId = atoi(stId.c_str());
-
-					for (size_t i = 0; i < anuncios.size(); i++)
-					{
-						if (anuncios[i]->getID() == tId)
-							tTr.push_back(anuncios[i]);
-					}
-				}
-				Anuncio * anun = new AnuncioCompra(&tUti, tTit, tCat, tDes, tNeg, tPre, tTr);
-				anun->setDataCriacao(tDt);
-				anun->setNum_clicks(tClicks);
-				anun->setImagens(tIm);
-				anun->setId(tId);
-				anuncios.push_back(anun);
-			}
-
-		}
-	}
-
-	for (unsigned int i = 0; i < vecutilizadores.size(); i++){
-		utilizadores.insert(vecutilizadores[i]);
-	}
-
-	anFile.close();
-*/
 }
 
 Utilizador * OLZ::pesquisaEmail(string mail)
@@ -3765,6 +3716,24 @@ Utilizador OLZ::searchUtilizador(string emailUt)
 	return temp;
 }
 
+Utilizador * OLZ::searchUtilizadorPtr(string emailUt)
+{
+	Utilizador * temp = NULL;
+
+	BSTItrIn<Utilizador> it(utilizadores);
+
+	while (!it.isAtEnd()){
+
+		if (it.retrieve().getEmail() == emailUt) {
+			temp = &(it.retrieve());
+			return temp;
+		}
+
+		it.advance();
+	}
+
+	return temp;
+}
 void OLZ::adminMostraUsers()
 {
 	clrscr();
@@ -4180,7 +4149,7 @@ void OLZ::pesquisaPalavra(string p)
 		cout << "Qual o anuncio em que esta interessado?(0 se nao estiver interessado) : " << endl;
 		cin >> anuncio;
 	}
-	else
+	else				//Se estiver interessado
 	{
 		if (userLogado)
 		{
@@ -4267,25 +4236,25 @@ void OLZ::criaContactoLogado(Anuncio * a)
 	clean_buffer();
 	cout << "Insira a mensagem pretendida: " << endl;
 	getline(cin, mensagem);
-	Utilizador u = searchUtilizador(userOnline);
+	Utilizador * u = searchUtilizadorPtr(userOnline);
 
 	string nome = "Utilizador Anonimo";
-	if (u.getVisNome())						//Se o utilizador permitir que o seu nome se veja
-		nome = u.getNome();					//mostra o nome na mensagem
+	if (u->getVisNome())						//Se o utilizador permitir que o seu nome se veja
+		nome = u->getNome();					//mostra o nome na mensagem
 
 	stringstream ss;
-	if (u.getVisEmail())					//Se o utilizador permitir que o seu mail se veja
-		ss << u.getEmail();					//inclui o email na mensagem
+	if (u->getVisEmail())					//Se o utilizador permitir que o seu mail se veja
+		ss << u->getEmail();					//inclui o email na mensagem
 
-	if (u.getVisTelefone())					//Se o utilizador permitir que o seu telefone se veja
-		ss << u.getTelefone();				//inclui o telefone na mensagem
+	if (u->getVisTelefone())					//Se o utilizador permitir que o seu telefone se veja
+		ss << u->getTelefone();				//inclui o telefone na mensagem
 
 	Contato c(a, nome, mensagem, ss.str());
 
 	contatos.push_back(c);
 
 	a->Anunciante->addmsgRec(c);			//Envia o contacto para o Anunciante
-	u.addmsgEnv(c);						//Adiciona a mensagem ás Enviadas do Utilizador
+	u->addmsgEnv(c);						//Adiciona a mensagem ás Enviadas do Utilizador
 
 	return;
 }

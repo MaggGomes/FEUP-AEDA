@@ -422,6 +422,13 @@ public:
 	Utilizador searchUtilizador(string emailUt);
 
 	/**
+	* @brief Procura um determinado utilizador através do seu email, baseado em sequential search
+	*
+	* @return Retorna o pointer para o utilizador com o email pretendido, NULL se nao for encontrado
+	*/
+	Utilizador * searchUtilizadorPtr(string emailUt);
+
+	/**
 	* @brief Procura um determinado anuncio através do seu id, baseado em sequential search
 	*
 	* @return Retorna a posiçao do anuncio com o email pretendido, -1 se nao for encontrado
